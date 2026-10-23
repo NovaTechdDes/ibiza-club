@@ -1,0 +1,155 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlserver"
+}
+
+model VersionConfig {
+  id     Int @id @default(1)
+  actual Int @default(0)
+}
+
+model Caja {
+  id            Int      @id @default(autoincrement())
+  nombre        String   @unique @db.NVarChar(50)
+  activo        Boolean  @default(true)
+  version       Int
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  @@index([version])
+}
+
+model Usuario {
+  id            Int      @id @default(autoincrement())
+  nombre        String   @db.NVarChar(100)
+  rol           String   @db.NVarChar(20) // CAJERO | ENCARGADO | ADMIN
+  pinHash       String   @db.NVarChar(255)
+  activo        Boolean  @default(true)
+  version       Int
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  @@index([version])
+}
+
+model Envase {
+  id               Int               @id @default(autoincrement())
+  nombre           String            @unique @db.NVarChar(50)
+  orden            Int               @default(0)
+  activo           Boolean           @default(true)
+  version          Int
+  creadaEn         DateTime          @default(now())
+  actualizadoEn    DateTime          @updatedAt
+  variantes        Variante[]
+  promocionEnvases PromocionEnvase[]
+
+  @@index([version])
+}
+
+model Categoria {
+  id                Int                @id @default(autoincrement())
+  nombre            String             @unique @db.NVarChar(100)
+  orden             Int                @default(0)
+  activo            Boolean            @default(true)
+  version           Int
+  creadaEn          DateTime           @default(now())
+  actualizadoEn     DateTime           @updatedAt
+  productos         Producto[]
+  promocionAlcances PromocionAlcance[]
+
+  @@index([version])
+}
+
+model Producto {
+  id            Int      @id @default(autoincrement())
+  categoriaId   Int
+  nombre        String   @db.NVarChar(100)
+  orden         Int      @default(0)
+  activo        Boolean  @default(true)
+  version       Int
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  categoria         Categoria          @relation(fields: [categoriaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  variantes         Variante[]
+  promocionAlcances PromocionAlcance[]
+
+  @@unique([categoriaId, nombre])
+  @@index([version])
+}
+
+model Variante {
+  id            Int      @id @default(autoincrement())
+  productoId    Int
+  envaseId      Int
+  precio        Int
+  activo        Boolean  @default(true)
+  version       Int
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  producto Producto @relation(fields: [productoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  envase   Envase   @relation(fields: [envaseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([productoId, envaseId])
+  @@index([version])
+}
+
+model Promocion {
+  id                Int                @id @default(autoincrement())
+  nombre            String             @db.NVarChar(100)
+  tipo              String             @db.NVarChar(20)
+  llevar            Int?
+  pagar             Int?
+  porcentaje        Int?
+  monto             Int?
+  dias              String             @db.NVarChar(20)
+  horaDesde         String?            @db.Char(5)
+  horaHasta         String?            @db.Char(5)
+  pausada           Boolean            @default(false)
+  activo            Boolean            @default(true)
+  version           Int
+  creadaEn          DateTime           @default(now())
+  actualizadoEn     DateTime           @updatedAt
+  promocionAlcances PromocionAlcance[]
+  promocionEnvases  PromocionEnvase[]
+
+  @@index([version])
+}
+
+model PromocionAlcance {
+  id            Int      @id @default(autoincrement())
+  promocionId   Int
+  productoId    Int?
+  categoriaId   Int?
+  activo        Boolean  @default(true)
+  version       Int
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  promocion Promocion  @relation(fields: [promocionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  producto  Producto?  @relation(fields: [productoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  categoria Categoria? @relation(fields: [categoriaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([version])
+}
+
+model PromocionEnvase {
+  id            Int      @id @default(autoincrement())
+  promocionId   Int
+  envaseId      Int
+  activo        Boolean  @default(true)
+  version       Int
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  promocion Promocion @relation(fields: [promocionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  envase    Envase    @relation(fields: [envaseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([promocionId, envaseId])
+  @@index([version])
+}

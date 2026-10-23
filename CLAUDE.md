@@ -34,6 +34,7 @@ Sistema de escritorio de venta de bebidas para **Ibiza Club**, un boliche que ab
 - QR con firma digital: descartado por ahora, posible a futuro.
 
 Ejemplo:
+
 ```
         ★  S  ★
    VIE 23/10 · Caja 2 · #0147
@@ -70,15 +71,15 @@ Efectivo, Mercado Pago (QR) y transferencia. **Sin integración por ahora**: el 
 
 ## Usuarios y permisos
 
-| Permiso | Cajero | Encargado | Admin/Dueño |
-|---|---|---|---|
-| Vender | ✓ | ✓ | ✓ |
-| Anular venta | — | ✓ | ✓ |
-| Retirar efectivo | — | ✓ | ✓ |
-| Cambiar precios | — | ✓ | ✓ |
-| Crear/pausar promos | — | ✓ | ✓ |
-| Crear usuarios y cajas | — | — | ✓ |
-| Ver reportes | — | — | ✓ (online) |
+| Permiso                | Cajero | Encargado | Admin/Dueño |
+| ---------------------- | ------ | --------- | ----------- |
+| Vender                 | ✓      | ✓         | ✓           |
+| Anular venta           | —      | ✓         | ✓           |
+| Retirar efectivo       | —      | ✓         | ✓           |
+| Cambiar precios        | —      | ✓         | ✓           |
+| Crear/pausar promos    | —      | ✓         | ✓           |
+| Crear usuarios y cajas | —      | —         | ✓           |
+| Ver reportes           | —      | —         | ✓ (online)  |
 
 - El cajero entra con su **PIN**. Para acciones sensibles, el encargado pone **su PIN solo para esa acción**.
 - Usuarios y PINs (hasheados) se cargan en Azure y bajan a todas las cajas.
@@ -95,6 +96,7 @@ Efectivo, Mercado Pago (QR) y transferencia. **Sin integración por ahora**: el 
 ## Pantalla de venta (diseño existente, ajustes acordados)
 
 Tema oscuro, categorías arriba con contador, grilla de tarjetas, carrito a la derecha, total grande y botón COBRAR. Ajustes a hacer:
+
 1. Tarjeta con **dos botones (Vaso $X / Tanque $Y)** para agregar en un toque.
 2. **Cartel de promo** en la tarjeta ("2x1 hasta 02:00") y línea de descuento en el carrito.
 3. Encabezado: **caja + cajero**, letra de la semana e indicador de sincronización.
@@ -150,6 +152,7 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 2. **Operaciones suben** (bandeja de salida): la venta y su entrada en la cola se guardan en la misma transacción; se mandan lotes de ~50; la nube inserta solo si el UUID no existe (idempotente) y confirma; reintentos con espera creciente. Orden: apertura → ventas y movimientos → cierre.
 3. **Cambio de precio desde una caja**: se aplica local, sube por la cola, la nube genera nueva versión y baja a todas. Conflicto: gana el más reciente por hora, ambos auditados.
 4. **Red local** (respaldo sin internet): las cajas se descubren por mDNS, se avisan cambios de precio y una caja que prende pide el catálogo más nuevo a sus compañeras. Las ventas no viajan por la red local. Al volver internet, la nube tiene la última palabra.
+
 - No se sincronizan: correlativo (propio de cada caja) ni letra (calculada).
 - Cada caja tiene su **token** para la API, revocable desde la nube.
 - La caja avisa si su hora difiere mucho de la nube.
@@ -160,7 +163,7 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 - [x] **Paso 1** — Esqueleto del monorepo (pnpm, carpetas, `pnpm-workspace.yaml`, Git).
 - [x] **Paso 2** — `tsconfig.base.json` compartido (ES2022, NodeNext, strict, noUncheckedIndexedAccess).
 - [x] **Paso 3** — `apps/api` con Express 5, `tsx`, `--env-file`, variables validadas con Zod (`src/config/env.ts`), `app.ts` + `index.ts`, ruta `/health`.
-- [ ] **Paso 4** — Prisma 7 + SQL Server local: preparar SQL Server (TCP/IP, autenticación SQL, login y base), `prisma.config.ts`, cliente con adapter en `src/db/prisma.ts`, primer modelo `Caja`, primera migración, ruta `/health/db`.
+- [x] **Paso 4** — Prisma 7 + SQL Server local: preparar SQL Server (TCP/IP, autenticación SQL, login y base), `prisma.config.ts`, cliente con adapter en `src/db/prisma.ts`, primer modelo `Caja`, primera migración, ruta `/health/db`.
 - [ ] **Paso 5** — Schema completo de Prisma con todos los modelos, relaciones, índices y versión global.
 - [ ] **Paso 6** — Paquete `packages/shared`: enums, constantes, schemas Zod y tipos compartidos; usarlo desde la API.
 - [ ] **Paso 7** — Estructura de módulos (`src/modules/`), middleware de validación con Zod y manejo central de errores.
