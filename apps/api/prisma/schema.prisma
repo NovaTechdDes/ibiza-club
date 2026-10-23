@@ -13,25 +13,45 @@ model VersionConfig {
 }
 
 model Caja {
-  id            Int      @id @default(autoincrement())
-  nombre        String   @unique @db.NVarChar(50)
-  activo        Boolean  @default(true)
+  id            Int            @id @default(autoincrement())
+  nombre        String         @unique @db.NVarChar(50)
+  activo        Boolean        @default(true)
   version       Int
-  creadaEn      DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  creadaEn      DateTime       @default(now())
+  actualizadoEn DateTime       @updatedAt
+  aperturaCajas AperturaCaja[]
+
+  aperturas   AperturaCaja[]
+  cierres     CierreCaja[]
+  ventas      Venta[]
+  anulaciones Anulacion[]
+  movimientos MovimientoCaja[]
+  auditorias  AuditoriaCaja[]
 
   @@index([version])
 }
 
 model Usuario {
-  id            Int      @id @default(autoincrement())
-  nombre        String   @db.NVarChar(100)
-  rol           String   @db.NVarChar(20) // CAJERO | ENCARGADO | ADMIN
-  pinHash       String   @db.NVarChar(255)
-  activo        Boolean  @default(true)
+  id            Int            @id @default(autoincrement())
+  nombre        String         @db.NVarChar(100)
+  rol           String         @db.NVarChar(20) // CAJERO | ENCARGADO | ADMIN
+  pinHash       String         @db.NVarChar(255)
+  activo        Boolean        @default(true)
   version       Int
-  creadaEn      DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  creadaEn      DateTime       @default(now())
+  actualizadoEn DateTime       @updatedAt
+  aperturaCajas AperturaCaja[]
+
+  aperturasComoCajero    AperturaCaja[]   @relation("AperturaCajero")
+  aperturasComoEncargado AperturaCaja[]   @relation("AperturaEncargado")
+  cierres                CierreCaja[]
+  ventas                 Venta[]
+  anulaciones            Anulacion[]
+  movimientos            MovimientoCaja[] @relation("MovimientoUsuario")
+  movimientosAutorizados MovimientoCaja[] @relation("MovimientoAutorizo")
+  auditoriasCaja         AuditoriaCaja[]
+  auditoriasPanel        AuditoriaPanel[]
+  movimientoCajas        MovimientoCaja[]
 
   @@index([version])
 }
@@ -92,8 +112,9 @@ model Variante {
   creadaEn      DateTime @default(now())
   actualizadoEn DateTime @updatedAt
 
-  producto Producto @relation(fields: [productoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  envase   Envase   @relation(fields: [envaseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  producto   Producto    @relation(fields: [productoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  envase     Envase      @relation(fields: [envaseId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  itemVentas ItemVenta[]
 
   @@unique([productoId, envaseId])
   @@index([version])
@@ -117,6 +138,7 @@ model Promocion {
   actualizadoEn     DateTime           @updatedAt
   promocionAlcances PromocionAlcance[]
   promocionEnvases  PromocionEnvase[]
+  itemVentas        ItemVenta[]
 
   @@index([version])
 }
@@ -152,4 +174,176 @@ model PromocionEnvase {
 
   @@unique([promocionId, envaseId])
   @@index([version])
+}
+
+model jornada {
+  id         Int      @id @default(autoincrement())
+  fecha      DateTime @unique @db.Date
+  letra      String   @db.Char(1)
+  recibidaEn DateTime @default(now())
+
+  apertura AperturaCaja[]
+}
+
+model AperturaCaja {
+  id          Int      @id @default(autoincrement())
+  cajaId      Int
+  idLocal     Int
+  jornadaId   Int
+  cajeroId    Int
+  encargadoId Int
+  fondo       Int
+  ocurridaEn  DateTime
+  rebidaEn    DateTime @default(now())
+
+  caja      Caja    @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  jornada   jornada @relation(fields: [jornadaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cajero    Usuario @relation(fields: [cajeroId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  encargado Usuario @relation(fields: [encargadoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  cierre      CierreCaja?
+  ventas      Venta[]
+  movimientos MovimientoCaja[]
+  usuario     Usuario?         @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int?
+  usuario     Usuario?         @relation(fields: [usuarioId], references: [id])
+  usuarioId   Int?
+
+  @@unique([cajaId, idLocal])
+  @@index([jornadaId])
+}
+
+model CierreCaja {
+  id                 Int      @id @default(autoincrement())
+  cajaId             Int
+  idLocal            Int
+  aperturaId         Int
+  cerradoPorId       Int
+  contado            Int
+  esperado           Int
+  diferencia         Int
+  totalMercadoPago   Int
+  totalTransferencia Int
+  pendiente          Boolean  @default(false)
+  ocurridaEn         DateTime
+  recibidaEn         DateTime
+
+  caja       Caja         @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  apertura   AperturaCaja @relation(fields: [aperturaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cerradoPor Usuario      @relation(fields: [cerradoPorId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([cajaId, idLocal])
+}
+
+model Venta {
+  id         Int      @id @default(autoincrement())
+  cajaId     Int
+  idLocal    Int
+  aperturaId Int
+  numero     Int
+  cajeroId   Int
+  medioPago  String   @db.NVarChar(20)
+  subTotal   Int
+  descuento  Int
+  total      Int
+  ocurridaEn DateTime
+  recibidaEn DateTime @default(now())
+
+  caja      Caja         @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  apertura  AperturaCaja @relation(fields: [aperturaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cajero    Usuario      @relation(fields: [cajeroId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  items     ItemVenta[]
+  anulacion Anulacion?
+
+  @@unique([cajaId, idLocal])
+  @@unique([aperturaId, numero])
+  @@index([ocurridaEn])
+}
+
+model ItemVenta {
+  id              Int     @id @default(autoincrement())
+  ventaId         Int
+  varianteId      Int
+  nombre          String  @db.NVarChar(150)
+  precioUnitario  Int
+  cantidad        Int
+  promocionId     Int?
+  promocionNombre String? @db.NVarChar(100)
+  descuento       Int     @default(0)
+
+  venta     Venta      @relation(fields: [ventaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  variante  Variante   @relation(fields: [varianteId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  promocion Promocion? @relation(fields: [promocionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([ventaId])
+}
+
+model Anulacion {
+  id          Int      @id @default(autoincrement())
+  cajaId      Int
+  idLocal     Int
+  ventaId     Int      @unique
+  encargadoId Int
+  motivo      String   @db.NVarChar(255)
+  ocurridaEn  DateTime
+  recibidaEn  DateTime @default(now())
+
+  caja      Caja    @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  venta     Venta   @relation(fields: [ventaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  encargado Usuario @relation(fields: [encargadoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([cajaId, idLocal])
+}
+
+model MovimientoCaja {
+  id         Int      @id @default(autoincrement())
+  cajaId     Int
+  idLocal    Int
+  aperturaId Int
+  tipo       String   @db.VarChar(20)
+  monto      Int
+  motivo     String?  @db.NVarChar(255)
+  usuarioId  Int
+  autorizoId Int?
+  ocurridaEn DateTime
+  recibidaEn DateTime @default(now())
+
+  caja     Caja         @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  apertura AperturaCaja @relation(fields: [aperturaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuario  Usuario      @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  autorizo Usuario?     @relation(fields: [autorizoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuario  Usuario      @relation(fields: [usuarioId], references: [id])
+  usuario  Usuario      @relation(fields: [usuarioId], references: [id])
+
+  @@unique([cajaId, idLocal])
+  @@index([aperturaId])
+}
+
+model AuditoriaCaja {
+  id         Int      @id @default(autoincrement())
+  cajaId     Int
+  idLocal    Int
+  usuarioId  Int?
+  accion     String   @db.VarChar(50)
+  detalle    String?  @db.NVarChar(MAX)
+  ocurridaEn DateTime
+  recibidaEn DateTime @default(now())
+
+  caja    Caja     @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  usuario Usuario? @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([cajaId, idLocal])
+  @@index([ocurridaEn])
+}
+
+model AuditoriaPanel {
+  id        Int      @id @default(autoincrement())
+  usuarioId Int
+  accion    String   @db.VarChar(50)
+  detalle   String?  @db.NVarChar(MAX)
+  creadaEn  DateTime @default(now())
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([creadaEn])
 }
