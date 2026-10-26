@@ -179,6 +179,46 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 
 Después del backend: app de escritorio (Electron + SQLite + impresión + sincronización), pantalla de cobro y panel web del dueño.
 
+## Cambios de rumbo
+
+Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción. Se integra al resto del documento más adelante.
+
+1. **Aplicación sencilla y modos configurables.** El cliente quiere algo simple. Se sigue con el diseño actual, pero las funciones que quizás no use tienen que poder **activarse/desactivarse** sin rehacer nada. En particular la **jornada** (abrir/empezar la jornada): puede que el cliente no quiera ese paso. Por lo tanto:
+   - Diseñar la jornada como un **modo opcional** (configuración en Azure que baja a las cajas), no como algo cableado en toda la lógica.
+   - Con la jornada desactivada, la app tiene que funcionar igual: vender, imprimir ticket y cerrar caja sin exigir una jornada abierta. Hay que definir de dónde sale entonces la fecha del ticket, la letra y la vigencia de promos (probablemente de la fecha/hora real, o de la jornada calculada por el horario de corte, sin paso manual).
+   - Evitar que ventas, promos y tickets dependan de forma obligatoria de una `Jornada`; la relación debe poder ser opcional.
+2. **Actualización automática de la app de escritorio.** La app se instala una vez en cada PC y no se reinstala con pendrive. Cuando hay una versión nueva publicada en GitHub, la app muestra un **modal** avisando que hay que actualizar y se actualiza desde ahí. Por lo tanto:
+   - Usar el updater de **Tauri** (`tauri-plugin-updater`, ver punto 4) con **GitHub Releases** como fuente de las versiones. Tauri exige firmar los paquetes de actualización con su propia clave (distinta de la firma de código de Windows).
+   - Las versiones se publican como release (instalador + metadatos) desde el repo, idealmente con un workflow de GitHub Actions al crear un tag; no basta con hacer push al código.
+   - El modal de actualización: avisa que hay versión nueva, deja actualizar y reiniciar. Definir si es obligatoria u opcional y que **nunca interrumpa una venta en curso** (la caja vende de noche, ver Jornada).
+   - Si el repo es privado, el updater necesita un token de solo lectura; evaluar hacer los releases públicos o usar otro hosting para los instaladores.
+   - Firma de código en Windows: sin certificado aparece la advertencia de SmartScreen; definir cómo se maneja.
+3. **Cantidad y distribución de PCs sin definir.** No se sabe cuántas cajas habrá. Lo seguro es que el boliche tiene **varias PCs repartidas por barra**; por ejemplo una para afuera, una para el VIP y una barra interior que podría tener **2 o 3 PCs en la misma barra**. Por lo tanto:
+   - No asumir "5 o 6 cajas" ni una caja por barra: el sistema debe soportar **N cajas**, dadas de alta desde Azure.
+   - Hay que decidir cómo se **registra cada jornada/apertura por PC**: opciones a evaluar, (a) cada PC abre y cierra su propia caja con su arqueo, aunque compartan barra; (b) agrupar las PCs en una **barra/puesto** con un arqueo común. Por defecto, cada PC es una caja independiente (correlativo propio, apertura, arqueo y cierre propios).
+   - Evaluar un campo opcional de **barra/ubicación** en `Caja` (ej: "Afuera", "VIP", "Barra interior") para poder agrupar en los reportes sin cambiar la lógica de venta.
+   - El correlativo del ticket ("C2-0147") y la sincronización por red local no deben suponer un número fijo de cajas.
+   - Pendiente de consultar al cliente: cuántas cajas y cómo están repartidas, y si el dinero de una barra con varias PCs se cuenta junto o por separado.
+4. **Stack tecnológico actualizado.** Reemplaza lo de la sección "Stack" donde contradiga (en particular: **Tauri en lugar de Electron**).
+   - **Nube (Azure)**: Azure SQL (base central), **API** y **Blob Storage** central de imágenes (imágenes de productos).
+   - **Base local de cada PC**: **SQLite**.
+   - **API**: Node.js, Express, TypeScript, Zod, Prisma.
+   - **Front end (app de caja)**: **Tauri**, React, TypeScript, Zustand, TanStack Query, SweetAlert, Axios.
+   - Consecuencias a tener en cuenta:
+     - Ya no hay Electron ni `electron-updater`: la actualización usa el updater de Tauri (punto 2).
+     - Tauri tiene backend en **Rust**: el acceso a SQLite local, la impresión térmica ESC/POS y el mDNS de la red local se hacen desde Rust (comandos/plugins de Tauri) o con plugins existentes, no con módulos de Node. Probar la impresora real temprano.
+     - Queda resuelto "Prisma vs Drizzle para el SQLite": en la caja el SQLite se maneja desde Tauri (p. ej. `tauri-plugin-sql`), no con Prisma. Prisma queda solo en la API con Azure SQL.
+     - Las imágenes viven en Blob Storage; las cajas deben **cachearlas localmente** para vender sin internet (offline-first).
+     - Zustand para estado de UI/carrito, TanStack Query para datos y sincronización, Axios para llamar a la API.
+5. **Diseño de la app: pantalla de venta permanente, casi sin teclado.** Reemplaza lo de "Pantalla de venta" donde contradiga.
+   - Pensada como **POS táctil**: casi sin teclado. Si alguna función lo necesita (PIN, motivo, búsqueda), se usa un teclado, preferentemente **en pantalla**.
+   - La app está **siempre en la pantalla de venta**; las demás funciones (retiros, cierre, promos, configuración) son accesos secundarios que vuelven a la venta.
+   - **Izquierda: productos** en tarjetas grandes. Cada producto puede tener **variantes de tamaño/envase** (vaso, tanque, etc.), cada una con su precio. Puede mostrarse como una tarjeta con un botón por tamaño, o como dos tarjetas separadas del mismo producto con distinto tamaño y precio; se decide en el diseño, el modelo de datos (producto + variante con precio) no cambia.
+   - **Derecha: carrito** con el resumen de la compra (ítems, descuentos de promo, total).
+   - **Cobro en un toque:** debajo del carrito hay **3 botones de medio de pago: Efectivo, Transferencia y Tarjeta**. Al tocar uno se registra el medio y se cierra la venta (imprime ticket); no hay un paso previo de "COBRAR".
+   - Botones grandes, pensados para usar de noche y con apuro; "Vaciar" carrito alejado de los botones de pago o con confirmación.
+   - **Cambio de medios de pago:** el tercer medio pasa a ser **Tarjeta** (antes estaba "Mercado Pago (QR)"). Pendiente de confirmar si Mercado Pago/QR queda como parte de "Tarjeta" o como otro botón, y si en Efectivo se muestra "paga con" y vuelto (eso sí necesitaría números; hacerlo con montos rápidos en botones).
+
 ## Pendientes y preguntas abiertas
 
 - Integración con Mercado Pago (consultar al cliente).
