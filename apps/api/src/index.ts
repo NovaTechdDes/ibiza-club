@@ -1,5 +1,5 @@
 
-import { Rol, TipoPromocion } from '@ibiza/shared';
+
 import { app } from './app.js';
 import { env } from './config/env.js';
 

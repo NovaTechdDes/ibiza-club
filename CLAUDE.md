@@ -164,8 +164,8 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 - [x] **Paso 2** — `tsconfig.base.json` compartido (ES2022, NodeNext, strict, noUncheckedIndexedAccess).
 - [x] **Paso 3** — `apps/api` con Express 5, `tsx`, `--env-file`, variables validadas con Zod (`src/config/env.ts`), `app.ts` + `index.ts`, ruta `/health`.
 - [x] **Paso 4** — Prisma 7 + SQL Server local: preparar SQL Server (TCP/IP, autenticación SQL, login y base), `prisma.config.ts`, cliente con adapter en `src/db/prisma.ts`, primer modelo `Caja`, primera migración, ruta `/health/db`.
-- [ ] **Paso 5** — Schema completo de Prisma con todos los modelos, relaciones, índices y versión global.
-- [ ] **Paso 6** — Paquete `packages/shared`: enums, constantes, schemas Zod y tipos compartidos; usarlo desde la API.
+- [x] **Paso 5** — Schema completo de Prisma con todos los modelos, relaciones, índices y versión global.
+- [x] **Paso 6** — Paquete `packages/shared`: enums, constantes, schemas Zod y tipos compartidos; usarlo desde la API.
 - [ ] **Paso 7** — Estructura de módulos (`src/modules/`), middleware de validación con Zod y manejo central de errores.
 - [ ] **Paso 8** — Seed de datos de prueba (cajas, usuarios, catálogo, promos).
 - [ ] **Paso 9** — Módulo catálogo: CRUD de categorías, productos, envases, variantes y promos (sube la versión global y registra auditoría).
