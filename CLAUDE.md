@@ -133,7 +133,7 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 
 ## Decisiones de datos
 
-- **IDs UUID v7** (las cajas los generan offline sin chocar).
+- **IDs `Int` autoincrement** en la nube. Las operaciones que nacen en una caja (apertura, venta, cierre, movimiento, anulación, auditoría) llevan además `idLocal` (el id autoincrement de la SQLite de la caja); el par `cajaId + idLocal` es único y evita choques entre cajas offline.
 - **Plata como enteros en pesos**, nunca decimales flotantes.
 - **Versión global** que sube con cada cambio de configuración; cada fila de configuración guarda en qué versión cambió.
 - **Bajas lógicas** (`activo = false`), nunca borrar configuración.
@@ -149,7 +149,7 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 ## Protocolo de sincronización
 
 1. **Catálogo baja**: la caja pregunta "¿qué cambió desde la versión X?" cada 1-2 minutos; la nube responde solo los cambios; la caja aplica todo en una transacción.
-2. **Operaciones suben** (bandeja de salida): la venta y su entrada en la cola se guardan en la misma transacción; se mandan lotes de ~50; la nube inserta solo si el UUID no existe (idempotente) y confirma; reintentos con espera creciente. Orden: apertura → ventas y movimientos → cierre.
+2. **Operaciones suben** (bandeja de salida): la venta y su entrada en la cola se guardan en la misma transacción; se mandan lotes de ~50; la nube inserta solo si el par `cajaId + idLocal` no existe (idempotente) y confirma; reintentos con espera creciente. Orden: apertura → ventas y movimientos → cierre.
 3. **Cambio de precio desde una caja**: se aplica local, sube por la cola, la nube genera nueva versión y baja a todas. Conflicto: gana el más reciente por hora, ambos auditados.
 4. **Red local** (respaldo sin internet): las cajas se descubren por mDNS, se avisan cambios de precio y una caja que prende pide el catálogo más nuevo a sus compañeras. Las ventas no viajan por la red local. Al volver internet, la nube tiene la última palabra.
 
@@ -226,3 +226,8 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 - Prisma vs Drizzle para el SQLite de las cajas.
 - Horario exacto de corte de la jornada.
 - Diseño de la pantalla de cobro.
+- ¿"Tarjeta" incluye Mercado Pago/QR o va como botón aparte? (hoy `CierreCaja` tiene `totalMercadoPago`, habría que renombrarlo según la respuesta).
+- ¿En Efectivo se muestra "paga con" y vuelto (montos rápidos en botones)?
+- Cuántas cajas hay y cómo están repartidas por barra; si el dinero de una barra con varias PCs se cuenta junto o por separado.
+- ¿El cliente quiere el paso de abrir jornada? (modo opcional, ver Cambios de rumbo 1).
+- Updater: ¿actualización obligatoria u opcional? ¿Repo público o privado? ¿Cómo se maneja SmartScreen sin certificado?

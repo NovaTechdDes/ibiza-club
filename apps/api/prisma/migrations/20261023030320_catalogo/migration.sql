@@ -16,6 +16,7 @@ ALTER TABLE [dbo].[Caja] DROP CONSTRAINT [Caja_nombre_key];
 
 -- AlterTable
 ALTER TABLE [dbo].[Caja] ALTER COLUMN [nombre] NVARCHAR(50) NOT NULL;
+ALTER TABLE [dbo].[Caja] DROP CONSTRAINT [Caja_activa_df];
 ALTER TABLE [dbo].[Caja] DROP COLUMN [activa];
 ALTER TABLE [dbo].[Caja] ADD [activo] BIT NOT NULL CONSTRAINT [Caja_activo_df] DEFAULT 1,
 [actualizadoEn] DATETIME2 NOT NULL,

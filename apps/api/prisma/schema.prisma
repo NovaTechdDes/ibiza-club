@@ -13,13 +13,14 @@ model VersionConfig {
 }
 
 model Caja {
-  id            Int            @id @default(autoincrement())
-  nombre        String         @unique @db.NVarChar(50)
-  activo        Boolean        @default(true)
+  id            Int      @id @default(autoincrement())
+  nombre        String   @unique @db.NVarChar(50)
+  activo        Boolean  @default(true)
+  barra         String?  @db.NVarChar(50)
+  tokenHash     String?  @db.NVarChar(255)
   version       Int
-  creadaEn      DateTime       @default(now())
-  actualizadoEn DateTime       @updatedAt
-  aperturaCajas AperturaCaja[]
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
 
   aperturas   AperturaCaja[]
   cierres     CierreCaja[]
@@ -32,15 +33,14 @@ model Caja {
 }
 
 model Usuario {
-  id            Int            @id @default(autoincrement())
-  nombre        String         @db.NVarChar(100)
-  rol           String         @db.NVarChar(20) // CAJERO | ENCARGADO | ADMIN
-  pinHash       String         @db.NVarChar(255)
-  activo        Boolean        @default(true)
+  id            Int      @id @default(autoincrement())
+  nombre        String   @db.NVarChar(100)
+  rol           String   @db.NVarChar(20) // CAJERO | ENCARGADO | ADMIN
+  pinHash       String   @db.NVarChar(255)
+  activo        Boolean  @default(true)
   version       Int
-  creadaEn      DateTime       @default(now())
-  actualizadoEn DateTime       @updatedAt
-  aperturaCajas AperturaCaja[]
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
 
   aperturasComoCajero    AperturaCaja[]   @relation("AperturaCajero")
   aperturasComoEncargado AperturaCaja[]   @relation("AperturaEncargado")
@@ -51,7 +51,6 @@ model Usuario {
   movimientosAutorizados MovimientoCaja[] @relation("MovimientoAutorizo")
   auditoriasCaja         AuditoriaCaja[]
   auditoriasPanel        AuditoriaPanel[]
-  movimientoCajas        MovimientoCaja[]
 
   @@index([version])
 }
@@ -176,7 +175,7 @@ model PromocionEnvase {
   @@index([version])
 }
 
-model jornada {
+model Jornada {
   id         Int      @id @default(autoincrement())
   fecha      DateTime @unique @db.Date
   letra      String   @db.Char(1)
@@ -189,25 +188,21 @@ model AperturaCaja {
   id          Int      @id @default(autoincrement())
   cajaId      Int
   idLocal     Int
-  jornadaId   Int
+  jornadaId   Int?
   cajeroId    Int
   encargadoId Int
   fondo       Int
   ocurridaEn  DateTime
-  rebidaEn    DateTime @default(now())
+  recibidaEn  DateTime @default(now())
 
-  caja      Caja    @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  jornada   jornada @relation(fields: [jornadaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  cajero    Usuario @relation(fields: [cajeroId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  encargado Usuario @relation(fields: [encargadoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  caja      Caja     @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  jornada   Jornada? @relation(fields: [jornadaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  cajero    Usuario  @relation("AperturaCajero", fields: [cajeroId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  encargado Usuario  @relation("AperturaEncargado", fields: [encargadoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   cierre      CierreCaja?
   ventas      Venta[]
   movimientos MovimientoCaja[]
-  usuario     Usuario?         @relation(fields: [usuarioId], references: [id])
-  usuarioId   Int?
-  usuario     Usuario?         @relation(fields: [usuarioId], references: [id])
-  usuarioId   Int?
 
   @@unique([cajaId, idLocal])
   @@index([jornadaId])
@@ -217,7 +212,7 @@ model CierreCaja {
   id                 Int      @id @default(autoincrement())
   cajaId             Int
   idLocal            Int
-  aperturaId         Int
+  aperturaId         Int      @unique
   cerradoPorId       Int
   contado            Int
   esperado           Int
@@ -226,7 +221,7 @@ model CierreCaja {
   totalTransferencia Int
   pendiente          Boolean  @default(false)
   ocurridaEn         DateTime
-  recibidaEn         DateTime
+  recibidaEn         DateTime @default(now())
 
   caja       Caja         @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   apertura   AperturaCaja @relation(fields: [aperturaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
@@ -292,7 +287,7 @@ model Anulacion {
   venta     Venta   @relation(fields: [ventaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   encargado Usuario @relation(fields: [encargadoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
-  @@index([cajaId, idLocal])
+  @@unique([cajaId, idLocal])
 }
 
 model MovimientoCaja {
@@ -310,10 +305,8 @@ model MovimientoCaja {
 
   caja     Caja         @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   apertura AperturaCaja @relation(fields: [aperturaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  usuario  Usuario      @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  autorizo Usuario?     @relation(fields: [autorizoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  usuario  Usuario      @relation(fields: [usuarioId], references: [id])
-  usuario  Usuario      @relation(fields: [usuarioId], references: [id])
+  usuario  Usuario      @relation("MovimientoUsuario", fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  autorizo Usuario?     @relation("MovimientoAutorizo", fields: [autorizoId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([cajaId, idLocal])
   @@index([aperturaId])
