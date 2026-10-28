@@ -8,5 +8,23 @@
  *
  * 🟢 You can import this file directly.
  */
+export type * from './models/VersionConfig.js'
 export type * from './models/Caja.js'
+export type * from './models/Usuario.js'
+export type * from './models/Envase.js'
+export type * from './models/Categoria.js'
+export type * from './models/Producto.js'
+export type * from './models/Variante.js'
+export type * from './models/Promocion.js'
+export type * from './models/PromocionAlcance.js'
+export type * from './models/PromocionEnvase.js'
+export type * from './models/Jornada.js'
+export type * from './models/AperturaCaja.js'
+export type * from './models/CierreCaja.js'
+export type * from './models/Venta.js'
+export type * from './models/ItemVenta.js'
+export type * from './models/Anulacion.js'
+export type * from './models/MovimientoCaja.js'
+export type * from './models/AuditoriaCaja.js'
+export type * from './models/AuditoriaPanel.js'
 export type * from './commonInputTypes.js'

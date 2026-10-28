@@ -1,7 +1,10 @@
 import { prisma } from "./db/prisma.js";
 import express, { Express } from "express";
-import z from "zod";
 import { CajaInputSchema, PromocionInputSchema } from "@ibiza/shared";
+import { rutaNoEncontrada } from "./middleware/no-encontrado.js";
+import { errorHandler } from "./middleware/error-handler.js";
+import { validar } from "./middleware/validar.js";
+import { apiRouter } from "./routes.js";
 
 export const app: Express = express();
 
@@ -22,21 +25,16 @@ app.get("/health/db", async (req, res) => {
     }
 });
 
-// Rutas temporales (6d): se reemplazan por el middleware de validación en el Paso 7.
-app.post("/dev/validar-caja", (req, res) => {
-    const resultado = CajaInputSchema.safeParse(req.body);
-    if (!resultado.success) {
-        res.status(400).json(z.flattenError(resultado.error));
-        return;
-    }
-    res.json(resultado.data);
+
+app.post("/dev/validar-caja",validar({ body: CajaInputSchema}), (req, res) => {
+    res.json(req.body);
 });
 
-app.post("/dev/validar-promocion", (req, res) => {
-    const resultado = PromocionInputSchema.safeParse(req.body);
-    if (!resultado.success) {
-        res.status(400).json(z.flattenError(resultado.error));
-        return;
-    }
-    res.json(resultado.data);
+app.post("/dev/validar-promocion",validar({ body: PromocionInputSchema}), (req, res) => {
+    res.json(req.body);
 });
+
+app.use('/api', apiRouter)
+
+app.use(rutaNoEncontrada);
+app.use(errorHandler);

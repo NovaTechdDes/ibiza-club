@@ -18,7 +18,97 @@ export { Prisma }
 export * as $Enums from './enums.js'
 export * from './enums.js';
 /**
+ * Model VersionConfig
+ * 
+ */
+export type VersionConfig = Prisma.VersionConfigModel
+/**
  * Model Caja
  * 
  */
 export type Caja = Prisma.CajaModel
+/**
+ * Model Usuario
+ * 
+ */
+export type Usuario = Prisma.UsuarioModel
+/**
+ * Model Envase
+ * 
+ */
+export type Envase = Prisma.EnvaseModel
+/**
+ * Model Categoria
+ * 
+ */
+export type Categoria = Prisma.CategoriaModel
+/**
+ * Model Producto
+ * 
+ */
+export type Producto = Prisma.ProductoModel
+/**
+ * Model Variante
+ * 
+ */
+export type Variante = Prisma.VarianteModel
+/**
+ * Model Promocion
+ * 
+ */
+export type Promocion = Prisma.PromocionModel
+/**
+ * Model PromocionAlcance
+ * 
+ */
+export type PromocionAlcance = Prisma.PromocionAlcanceModel
+/**
+ * Model PromocionEnvase
+ * 
+ */
+export type PromocionEnvase = Prisma.PromocionEnvaseModel
+/**
+ * Model Jornada
+ * 
+ */
+export type Jornada = Prisma.JornadaModel
+/**
+ * Model AperturaCaja
+ * 
+ */
+export type AperturaCaja = Prisma.AperturaCajaModel
+/**
+ * Model CierreCaja
+ * 
+ */
+export type CierreCaja = Prisma.CierreCajaModel
+/**
+ * Model Venta
+ * 
+ */
+export type Venta = Prisma.VentaModel
+/**
+ * Model ItemVenta
+ * 
+ */
+export type ItemVenta = Prisma.ItemVentaModel
+/**
+ * Model Anulacion
+ * 
+ */
+export type Anulacion = Prisma.AnulacionModel
+/**
+ * Model MovimientoCaja
+ * 
+ */
+export type MovimientoCaja = Prisma.MovimientoCajaModel
+/**
+ * Model AuditoriaCaja
+ * 
+ */
+export type AuditoriaCaja = Prisma.AuditoriaCajaModel
+/**
+ * Model AuditoriaPanel
+ * 
+ */
+export type AuditoriaPanel = Prisma.AuditoriaPanelModel

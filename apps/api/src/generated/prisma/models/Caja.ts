@@ -28,62 +28,90 @@ export type AggregateCaja = {
 
 export type CajaAvgAggregateOutputType = {
   id: number | null
+  version: number | null
 }
 
 export type CajaSumAggregateOutputType = {
   id: number | null
+  version: number | null
 }
 
 export type CajaMinAggregateOutputType = {
   id: number | null
   nombre: string | null
-  activa: boolean | null
+  activo: boolean | null
+  barra: string | null
+  tokenHash: string | null
+  version: number | null
   creadaEn: Date | null
+  actualizadoEn: Date | null
 }
 
 export type CajaMaxAggregateOutputType = {
   id: number | null
   nombre: string | null
-  activa: boolean | null
+  activo: boolean | null
+  barra: string | null
+  tokenHash: string | null
+  version: number | null
   creadaEn: Date | null
+  actualizadoEn: Date | null
 }
 
 export type CajaCountAggregateOutputType = {
   id: number
   nombre: number
-  activa: number
+  activo: number
+  barra: number
+  tokenHash: number
+  version: number
   creadaEn: number
+  actualizadoEn: number
   _all: number
 }
 
 
 export type CajaAvgAggregateInputType = {
   id?: true
+  version?: true
 }
 
 export type CajaSumAggregateInputType = {
   id?: true
+  version?: true
 }
 
 export type CajaMinAggregateInputType = {
   id?: true
   nombre?: true
-  activa?: true
+  activo?: true
+  barra?: true
+  tokenHash?: true
+  version?: true
   creadaEn?: true
+  actualizadoEn?: true
 }
 
 export type CajaMaxAggregateInputType = {
   id?: true
   nombre?: true
-  activa?: true
+  activo?: true
+  barra?: true
+  tokenHash?: true
+  version?: true
   creadaEn?: true
+  actualizadoEn?: true
 }
 
 export type CajaCountAggregateInputType = {
   id?: true
   nombre?: true
-  activa?: true
+  activo?: true
+  barra?: true
+  tokenHash?: true
+  version?: true
   creadaEn?: true
+  actualizadoEn?: true
   _all?: true
 }
 
@@ -176,8 +204,12 @@ export type CajaGroupByArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
 export type CajaGroupByOutputType = {
   id: number
   nombre: string
-  activa: boolean
+  activo: boolean
+  barra: string | null
+  tokenHash: string | null
+  version: number
   creadaEn: Date
+  actualizadoEn: Date
   _count: CajaCountAggregateOutputType | null
   _avg: CajaAvgAggregateOutputType | null
   _sum: CajaSumAggregateOutputType | null
@@ -206,15 +238,35 @@ export type CajaWhereInput = {
   NOT?: Prisma.CajaWhereInput | Prisma.CajaWhereInput[]
   id?: Prisma.IntFilter<"Caja"> | number
   nombre?: Prisma.StringFilter<"Caja"> | string
-  activa?: Prisma.BoolFilter<"Caja"> | boolean
+  activo?: Prisma.BoolFilter<"Caja"> | boolean
+  barra?: Prisma.StringNullableFilter<"Caja"> | string | null
+  tokenHash?: Prisma.StringNullableFilter<"Caja"> | string | null
+  version?: Prisma.IntFilter<"Caja"> | number
   creadaEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
+  actualizadoEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
+  aperturas?: Prisma.AperturaCajaListRelationFilter
+  cierres?: Prisma.CierreCajaListRelationFilter
+  ventas?: Prisma.VentaListRelationFilter
+  anulaciones?: Prisma.AnulacionListRelationFilter
+  movimientos?: Prisma.MovimientoCajaListRelationFilter
+  auditorias?: Prisma.AuditoriaCajaListRelationFilter
 }
 
 export type CajaOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
-  activa?: Prisma.SortOrder
+  activo?: Prisma.SortOrder
+  barra?: Prisma.SortOrderInput | Prisma.SortOrder
+  tokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
+  actualizadoEn?: Prisma.SortOrder
+  aperturas?: Prisma.AperturaCajaOrderByRelationAggregateInput
+  cierres?: Prisma.CierreCajaOrderByRelationAggregateInput
+  ventas?: Prisma.VentaOrderByRelationAggregateInput
+  anulaciones?: Prisma.AnulacionOrderByRelationAggregateInput
+  movimientos?: Prisma.MovimientoCajaOrderByRelationAggregateInput
+  auditorias?: Prisma.AuditoriaCajaOrderByRelationAggregateInput
 }
 
 export type CajaWhereUniqueInput = Prisma.AtLeast<{
@@ -223,15 +275,29 @@ export type CajaWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.CajaWhereInput | Prisma.CajaWhereInput[]
   OR?: Prisma.CajaWhereInput[]
   NOT?: Prisma.CajaWhereInput | Prisma.CajaWhereInput[]
-  activa?: Prisma.BoolFilter<"Caja"> | boolean
+  activo?: Prisma.BoolFilter<"Caja"> | boolean
+  barra?: Prisma.StringNullableFilter<"Caja"> | string | null
+  tokenHash?: Prisma.StringNullableFilter<"Caja"> | string | null
+  version?: Prisma.IntFilter<"Caja"> | number
   creadaEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
+  actualizadoEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
+  aperturas?: Prisma.AperturaCajaListRelationFilter
+  cierres?: Prisma.CierreCajaListRelationFilter
+  ventas?: Prisma.VentaListRelationFilter
+  anulaciones?: Prisma.AnulacionListRelationFilter
+  movimientos?: Prisma.MovimientoCajaListRelationFilter
+  auditorias?: Prisma.AuditoriaCajaListRelationFilter
 }, "id" | "nombre">
 
 export type CajaOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
-  activa?: Prisma.SortOrder
+  activo?: Prisma.SortOrder
+  barra?: Prisma.SortOrderInput | Prisma.SortOrder
+  tokenHash?: Prisma.SortOrderInput | Prisma.SortOrder
+  version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
+  actualizadoEn?: Prisma.SortOrder
   _count?: Prisma.CajaCountOrderByAggregateInput
   _avg?: Prisma.CajaAvgOrderByAggregateInput
   _max?: Prisma.CajaMaxOrderByAggregateInput
@@ -245,82 +311,157 @@ export type CajaScalarWhereWithAggregatesInput = {
   NOT?: Prisma.CajaScalarWhereWithAggregatesInput | Prisma.CajaScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"Caja"> | number
   nombre?: Prisma.StringWithAggregatesFilter<"Caja"> | string
-  activa?: Prisma.BoolWithAggregatesFilter<"Caja"> | boolean
+  activo?: Prisma.BoolWithAggregatesFilter<"Caja"> | boolean
+  barra?: Prisma.StringNullableWithAggregatesFilter<"Caja"> | string | null
+  tokenHash?: Prisma.StringNullableWithAggregatesFilter<"Caja"> | string | null
+  version?: Prisma.IntWithAggregatesFilter<"Caja"> | number
   creadaEn?: Prisma.DateTimeWithAggregatesFilter<"Caja"> | Date | string
+  actualizadoEn?: Prisma.DateTimeWithAggregatesFilter<"Caja"> | Date | string
 }
 
 export type CajaCreateInput = {
   nombre: string
-  activa?: boolean
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
   creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
 }
 
 export type CajaUncheckedCreateInput = {
   id?: number
   nombre: string
-  activa?: boolean
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
   creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
 }
 
 export type CajaUpdateInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
-  activa?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
-  activa?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
 }
 
 export type CajaCreateManyInput = {
   nombre: string
-  activa?: boolean
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
   creadaEn?: Date | string
+  actualizadoEn?: Date | string
 }
 
 export type CajaUpdateManyMutationInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
-  activa?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CajaUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
-  activa?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type CajaCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
-  activa?: Prisma.SortOrder
+  activo?: Prisma.SortOrder
+  barra?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
+  actualizadoEn?: Prisma.SortOrder
 }
 
 export type CajaAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  version?: Prisma.SortOrder
 }
 
 export type CajaMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
-  activa?: Prisma.SortOrder
+  activo?: Prisma.SortOrder
+  barra?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
+  actualizadoEn?: Prisma.SortOrder
 }
 
 export type CajaMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
-  activa?: Prisma.SortOrder
+  activo?: Prisma.SortOrder
+  barra?: Prisma.SortOrder
+  tokenHash?: Prisma.SortOrder
+  version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
+  actualizadoEn?: Prisma.SortOrder
 }
 
 export type CajaSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  version?: Prisma.SortOrder
+}
+
+export type CajaScalarRelationFilter = {
+  is?: Prisma.CajaWhereInput
+  isNot?: Prisma.CajaWhereInput
 }
 
 export type StringFieldUpdateOperationsInput = {
@@ -331,25 +472,658 @@ export type BoolFieldUpdateOperationsInput = {
   set?: boolean
 }
 
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: string | null
+}
+
 export type DateTimeFieldUpdateOperationsInput = {
   set?: Date | string
 }
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type CajaCreateNestedOneWithoutAperturasInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutAperturasInput, Prisma.CajaUncheckedCreateWithoutAperturasInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutAperturasInput
+  connect?: Prisma.CajaWhereUniqueInput
 }
 
+export type CajaUpdateOneRequiredWithoutAperturasNestedInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutAperturasInput, Prisma.CajaUncheckedCreateWithoutAperturasInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutAperturasInput
+  upsert?: Prisma.CajaUpsertWithoutAperturasInput
+  connect?: Prisma.CajaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutAperturasInput, Prisma.CajaUpdateWithoutAperturasInput>, Prisma.CajaUncheckedUpdateWithoutAperturasInput>
+}
+
+export type CajaCreateNestedOneWithoutCierresInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutCierresInput, Prisma.CajaUncheckedCreateWithoutCierresInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutCierresInput
+  connect?: Prisma.CajaWhereUniqueInput
+}
+
+export type CajaUpdateOneRequiredWithoutCierresNestedInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutCierresInput, Prisma.CajaUncheckedCreateWithoutCierresInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutCierresInput
+  upsert?: Prisma.CajaUpsertWithoutCierresInput
+  connect?: Prisma.CajaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutCierresInput, Prisma.CajaUpdateWithoutCierresInput>, Prisma.CajaUncheckedUpdateWithoutCierresInput>
+}
+
+export type CajaCreateNestedOneWithoutVentasInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutVentasInput, Prisma.CajaUncheckedCreateWithoutVentasInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutVentasInput
+  connect?: Prisma.CajaWhereUniqueInput
+}
+
+export type CajaUpdateOneRequiredWithoutVentasNestedInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutVentasInput, Prisma.CajaUncheckedCreateWithoutVentasInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutVentasInput
+  upsert?: Prisma.CajaUpsertWithoutVentasInput
+  connect?: Prisma.CajaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutVentasInput, Prisma.CajaUpdateWithoutVentasInput>, Prisma.CajaUncheckedUpdateWithoutVentasInput>
+}
+
+export type CajaCreateNestedOneWithoutAnulacionesInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutAnulacionesInput, Prisma.CajaUncheckedCreateWithoutAnulacionesInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutAnulacionesInput
+  connect?: Prisma.CajaWhereUniqueInput
+}
+
+export type CajaUpdateOneRequiredWithoutAnulacionesNestedInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutAnulacionesInput, Prisma.CajaUncheckedCreateWithoutAnulacionesInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutAnulacionesInput
+  upsert?: Prisma.CajaUpsertWithoutAnulacionesInput
+  connect?: Prisma.CajaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutAnulacionesInput, Prisma.CajaUpdateWithoutAnulacionesInput>, Prisma.CajaUncheckedUpdateWithoutAnulacionesInput>
+}
+
+export type CajaCreateNestedOneWithoutMovimientosInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutMovimientosInput, Prisma.CajaUncheckedCreateWithoutMovimientosInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutMovimientosInput
+  connect?: Prisma.CajaWhereUniqueInput
+}
+
+export type CajaUpdateOneRequiredWithoutMovimientosNestedInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutMovimientosInput, Prisma.CajaUncheckedCreateWithoutMovimientosInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutMovimientosInput
+  upsert?: Prisma.CajaUpsertWithoutMovimientosInput
+  connect?: Prisma.CajaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutMovimientosInput, Prisma.CajaUpdateWithoutMovimientosInput>, Prisma.CajaUncheckedUpdateWithoutMovimientosInput>
+}
+
+export type CajaCreateNestedOneWithoutAuditoriasInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutAuditoriasInput, Prisma.CajaUncheckedCreateWithoutAuditoriasInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutAuditoriasInput
+  connect?: Prisma.CajaWhereUniqueInput
+}
+
+export type CajaUpdateOneRequiredWithoutAuditoriasNestedInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutAuditoriasInput, Prisma.CajaUncheckedCreateWithoutAuditoriasInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutAuditoriasInput
+  upsert?: Prisma.CajaUpsertWithoutAuditoriasInput
+  connect?: Prisma.CajaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutAuditoriasInput, Prisma.CajaUpdateWithoutAuditoriasInput>, Prisma.CajaUncheckedUpdateWithoutAuditoriasInput>
+}
+
+export type CajaCreateWithoutAperturasInput = {
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+}
+
+export type CajaUncheckedCreateWithoutAperturasInput = {
+  id?: number
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+}
+
+export type CajaCreateOrConnectWithoutAperturasInput = {
+  where: Prisma.CajaWhereUniqueInput
+  create: Prisma.XOR<Prisma.CajaCreateWithoutAperturasInput, Prisma.CajaUncheckedCreateWithoutAperturasInput>
+}
+
+export type CajaUpsertWithoutAperturasInput = {
+  update: Prisma.XOR<Prisma.CajaUpdateWithoutAperturasInput, Prisma.CajaUncheckedUpdateWithoutAperturasInput>
+  create: Prisma.XOR<Prisma.CajaCreateWithoutAperturasInput, Prisma.CajaUncheckedCreateWithoutAperturasInput>
+  where?: Prisma.CajaWhereInput
+}
+
+export type CajaUpdateToOneWithWhereWithoutAperturasInput = {
+  where?: Prisma.CajaWhereInput
+  data: Prisma.XOR<Prisma.CajaUpdateWithoutAperturasInput, Prisma.CajaUncheckedUpdateWithoutAperturasInput>
+}
+
+export type CajaUpdateWithoutAperturasInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaUncheckedUpdateWithoutAperturasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaCreateWithoutCierresInput = {
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+}
+
+export type CajaUncheckedCreateWithoutCierresInput = {
+  id?: number
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+}
+
+export type CajaCreateOrConnectWithoutCierresInput = {
+  where: Prisma.CajaWhereUniqueInput
+  create: Prisma.XOR<Prisma.CajaCreateWithoutCierresInput, Prisma.CajaUncheckedCreateWithoutCierresInput>
+}
+
+export type CajaUpsertWithoutCierresInput = {
+  update: Prisma.XOR<Prisma.CajaUpdateWithoutCierresInput, Prisma.CajaUncheckedUpdateWithoutCierresInput>
+  create: Prisma.XOR<Prisma.CajaCreateWithoutCierresInput, Prisma.CajaUncheckedCreateWithoutCierresInput>
+  where?: Prisma.CajaWhereInput
+}
+
+export type CajaUpdateToOneWithWhereWithoutCierresInput = {
+  where?: Prisma.CajaWhereInput
+  data: Prisma.XOR<Prisma.CajaUpdateWithoutCierresInput, Prisma.CajaUncheckedUpdateWithoutCierresInput>
+}
+
+export type CajaUpdateWithoutCierresInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaUncheckedUpdateWithoutCierresInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaCreateWithoutVentasInput = {
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+}
+
+export type CajaUncheckedCreateWithoutVentasInput = {
+  id?: number
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+}
+
+export type CajaCreateOrConnectWithoutVentasInput = {
+  where: Prisma.CajaWhereUniqueInput
+  create: Prisma.XOR<Prisma.CajaCreateWithoutVentasInput, Prisma.CajaUncheckedCreateWithoutVentasInput>
+}
+
+export type CajaUpsertWithoutVentasInput = {
+  update: Prisma.XOR<Prisma.CajaUpdateWithoutVentasInput, Prisma.CajaUncheckedUpdateWithoutVentasInput>
+  create: Prisma.XOR<Prisma.CajaCreateWithoutVentasInput, Prisma.CajaUncheckedCreateWithoutVentasInput>
+  where?: Prisma.CajaWhereInput
+}
+
+export type CajaUpdateToOneWithWhereWithoutVentasInput = {
+  where?: Prisma.CajaWhereInput
+  data: Prisma.XOR<Prisma.CajaUpdateWithoutVentasInput, Prisma.CajaUncheckedUpdateWithoutVentasInput>
+}
+
+export type CajaUpdateWithoutVentasInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaUncheckedUpdateWithoutVentasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaCreateWithoutAnulacionesInput = {
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+}
+
+export type CajaUncheckedCreateWithoutAnulacionesInput = {
+  id?: number
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+}
+
+export type CajaCreateOrConnectWithoutAnulacionesInput = {
+  where: Prisma.CajaWhereUniqueInput
+  create: Prisma.XOR<Prisma.CajaCreateWithoutAnulacionesInput, Prisma.CajaUncheckedCreateWithoutAnulacionesInput>
+}
+
+export type CajaUpsertWithoutAnulacionesInput = {
+  update: Prisma.XOR<Prisma.CajaUpdateWithoutAnulacionesInput, Prisma.CajaUncheckedUpdateWithoutAnulacionesInput>
+  create: Prisma.XOR<Prisma.CajaCreateWithoutAnulacionesInput, Prisma.CajaUncheckedCreateWithoutAnulacionesInput>
+  where?: Prisma.CajaWhereInput
+}
+
+export type CajaUpdateToOneWithWhereWithoutAnulacionesInput = {
+  where?: Prisma.CajaWhereInput
+  data: Prisma.XOR<Prisma.CajaUpdateWithoutAnulacionesInput, Prisma.CajaUncheckedUpdateWithoutAnulacionesInput>
+}
+
+export type CajaUpdateWithoutAnulacionesInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaUncheckedUpdateWithoutAnulacionesInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaCreateWithoutMovimientosInput = {
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+}
+
+export type CajaUncheckedCreateWithoutMovimientosInput = {
+  id?: number
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+}
+
+export type CajaCreateOrConnectWithoutMovimientosInput = {
+  where: Prisma.CajaWhereUniqueInput
+  create: Prisma.XOR<Prisma.CajaCreateWithoutMovimientosInput, Prisma.CajaUncheckedCreateWithoutMovimientosInput>
+}
+
+export type CajaUpsertWithoutMovimientosInput = {
+  update: Prisma.XOR<Prisma.CajaUpdateWithoutMovimientosInput, Prisma.CajaUncheckedUpdateWithoutMovimientosInput>
+  create: Prisma.XOR<Prisma.CajaCreateWithoutMovimientosInput, Prisma.CajaUncheckedCreateWithoutMovimientosInput>
+  where?: Prisma.CajaWhereInput
+}
+
+export type CajaUpdateToOneWithWhereWithoutMovimientosInput = {
+  where?: Prisma.CajaWhereInput
+  data: Prisma.XOR<Prisma.CajaUpdateWithoutMovimientosInput, Prisma.CajaUncheckedUpdateWithoutMovimientosInput>
+}
+
+export type CajaUpdateWithoutMovimientosInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaUncheckedUpdateWithoutMovimientosInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaCreateWithoutAuditoriasInput = {
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+}
+
+export type CajaUncheckedCreateWithoutAuditoriasInput = {
+  id?: number
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+}
+
+export type CajaCreateOrConnectWithoutAuditoriasInput = {
+  where: Prisma.CajaWhereUniqueInput
+  create: Prisma.XOR<Prisma.CajaCreateWithoutAuditoriasInput, Prisma.CajaUncheckedCreateWithoutAuditoriasInput>
+}
+
+export type CajaUpsertWithoutAuditoriasInput = {
+  update: Prisma.XOR<Prisma.CajaUpdateWithoutAuditoriasInput, Prisma.CajaUncheckedUpdateWithoutAuditoriasInput>
+  create: Prisma.XOR<Prisma.CajaCreateWithoutAuditoriasInput, Prisma.CajaUncheckedCreateWithoutAuditoriasInput>
+  where?: Prisma.CajaWhereInput
+}
+
+export type CajaUpdateToOneWithWhereWithoutAuditoriasInput = {
+  where?: Prisma.CajaWhereInput
+  data: Prisma.XOR<Prisma.CajaUpdateWithoutAuditoriasInput, Prisma.CajaUncheckedUpdateWithoutAuditoriasInput>
+}
+
+export type CajaUpdateWithoutAuditoriasInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaUncheckedUpdateWithoutAuditoriasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+}
+
+
+/**
+ * Count Type CajaCountOutputType
+ */
+
+export type CajaCountOutputType = {
+  aperturas: number
+  cierres: number
+  ventas: number
+  anulaciones: number
+  movimientos: number
+  auditorias: number
+}
+
+export type CajaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  aperturas?: boolean | CajaCountOutputTypeCountAperturasArgs
+  cierres?: boolean | CajaCountOutputTypeCountCierresArgs
+  ventas?: boolean | CajaCountOutputTypeCountVentasArgs
+  anulaciones?: boolean | CajaCountOutputTypeCountAnulacionesArgs
+  movimientos?: boolean | CajaCountOutputTypeCountMovimientosArgs
+  auditorias?: boolean | CajaCountOutputTypeCountAuditoriasArgs
+}
+
+/**
+ * CajaCountOutputType without action
+ */
+export type CajaCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CajaCountOutputType
+   */
+  select?: Prisma.CajaCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * CajaCountOutputType without action
+ */
+export type CajaCountOutputTypeCountAperturasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AperturaCajaWhereInput
+}
+
+/**
+ * CajaCountOutputType without action
+ */
+export type CajaCountOutputTypeCountCierresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CierreCajaWhereInput
+}
+
+/**
+ * CajaCountOutputType without action
+ */
+export type CajaCountOutputTypeCountVentasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VentaWhereInput
+}
+
+/**
+ * CajaCountOutputType without action
+ */
+export type CajaCountOutputTypeCountAnulacionesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AnulacionWhereInput
+}
+
+/**
+ * CajaCountOutputType without action
+ */
+export type CajaCountOutputTypeCountMovimientosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.MovimientoCajaWhereInput
+}
+
+/**
+ * CajaCountOutputType without action
+ */
+export type CajaCountOutputTypeCountAuditoriasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AuditoriaCajaWhereInput
+}
 
 
 export type CajaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   nombre?: boolean
-  activa?: boolean
+  activo?: boolean
+  barra?: boolean
+  tokenHash?: boolean
+  version?: boolean
   creadaEn?: boolean
+  actualizadoEn?: boolean
+  aperturas?: boolean | Prisma.Caja$aperturasArgs<ExtArgs>
+  cierres?: boolean | Prisma.Caja$cierresArgs<ExtArgs>
+  ventas?: boolean | Prisma.Caja$ventasArgs<ExtArgs>
+  anulaciones?: boolean | Prisma.Caja$anulacionesArgs<ExtArgs>
+  movimientos?: boolean | Prisma.Caja$movimientosArgs<ExtArgs>
+  auditorias?: boolean | Prisma.Caja$auditoriasArgs<ExtArgs>
+  _count?: boolean | Prisma.CajaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["caja"]>
 
 
@@ -357,20 +1131,44 @@ export type CajaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
 export type CajaSelectScalar = {
   id?: boolean
   nombre?: boolean
-  activa?: boolean
+  activo?: boolean
+  barra?: boolean
+  tokenHash?: boolean
+  version?: boolean
   creadaEn?: boolean
+  actualizadoEn?: boolean
 }
 
-export type CajaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nombre" | "activa" | "creadaEn", ExtArgs["result"]["caja"]>
+export type CajaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nombre" | "activo" | "barra" | "tokenHash" | "version" | "creadaEn" | "actualizadoEn", ExtArgs["result"]["caja"]>
+export type CajaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  aperturas?: boolean | Prisma.Caja$aperturasArgs<ExtArgs>
+  cierres?: boolean | Prisma.Caja$cierresArgs<ExtArgs>
+  ventas?: boolean | Prisma.Caja$ventasArgs<ExtArgs>
+  anulaciones?: boolean | Prisma.Caja$anulacionesArgs<ExtArgs>
+  movimientos?: boolean | Prisma.Caja$movimientosArgs<ExtArgs>
+  auditorias?: boolean | Prisma.Caja$auditoriasArgs<ExtArgs>
+  _count?: boolean | Prisma.CajaCountOutputTypeDefaultArgs<ExtArgs>
+}
 
 export type $CajaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Caja"
-  objects: {}
+  objects: {
+    aperturas: Prisma.$AperturaCajaPayload<ExtArgs>[]
+    cierres: Prisma.$CierreCajaPayload<ExtArgs>[]
+    ventas: Prisma.$VentaPayload<ExtArgs>[]
+    anulaciones: Prisma.$AnulacionPayload<ExtArgs>[]
+    movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
+    auditorias: Prisma.$AuditoriaCajaPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     nombre: string
-    activa: boolean
+    activo: boolean
+    barra: string | null
+    tokenHash: string | null
+    version: number
     creadaEn: Date
+    actualizadoEn: Date
   }, ExtArgs["result"]["caja"]>
   composites: {}
 }
@@ -711,6 +1509,12 @@ readonly fields: CajaFieldRefs;
  */
 export interface Prisma__CajaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  aperturas<T extends Prisma.Caja$aperturasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$aperturasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AperturaCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  cierres<T extends Prisma.Caja$cierresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$cierresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CierreCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ventas<T extends Prisma.Caja$ventasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$ventasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VentaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  anulaciones<T extends Prisma.Caja$anulacionesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$anulacionesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnulacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  movimientos<T extends Prisma.Caja$movimientosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  auditorias<T extends Prisma.Caja$auditoriasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$auditoriasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditoriaCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -742,8 +1546,12 @@ export interface Prisma__CajaClient<T, Null = never, ExtArgs extends runtime.Typ
 export interface CajaFieldRefs {
   readonly id: Prisma.FieldRef<"Caja", 'Int'>
   readonly nombre: Prisma.FieldRef<"Caja", 'String'>
-  readonly activa: Prisma.FieldRef<"Caja", 'Boolean'>
+  readonly activo: Prisma.FieldRef<"Caja", 'Boolean'>
+  readonly barra: Prisma.FieldRef<"Caja", 'String'>
+  readonly tokenHash: Prisma.FieldRef<"Caja", 'String'>
+  readonly version: Prisma.FieldRef<"Caja", 'Int'>
   readonly creadaEn: Prisma.FieldRef<"Caja", 'DateTime'>
+  readonly actualizadoEn: Prisma.FieldRef<"Caja", 'DateTime'>
 }
     
 
@@ -760,6 +1568,10 @@ export type CajaFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Caja
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
   /**
    * Filter, which Caja to fetch.
    */
@@ -779,6 +1591,10 @@ export type CajaFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extensions.I
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
+  /**
    * Filter, which Caja to fetch.
    */
   where: Prisma.CajaWhereUniqueInput
@@ -796,6 +1612,10 @@ export type CajaFindFirstArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Caja
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
   /**
    * Filter, which Caja to fetch.
    */
@@ -845,6 +1665,10 @@ export type CajaFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
+  /**
    * Filter, which Caja to fetch.
    */
   where?: Prisma.CajaWhereInput
@@ -892,6 +1716,10 @@ export type CajaFindManyArgs<ExtArgs extends runtime.Types.Extensions.InternalAr
    * Omit specific fields from the Caja
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
   /**
    * Filter, which Cajas to fetch.
    */
@@ -941,6 +1769,10 @@ export type CajaCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
+  /**
    * The data needed to create a Caja.
    */
   data: Prisma.XOR<Prisma.CajaCreateInput, Prisma.CajaUncheckedCreateInput>
@@ -968,6 +1800,10 @@ export type CajaUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    * Omit specific fields from the Caja
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
   /**
    * The data needed to update a Caja.
    */
@@ -1009,6 +1845,10 @@ export type CajaUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
+  /**
    * The filter to search for the Caja to update in case it exists.
    */
   where: Prisma.CajaWhereUniqueInput
@@ -1035,6 +1875,10 @@ export type CajaDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
+  /**
    * Filter which Caja to delete.
    */
   where: Prisma.CajaWhereUniqueInput
@@ -1055,6 +1899,150 @@ export type CajaDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
 }
 
 /**
+ * Caja.aperturas
+ */
+export type Caja$aperturasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AperturaCaja
+   */
+  select?: Prisma.AperturaCajaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AperturaCaja
+   */
+  omit?: Prisma.AperturaCajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AperturaCajaInclude<ExtArgs> | null
+  where?: Prisma.AperturaCajaWhereInput
+  orderBy?: Prisma.AperturaCajaOrderByWithRelationInput | Prisma.AperturaCajaOrderByWithRelationInput[]
+  cursor?: Prisma.AperturaCajaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AperturaCajaScalarFieldEnum | Prisma.AperturaCajaScalarFieldEnum[]
+}
+
+/**
+ * Caja.cierres
+ */
+export type Caja$cierresArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CierreCaja
+   */
+  select?: Prisma.CierreCajaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CierreCaja
+   */
+  omit?: Prisma.CierreCajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CierreCajaInclude<ExtArgs> | null
+  where?: Prisma.CierreCajaWhereInput
+  orderBy?: Prisma.CierreCajaOrderByWithRelationInput | Prisma.CierreCajaOrderByWithRelationInput[]
+  cursor?: Prisma.CierreCajaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CierreCajaScalarFieldEnum | Prisma.CierreCajaScalarFieldEnum[]
+}
+
+/**
+ * Caja.ventas
+ */
+export type Caja$ventasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Venta
+   */
+  select?: Prisma.VentaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Venta
+   */
+  omit?: Prisma.VentaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VentaInclude<ExtArgs> | null
+  where?: Prisma.VentaWhereInput
+  orderBy?: Prisma.VentaOrderByWithRelationInput | Prisma.VentaOrderByWithRelationInput[]
+  cursor?: Prisma.VentaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VentaScalarFieldEnum | Prisma.VentaScalarFieldEnum[]
+}
+
+/**
+ * Caja.anulaciones
+ */
+export type Caja$anulacionesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Anulacion
+   */
+  select?: Prisma.AnulacionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Anulacion
+   */
+  omit?: Prisma.AnulacionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AnulacionInclude<ExtArgs> | null
+  where?: Prisma.AnulacionWhereInput
+  orderBy?: Prisma.AnulacionOrderByWithRelationInput | Prisma.AnulacionOrderByWithRelationInput[]
+  cursor?: Prisma.AnulacionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AnulacionScalarFieldEnum | Prisma.AnulacionScalarFieldEnum[]
+}
+
+/**
+ * Caja.movimientos
+ */
+export type Caja$movimientosArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the MovimientoCaja
+   */
+  select?: Prisma.MovimientoCajaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the MovimientoCaja
+   */
+  omit?: Prisma.MovimientoCajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.MovimientoCajaInclude<ExtArgs> | null
+  where?: Prisma.MovimientoCajaWhereInput
+  orderBy?: Prisma.MovimientoCajaOrderByWithRelationInput | Prisma.MovimientoCajaOrderByWithRelationInput[]
+  cursor?: Prisma.MovimientoCajaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.MovimientoCajaScalarFieldEnum | Prisma.MovimientoCajaScalarFieldEnum[]
+}
+
+/**
+ * Caja.auditorias
+ */
+export type Caja$auditoriasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AuditoriaCaja
+   */
+  select?: Prisma.AuditoriaCajaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AuditoriaCaja
+   */
+  omit?: Prisma.AuditoriaCajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AuditoriaCajaInclude<ExtArgs> | null
+  where?: Prisma.AuditoriaCajaWhereInput
+  orderBy?: Prisma.AuditoriaCajaOrderByWithRelationInput | Prisma.AuditoriaCajaOrderByWithRelationInput[]
+  cursor?: Prisma.AuditoriaCajaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AuditoriaCajaScalarFieldEnum | Prisma.AuditoriaCajaScalarFieldEnum[]
+}
+
+/**
  * Caja without action
  */
 export type CajaDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1066,4 +2054,8 @@ export type CajaDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
    * Omit specific fields from the Caja
    */
   omit?: Prisma.CajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CajaInclude<ExtArgs> | null
 }

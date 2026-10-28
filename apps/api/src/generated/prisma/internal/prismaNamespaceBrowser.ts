@@ -51,7 +51,25 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Caja: 'Caja'
+  VersionConfig: 'VersionConfig',
+  Caja: 'Caja',
+  Usuario: 'Usuario',
+  Envase: 'Envase',
+  Categoria: 'Categoria',
+  Producto: 'Producto',
+  Variante: 'Variante',
+  Promocion: 'Promocion',
+  PromocionAlcance: 'PromocionAlcance',
+  PromocionEnvase: 'PromocionEnvase',
+  Jornada: 'Jornada',
+  AperturaCaja: 'AperturaCaja',
+  CierreCaja: 'CierreCaja',
+  Venta: 'Venta',
+  ItemVenta: 'ItemVenta',
+  Anulacion: 'Anulacion',
+  MovimientoCaja: 'MovimientoCaja',
+  AuditoriaCaja: 'AuditoriaCaja',
+  AuditoriaPanel: 'AuditoriaPanel'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -71,14 +89,275 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+export const VersionConfigScalarFieldEnum = {
+  id: 'id',
+  actual: 'actual'
+} as const
+
+export type VersionConfigScalarFieldEnum = (typeof VersionConfigScalarFieldEnum)[keyof typeof VersionConfigScalarFieldEnum]
+
+
 export const CajaScalarFieldEnum = {
   id: 'id',
   nombre: 'nombre',
-  activa: 'activa',
-  creadaEn: 'creadaEn'
+  activo: 'activo',
+  barra: 'barra',
+  tokenHash: 'tokenHash',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
 } as const
 
 export type CajaScalarFieldEnum = (typeof CajaScalarFieldEnum)[keyof typeof CajaScalarFieldEnum]
+
+
+export const UsuarioScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  rol: 'rol',
+  pinHash: 'pinHash',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type UsuarioScalarFieldEnum = (typeof UsuarioScalarFieldEnum)[keyof typeof UsuarioScalarFieldEnum]
+
+
+export const EnvaseScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  orden: 'orden',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type EnvaseScalarFieldEnum = (typeof EnvaseScalarFieldEnum)[keyof typeof EnvaseScalarFieldEnum]
+
+
+export const CategoriaScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  orden: 'orden',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type CategoriaScalarFieldEnum = (typeof CategoriaScalarFieldEnum)[keyof typeof CategoriaScalarFieldEnum]
+
+
+export const ProductoScalarFieldEnum = {
+  id: 'id',
+  categoriaId: 'categoriaId',
+  nombre: 'nombre',
+  orden: 'orden',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type ProductoScalarFieldEnum = (typeof ProductoScalarFieldEnum)[keyof typeof ProductoScalarFieldEnum]
+
+
+export const VarianteScalarFieldEnum = {
+  id: 'id',
+  productoId: 'productoId',
+  envaseId: 'envaseId',
+  precio: 'precio',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type VarianteScalarFieldEnum = (typeof VarianteScalarFieldEnum)[keyof typeof VarianteScalarFieldEnum]
+
+
+export const PromocionScalarFieldEnum = {
+  id: 'id',
+  nombre: 'nombre',
+  tipo: 'tipo',
+  llevar: 'llevar',
+  pagar: 'pagar',
+  porcentaje: 'porcentaje',
+  monto: 'monto',
+  dias: 'dias',
+  horaDesde: 'horaDesde',
+  horaHasta: 'horaHasta',
+  pausada: 'pausada',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type PromocionScalarFieldEnum = (typeof PromocionScalarFieldEnum)[keyof typeof PromocionScalarFieldEnum]
+
+
+export const PromocionAlcanceScalarFieldEnum = {
+  id: 'id',
+  promocionId: 'promocionId',
+  productoId: 'productoId',
+  categoriaId: 'categoriaId',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type PromocionAlcanceScalarFieldEnum = (typeof PromocionAlcanceScalarFieldEnum)[keyof typeof PromocionAlcanceScalarFieldEnum]
+
+
+export const PromocionEnvaseScalarFieldEnum = {
+  id: 'id',
+  promocionId: 'promocionId',
+  envaseId: 'envaseId',
+  activo: 'activo',
+  version: 'version',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type PromocionEnvaseScalarFieldEnum = (typeof PromocionEnvaseScalarFieldEnum)[keyof typeof PromocionEnvaseScalarFieldEnum]
+
+
+export const JornadaScalarFieldEnum = {
+  id: 'id',
+  fecha: 'fecha',
+  letra: 'letra',
+  recibidaEn: 'recibidaEn'
+} as const
+
+export type JornadaScalarFieldEnum = (typeof JornadaScalarFieldEnum)[keyof typeof JornadaScalarFieldEnum]
+
+
+export const AperturaCajaScalarFieldEnum = {
+  id: 'id',
+  cajaId: 'cajaId',
+  idLocal: 'idLocal',
+  jornadaId: 'jornadaId',
+  cajeroId: 'cajeroId',
+  encargadoId: 'encargadoId',
+  fondo: 'fondo',
+  ocurridaEn: 'ocurridaEn',
+  recibidaEn: 'recibidaEn'
+} as const
+
+export type AperturaCajaScalarFieldEnum = (typeof AperturaCajaScalarFieldEnum)[keyof typeof AperturaCajaScalarFieldEnum]
+
+
+export const CierreCajaScalarFieldEnum = {
+  id: 'id',
+  cajaId: 'cajaId',
+  idLocal: 'idLocal',
+  aperturaId: 'aperturaId',
+  cerradoPorId: 'cerradoPorId',
+  contado: 'contado',
+  esperado: 'esperado',
+  diferencia: 'diferencia',
+  totalMercadoPago: 'totalMercadoPago',
+  totalTransferencia: 'totalTransferencia',
+  pendiente: 'pendiente',
+  ocurridaEn: 'ocurridaEn',
+  recibidaEn: 'recibidaEn'
+} as const
+
+export type CierreCajaScalarFieldEnum = (typeof CierreCajaScalarFieldEnum)[keyof typeof CierreCajaScalarFieldEnum]
+
+
+export const VentaScalarFieldEnum = {
+  id: 'id',
+  cajaId: 'cajaId',
+  idLocal: 'idLocal',
+  aperturaId: 'aperturaId',
+  numero: 'numero',
+  cajeroId: 'cajeroId',
+  medioPago: 'medioPago',
+  subTotal: 'subTotal',
+  descuento: 'descuento',
+  total: 'total',
+  ocurridaEn: 'ocurridaEn',
+  recibidaEn: 'recibidaEn'
+} as const
+
+export type VentaScalarFieldEnum = (typeof VentaScalarFieldEnum)[keyof typeof VentaScalarFieldEnum]
+
+
+export const ItemVentaScalarFieldEnum = {
+  id: 'id',
+  ventaId: 'ventaId',
+  varianteId: 'varianteId',
+  nombre: 'nombre',
+  precioUnitario: 'precioUnitario',
+  cantidad: 'cantidad',
+  promocionId: 'promocionId',
+  promocionNombre: 'promocionNombre',
+  descuento: 'descuento'
+} as const
+
+export type ItemVentaScalarFieldEnum = (typeof ItemVentaScalarFieldEnum)[keyof typeof ItemVentaScalarFieldEnum]
+
+
+export const AnulacionScalarFieldEnum = {
+  id: 'id',
+  cajaId: 'cajaId',
+  idLocal: 'idLocal',
+  ventaId: 'ventaId',
+  encargadoId: 'encargadoId',
+  motivo: 'motivo',
+  ocurridaEn: 'ocurridaEn',
+  recibidaEn: 'recibidaEn'
+} as const
+
+export type AnulacionScalarFieldEnum = (typeof AnulacionScalarFieldEnum)[keyof typeof AnulacionScalarFieldEnum]
+
+
+export const MovimientoCajaScalarFieldEnum = {
+  id: 'id',
+  cajaId: 'cajaId',
+  idLocal: 'idLocal',
+  aperturaId: 'aperturaId',
+  tipo: 'tipo',
+  monto: 'monto',
+  motivo: 'motivo',
+  usuarioId: 'usuarioId',
+  autorizoId: 'autorizoId',
+  ocurridaEn: 'ocurridaEn',
+  recibidaEn: 'recibidaEn'
+} as const
+
+export type MovimientoCajaScalarFieldEnum = (typeof MovimientoCajaScalarFieldEnum)[keyof typeof MovimientoCajaScalarFieldEnum]
+
+
+export const AuditoriaCajaScalarFieldEnum = {
+  id: 'id',
+  cajaId: 'cajaId',
+  idLocal: 'idLocal',
+  usuarioId: 'usuarioId',
+  accion: 'accion',
+  detalle: 'detalle',
+  ocurridaEn: 'ocurridaEn',
+  recibidaEn: 'recibidaEn'
+} as const
+
+export type AuditoriaCajaScalarFieldEnum = (typeof AuditoriaCajaScalarFieldEnum)[keyof typeof AuditoriaCajaScalarFieldEnum]
+
+
+export const AuditoriaPanelScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  accion: 'accion',
+  detalle: 'detalle',
+  creadaEn: 'creadaEn'
+} as const
+
+export type AuditoriaPanelScalarFieldEnum = (typeof AuditoriaPanelScalarFieldEnum)[keyof typeof AuditoriaPanelScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -87,4 +366,12 @@ export const SortOrder = {
 } as const
 
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
