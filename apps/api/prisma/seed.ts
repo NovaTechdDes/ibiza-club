@@ -36,7 +36,7 @@ const sembrarVersion = async () => {
     await prisma.versionConfig.upsert({
         where: { id: 1 },
         create: { id: 1, actual: VERSION_INICIAL },
-        update: { actual: VERSION_INICIAL },
+        update: {  },
     });
     console.log(`Versión global: ${VERSION_INICIAL}`);
 };
