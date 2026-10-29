@@ -15,3 +15,10 @@ export const ProductoSchema = ProductoInputSchema.extend({
 
 export type ProductoInput = z.infer<typeof ProductoInputSchema>
 export type Producto = z.infer<typeof ProductoSchema>
+
+export const ProductoUpdateSchema = z.object({
+    nombre: ProductoInputSchema.shape.nombre.optional(),
+    orden: z.number().int().min(0).optional(),
+    categoriaId: z.number().int().positive().optional()
+});
+export type ProductoUpdate = z.infer<typeof ProductoUpdateSchema>;

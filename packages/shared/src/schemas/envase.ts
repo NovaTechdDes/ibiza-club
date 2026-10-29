@@ -15,3 +15,9 @@ export const EnvaseSchema = EnvaseInputSchema.extend({
 
 export type EnvaseInput = z.infer<typeof EnvaseInputSchema>
 export type Envase = z.infer<typeof EnvaseSchema>
+
+export const EnvaseUpdateSchema = z.object({
+    nombre: EnvaseInputSchema.shape.nombre.optional(),
+    orden: z.number().int().min(0).optional()
+});
+export type EnvaseUpdate = z.infer<typeof EnvaseUpdateSchema>;

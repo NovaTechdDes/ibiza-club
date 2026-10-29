@@ -13,5 +13,14 @@ export const CategoriaSchema = CategoriaInputSchema.extend({
     version: z.number().int().min(0)
 });
 
+// Agregar
 export type CategoriaInput = z.infer<typeof CategoriaInputSchema>
 export type Categoria = z.infer<typeof CategoriaSchema>
+
+// Editar
+export const CategoriaUpdateSchema = z.object({
+    nombre: CategoriaInputSchema.shape.nombre.optional(),
+    orden: z.number().int().min(0).optional()
+});
+export type CategoriaUpdate = z.infer<typeof CategoriaUpdateSchema>;
+

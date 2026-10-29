@@ -14,3 +14,8 @@ export const VarianteSchema = VarianteInputSchema.extend({
 
 export type VarianteInput = z.infer<typeof VarianteInputSchema>
 export type Variante = z.infer<typeof VarianteSchema>
+
+export const VarianteUpdateSchema = z.object({
+    precio: VarianteInputSchema.shape.precio
+});
+export type VarianteUpdate = z.infer<typeof VarianteUpdateSchema>;
