@@ -13,3 +13,5 @@ export * from './schemas/caja.js';
 export * from './schemas/variante.js';
 export * from './schemas/usuario.js';
 export * from './schemas/promocion.js'
+
+export * from './schemas/auth.js'

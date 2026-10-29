@@ -123,10 +123,10 @@ export const obtenerPromocion = async (id: number) => {
     return aRespuesta(promo);
 };
 
-export const crearPromocion = async (input: PromocionInput) => {
+export const crearPromocion = async (usuarioId: number, input: PromocionInput) => {
     await validarReferencias(input);
 
-    const id = await escribirCatalogo('PROMOCION_CREAR', input, async (tx, version) => {
+    const id = await escribirCatalogo(usuarioId, 'PROMOCION_CREAR', input, async (tx, version) => {
         const promo = await tx.promocion.create({ data: { ...datosPromo(input), version } });
         await sincronizarAlcances(tx, promo.id, input, version);
         await sincronizarEnvases(tx, promo.id, input, version);
@@ -137,11 +137,11 @@ export const crearPromocion = async (input: PromocionInput) => {
 };
 
 // Reemplazo completo (PUT): el panel manda la promo entera.
-export const actualizarPromocion = async (id: number, input: PromocionInput) => {
+export const actualizarPromocion = async (usuarioId: number, id: number, input: PromocionInput) => {
     await obtenerPromocion(id);
     await validarReferencias(input);
 
-    await escribirCatalogo('PROMOCION_ACTUALIZAR', input, async (tx, version) => {
+    await escribirCatalogo(usuarioId, 'PROMOCION_ACTUALIZAR', input, async (tx, version) => {
         await tx.promocion.update({ where: { id }, data: { ...datosPromo(input), version } });
         await sincronizarAlcances(tx, id, input, version);
         await sincronizarEnvases(tx, id, input, version);
@@ -150,20 +150,20 @@ export const actualizarPromocion = async (id: number, input: PromocionInput) => 
     return obtenerPromocion(id);
 };
 
-export const cambiarPausaPromocion = async (id: number, pausada: boolean) => {
+export const cambiarPausaPromocion = async (usuarioId: number, id: number, pausada: boolean) => {
     await obtenerPromocion(id);
 
-    await escribirCatalogo(pausada ? 'PROMOCION_PAUSAR' : 'PROMOCION_REANUDAR', { pausada }, (tx, version) =>
+    await escribirCatalogo(usuarioId, pausada ? 'PROMOCION_PAUSAR' : 'PROMOCION_REANUDAR', { pausada }, (tx, version) =>
         tx.promocion.update({ where: { id }, data: { pausada, version } })
     );
 
     return obtenerPromocion(id);
 };
 
-export const cambiarEstadoPromocion = async (id: number, activo: boolean) => {
+export const cambiarEstadoPromocion = async (usuarioId: number, id: number, activo: boolean) => {
     await obtenerPromocion(id);
 
-    await escribirCatalogo(activo ? 'PROMOCION_ALTA' : 'PROMOCION_BAJA', { activo }, (tx, version) =>
+    await escribirCatalogo(usuarioId, activo ? 'PROMOCION_ALTA' : 'PROMOCION_BAJA', { activo }, (tx, version) =>
         tx.promocion.update({ where: { id }, data: { activo, version } })
     );
 

@@ -49,11 +49,11 @@ export const obtenerVariante = async (id: number) => {
     return variante;
 };
 
-export const crearVariante = async (input: VarianteInput) => {
+export const crearVariante = async (usuarioId: number, input: VarianteInput) => {
     await validarProductoYEnvase(input.productoId, input.envaseId);
 
     try {
-        return await escribirCatalogo('VARIANTE_CREAR', input, (tx, version) =>
+        return await escribirCatalogo(usuarioId, 'VARIANTE_CREAR', input, (tx, version) =>
             tx.variante.create({ data: {...input, version}, select: seleccion })
         )
     } catch (error: any) {
@@ -62,22 +62,22 @@ export const crearVariante = async (input: VarianteInput) => {
     }
 };
 
-export const actualizarVariante = async (id: number, input: VarianteUpdate) => {
+export const actualizarVariante = async (usuarioId: number, id: number, input: VarianteUpdate) => {
     await obtenerVariante(id);
 
-    return await escribirCatalogo('VARIANTE_ACTUALIZAR', input, (tx, version) =>
+    return await escribirCatalogo(usuarioId, 'VARIANTE_ACTUALIZAR', input, (tx, version) =>
         tx.variante.update({ where: {id}, data: {...input, version}, select: seleccion })
     )
 };
 
-export const cambiarEstadoVariante = async (id: number, activo: boolean) => {
+export const cambiarEstadoVariante = async (usuarioId: number, id: number, activo: boolean) => {
     const variante = await obtenerVariante(id);
 
     if(activo){
         await validarProductoYEnvase(variante.productoId, variante.envaseId);
     }
 
-    return await escribirCatalogo(activo ? 'VARIANTE_ALTA' : 'VARIANTE_BAJA', {activo}, (tx, version) =>
+    return await escribirCatalogo(usuarioId, activo ? 'VARIANTE_ALTA' : 'VARIANTE_BAJA', {activo}, (tx, version) =>
         tx.variante.update({ where: {id}, data: {activo, version}, select: seleccion })
     )
 };

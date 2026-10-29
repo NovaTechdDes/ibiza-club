@@ -31,20 +31,20 @@ export const obtenerCategoria = async (id: number ) => {
     return categoria;
 };
 
-export const crearCategoria = async (input: CategoriaInput) => {
+export const crearCategoria = async (usuarioId: number, input: CategoriaInput) => {
     try {
-        return await escribirCatalogo('CATEGORIA_CREAR', input, (tx, version) => tx.categoria.create({ data: {...input,  version}}))
+        return await escribirCatalogo(usuarioId, 'CATEGORIA_CREAR', input, (tx, version) => tx.categoria.create({ data: {...input,  version}}))
     } catch (error: any) {
         if (error.code === 'P2002' )throw AppError.conflicto('Ya existe una categoria con ese nombre')
             throw error
     }
 };
 
-export const actualizarCategoria = async(id: number, input: CategoriaUpdate) => {
+export const actualizarCategoria = async(usuarioId: number, id: number, input: CategoriaUpdate) => {
     try {
         await obtenerCategoria(id);
 
-        return await escribirCatalogo('CATEGORIA_ACTUALIZAR', input, (tx, version) => 
+        return await escribirCatalogo(usuarioId, 'CATEGORIA_ACTUALIZAR', input, (tx, version) => 
             tx.categoria.update({ where: {id}, data: {...input, version}})
         )
     } catch (error: any) {
@@ -53,7 +53,7 @@ export const actualizarCategoria = async(id: number, input: CategoriaUpdate) => 
     }
 }
 
-export const cambiarEstadoCategoria = async (id: number, activo: boolean) => {
+export const cambiarEstadoCategoria = async (usuarioId: number, id: number, activo: boolean) => {
     await obtenerCategoria(id);
 
     if(!activo){
@@ -61,7 +61,7 @@ export const cambiarEstadoCategoria = async (id: number, activo: boolean) => {
         if(conProductos) throw AppError.conflicto('La categoria tiene productos activos');
     }
 
-    return await escribirCatalogo(activo ? 'CATEGORIA_ALTA' : 'CATEGORIA_BAJA', {activo}, (tx, version) =>
+    return await escribirCatalogo(usuarioId, activo ? 'CATEGORIA_ALTA' : 'CATEGORIA_BAJA', {activo}, (tx, version) =>
         tx.categoria.update({ where: {id}, data: {activo, version}})
     )
 }

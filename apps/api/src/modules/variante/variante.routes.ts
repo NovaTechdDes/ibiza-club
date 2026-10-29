@@ -25,16 +25,16 @@ varianteRouter.get('/:id', validar({params: IdParamSchema}), async(req, res) => 
 });
 
 varianteRouter.post('/', validar({body: VarianteInputSchema}), async(req, res) => {
-    res.status(201).json(await crearVariante(req.body))
+    res.status(201).json(await crearVariante(req.usuarioId!, req.body))
 });
 
 varianteRouter.patch('/:id', validar({params: IdParamSchema, body: VarianteUpdateSchema}), async(req, res) => {
-    res.json(await actualizarVariante(Number(req.params.id), req.body))
+    res.json(await actualizarVariante(req.usuarioId!, Number(req.params.id), req.body))
 });
 
 varianteRouter.post('/:id/baja', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoVariante(Number(req.params.id), false))
+    res.json(await cambiarEstadoVariante(req.usuarioId!, Number(req.params.id), false))
 });
 varianteRouter.post('/:id/alta', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoVariante(Number(req.params.id), true))
+    res.json(await cambiarEstadoVariante(req.usuarioId!, Number(req.params.id), true))
 });

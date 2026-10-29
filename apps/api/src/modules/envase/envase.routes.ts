@@ -15,16 +15,16 @@ envaseRouter.get('/:id', validar({params: IdParamSchema}), async(req, res) => {
 });
 
 envaseRouter.post('/', validar({body: EnvaseInputSchema}), async(req, res) => {
-    res.status(201).json(await crearEnvase(req.body))
+    res.status(201).json(await crearEnvase(req.usuarioId!, req.body))
 });
 
 envaseRouter.patch('/:id', validar({params: IdParamSchema, body: EnvaseUpdateSchema}), async(req, res) => {
-    res.json(await actualizarEnvase(Number(req.params.id), req.body))
+    res.json(await actualizarEnvase(req.usuarioId!, Number(req.params.id), req.body))
 });
 
 envaseRouter.post('/:id/baja', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoEnvase(Number(req.params.id), false))
+    res.json(await cambiarEstadoEnvase(req.usuarioId!, Number(req.params.id), false))
 });
 envaseRouter.post('/:id/alta', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoEnvase(Number(req.params.id), true))
+    res.json(await cambiarEstadoEnvase(req.usuarioId!, Number(req.params.id), true))
 });

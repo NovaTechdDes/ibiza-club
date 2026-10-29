@@ -15,17 +15,17 @@ categoriaRouter.get('/:id', validar({params: IdParamSchema}), async(req, res) =>
 });
 
 categoriaRouter.post('/', validar({body: CategoriaInputSchema}), async(req, res) => {
-    res.status(201).json(await crearCategoria(req.body))
+    res.status(201).json(await crearCategoria(req.usuarioId!, req.body))
 })
 
 categoriaRouter.patch('/:id', validar({params: IdParamSchema, body: CategoriaUpdateSchema}), async(req, res) => {
-    res.json(await actualizarCategoria(Number(req.params.id), req.body))
+    res.json(await actualizarCategoria(req.usuarioId!, Number(req.params.id), req.body))
 });
 
 categoriaRouter.post('/:id/baja', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoCategoria(Number(req.params.id), false))
+    res.json(await cambiarEstadoCategoria(req.usuarioId!, Number(req.params.id), false))
 });
 categoriaRouter.post('/:id/alta', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoCategoria(Number(req.params.id), true))
+    res.json(await cambiarEstadoCategoria(req.usuarioId!, Number(req.params.id), true))
 });
 

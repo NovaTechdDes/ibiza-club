@@ -1,16 +1,19 @@
 import { Router } from "express";
+import { requerirAdmin } from "./middleware/requerir-admin.js";
 import { cajaRouter } from "./modules/caja/caja.routes.js";
 import { categoriaRouter } from "./modules/categoria/categoria.routes.js";
 import { envaseRouter } from "./modules/envase/envase.routes.js";
 import { productoRouter } from "./modules/producto/producto.routes.js";
 import { varianteRouter } from "./modules/variante/variante.routes.js";
 import { promocionRouter } from "./modules/promocion/promocion.routes.js";
+import { authRouter } from "./modules/auth/auth.routes.js";
 
 export const apiRouter: Router = Router();
 
-apiRouter.use('/cajas', cajaRouter);
-apiRouter.use('/categorias', categoriaRouter);
-apiRouter.use('/envases', envaseRouter);
-apiRouter.use('/productos', productoRouter);
-apiRouter.use('/variantes', varianteRouter);
-apiRouter.use('/promociones', promocionRouter);
+apiRouter.use('/auth', authRouter);
+apiRouter.use('/cajas', requerirAdmin, cajaRouter);
+apiRouter.use('/categorias', requerirAdmin, categoriaRouter);
+apiRouter.use('/envases', requerirAdmin, envaseRouter);
+apiRouter.use('/productos', requerirAdmin, productoRouter);
+apiRouter.use('/variantes', requerirAdmin, varianteRouter);
+apiRouter.use('/promociones', requerirAdmin, promocionRouter);

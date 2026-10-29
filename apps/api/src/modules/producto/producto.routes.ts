@@ -21,16 +21,16 @@ productoRouter.get('/:id', validar({params: IdParamSchema}), async(req, res) => 
 });
 
 productoRouter.post('/', validar({body: ProductoInputSchema}), async(req, res) => {
-    res.status(201).json(await crearProducto(req.body))
+    res.status(201).json(await crearProducto(req.usuarioId!, req.body))
 });
 
 productoRouter.patch('/:id', validar({params: IdParamSchema, body: ProductoUpdateSchema}), async(req, res) => {
-    res.json(await actualizarProducto(Number(req.params.id), req.body))
+    res.json(await actualizarProducto(req.usuarioId!, Number(req.params.id), req.body))
 });
 
 productoRouter.post('/:id/baja', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoProducto(Number(req.params.id), false))
+    res.json(await cambiarEstadoProducto(req.usuarioId!, Number(req.params.id), false))
 });
 productoRouter.post('/:id/alta', validar({params: IdParamSchema}), async(req, res) => {
-    res.json(await cambiarEstadoProducto(Number(req.params.id), true))
+    res.json(await cambiarEstadoProducto(req.usuarioId!, Number(req.params.id), true))
 });

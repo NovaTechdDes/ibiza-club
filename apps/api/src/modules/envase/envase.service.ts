@@ -31,20 +31,20 @@ export const obtenerEnvase = async (id: number) => {
     return envase;
 };
 
-export const crearEnvase = async (input: EnvaseInput) => {
+export const crearEnvase = async (usuarioId: number, input: EnvaseInput) => {
     try {
-        return await escribirCatalogo('ENVASE_CREAR', input, (tx, version) => tx.envase.create({ data: {...input, version}}))
+        return await escribirCatalogo(usuarioId, 'ENVASE_CREAR', input, (tx, version) => tx.envase.create({ data: {...input, version}}))
     } catch (error: any) {
         if (error.code === 'P2002') throw AppError.conflicto('Ya existe un envase con ese nombre')
         throw error
     }
 };
 
-export const actualizarEnvase = async (id: number, input: EnvaseUpdate) => {
+export const actualizarEnvase = async (usuarioId: number, id: number, input: EnvaseUpdate) => {
     try {
         await obtenerEnvase(id);
 
-        return await escribirCatalogo('ENVASE_ACTUALIZAR', input, (tx, version) =>
+        return await escribirCatalogo(usuarioId, 'ENVASE_ACTUALIZAR', input, (tx, version) =>
             tx.envase.update({ where: {id}, data: {...input, version}})
         )
     } catch (error: any) {
@@ -53,7 +53,7 @@ export const actualizarEnvase = async (id: number, input: EnvaseUpdate) => {
     }
 }
 
-export const cambiarEstadoEnvase = async (id: number, activo: boolean) => {
+export const cambiarEstadoEnvase = async (usuarioId: number, id: number, activo: boolean) => {
     await obtenerEnvase(id);
 
     if(!activo){
@@ -61,7 +61,7 @@ export const cambiarEstadoEnvase = async (id: number, activo: boolean) => {
         if(conVariantes) throw AppError.conflicto('El envase tiene variantes activas');
     }
 
-    return await escribirCatalogo(activo ? 'ENVASE_ALTA' : 'ENVASE_BAJA', {activo}, (tx, version) =>
+    return await escribirCatalogo(usuarioId, activo ? 'ENVASE_ALTA' : 'ENVASE_BAJA', {activo}, (tx, version) =>
         tx.envase.update({ where: {id}, data: {activo, version}})
     )
 }

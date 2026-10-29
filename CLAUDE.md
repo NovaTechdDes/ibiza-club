@@ -168,8 +168,8 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 - [x] **Paso 6** — Paquete `packages/shared`: enums, constantes, schemas Zod y tipos compartidos; usarlo desde la API.
 - [x] **Paso 7** — Estructura de módulos (`src/modules/`), middleware de validación con Zod y manejo central de errores.
 - [x] **Paso 8** — Seed de datos de prueba (cajas, usuarios, catálogo, promos).
-- [ ] **Paso 9** — Módulo catálogo: CRUD de categorías, productos, envases, variantes y promos (sube la versión global y registra auditoría).
-- [ ] **Paso 10** — Autenticación: login del panel (admin, JWT) y token de dispositivo por caja.
+- [x] **Paso 9** — Módulo catálogo: CRUD de categorías, productos, envases, variantes y promos (sube la versión global y registra auditoría).
+- [x] **Paso 10** — Autenticación: login del panel (admin, JWT) y token de dispositivo por caja.
 - [ ] **Paso 11** — Endpoint de sincronización de bajada (cambios desde versión X).
 - [ ] **Paso 12** — Endpoint de sincronización de subida (lotes idempotentes de operaciones, orden de dependencias).
 - [ ] **Paso 13** — Lógica de promos y letra de la semana en `shared`, con tests (Vitest).

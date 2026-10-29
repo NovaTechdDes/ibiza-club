@@ -50,11 +50,11 @@ export const obtenerProducto = async (id: number) => {
     return producto;
 };
 
-export const crearProducto = async (input: ProductoInput) => {
+export const crearProducto = async (usuarioId: number, input: ProductoInput) => {
     await validarCategoria(input.categoriaId);
 
     try {
-        return await escribirCatalogo('PRODUCTO_CREAR', input, (tx, version) =>
+        return await escribirCatalogo(usuarioId, 'PRODUCTO_CREAR', input, (tx, version) =>
             tx.producto.create({ data: {...input, version}, select: seleccion })
         )
     } catch (error: any) {
@@ -63,7 +63,7 @@ export const crearProducto = async (input: ProductoInput) => {
     }
 };
 
-export const actualizarProducto = async (id: number, input: ProductoUpdate) => {
+export const actualizarProducto = async (usuarioId: number, id: number, input: ProductoUpdate) => {
     await obtenerProducto(id);
 
     if(input.categoriaId !== undefined){
@@ -71,7 +71,7 @@ export const actualizarProducto = async (id: number, input: ProductoUpdate) => {
     }
 
     try {
-        return await escribirCatalogo('PRODUCTO_ACTUALIZAR', input, (tx, version) =>
+        return await escribirCatalogo(usuarioId, 'PRODUCTO_ACTUALIZAR', input, (tx, version) =>
             tx.producto.update({ where: {id}, data: {...input, version}, select: seleccion })
         )
     } catch (error: any) {
@@ -80,7 +80,7 @@ export const actualizarProducto = async (id: number, input: ProductoUpdate) => {
     }
 };
 
-export const cambiarEstadoProducto = async (id: number, activo: boolean) => {
+export const cambiarEstadoProducto = async (usuarioId: number, id: number, activo: boolean) => {
     const producto = await obtenerProducto(id);
 
     if(activo){
@@ -90,7 +90,7 @@ export const cambiarEstadoProducto = async (id: number, activo: boolean) => {
         if(conVariantes) throw AppError.conflicto('El producto tiene variantes activas');
     }
 
-    return await escribirCatalogo(activo ? 'PRODUCTO_ALTA' : 'PRODUCTO_BAJA', {activo}, (tx, version) =>
+    return await escribirCatalogo(usuarioId, activo ? 'PRODUCTO_ALTA' : 'PRODUCTO_BAJA', {activo}, (tx, version) =>
         tx.producto.update({ where: {id}, data: {activo, version}, select: seleccion })
     )
 };
