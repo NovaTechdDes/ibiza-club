@@ -119,14 +119,17 @@ const obtenerId = (mapa: Map<string, number>, nombre: string): number => {
     return id
 };
 
-// La tabla VersionConfig tiene una única fila (id = 1) con la versión global.
+// La tabla VersionConfig tiene una única fila (id = 1) con la versión global,
+// que la crea la migración en 0. Las filas del seed nacen con VERSION_INICIAL,
+// así que la global tiene que quedar al menos en ese valor (si no, nunca bajan
+// a las cajas). Solo sube: si ya hubo ediciones desde el panel, no la toca.
 const sembrarVersion = async () => {
-    await prisma.versionConfig.upsert({
-        where: { id: 1 },
-        create: { id: 1, actual: VERSION_INICIAL },
-        update: {  },
+    await prisma.versionConfig.updateMany({
+        where: { id: 1, actual: { lt: VERSION_INICIAL } },
+        data: { actual: VERSION_INICIAL },
     });
-    console.log(`Versión global: ${VERSION_INICIAL}`);
+    const { actual } = await prisma.versionConfig.findUniqueOrThrow({ where: { id: 1 } });
+    console.log(`Versión global: ${actual}`);
 };
 
 // Caja.nombre es único, así que podemos usar upsert:

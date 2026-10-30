@@ -7,6 +7,8 @@ import { productoRouter } from "./modules/producto/producto.routes.js";
 import { varianteRouter } from "./modules/variante/variante.routes.js";
 import { promocionRouter } from "./modules/promocion/promocion.routes.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
+import { requerirCaja } from "./middleware/requerir-caja.js";
+import { syncRouter } from "./modules/sync/sync.routes.js";
 
 export const apiRouter: Router = Router();
 
@@ -17,3 +19,4 @@ apiRouter.use('/envases', requerirAdmin, envaseRouter);
 apiRouter.use('/productos', requerirAdmin, productoRouter);
 apiRouter.use('/variantes', requerirAdmin, varianteRouter);
 apiRouter.use('/promociones', requerirAdmin, promocionRouter);
+apiRouter.use('/sync', requerirCaja, syncRouter);
