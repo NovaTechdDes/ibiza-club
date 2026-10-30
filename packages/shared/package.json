@@ -13,9 +13,14 @@
     },
     "scripts": {
         "build": "tsc",
-        "dev": "tsc --watch"
+        "dev": "tsc --watch",
+        "test": "vitest run",
+        "test:watch": "vitest"
     },
     "dependencies": {
         "zod": "^4.6.7"
+    },
+    "devDependencies": {
+        "vitest": "^5.0.5"
     }
 }
