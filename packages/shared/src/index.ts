@@ -15,6 +15,7 @@ export * from './schemas/usuario.js';
 export * from './schemas/promocion.js';
 export * from './schemas/sync.js';
 export * from './schemas/auth.js';
+export * from './schemas/reporte.js';
 
 
 export * from './logica/jornada.js';

@@ -9,6 +9,7 @@ import { promocionRouter } from "./modules/promocion/promocion.routes.js";
 import { authRouter } from "./modules/auth/auth.routes.js";
 import { requerirCaja } from "./middleware/requerir-caja.js";
 import { syncRouter } from "./modules/sync/sync.routes.js";
+import { reporteRouter } from "./modules/reporte/reporte.routes.js";
 
 export const apiRouter: Router = Router();
 
@@ -20,3 +21,4 @@ apiRouter.use('/productos', requerirAdmin, productoRouter);
 apiRouter.use('/variantes', requerirAdmin, varianteRouter);
 apiRouter.use('/promociones', requerirAdmin, promocionRouter);
 apiRouter.use('/sync', requerirCaja, syncRouter);
+apiRouter.use('/reportes', requerirAdmin, reporteRouter)
