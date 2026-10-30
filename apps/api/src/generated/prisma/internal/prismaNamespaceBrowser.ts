@@ -261,7 +261,7 @@ export const CierreCajaScalarFieldEnum = {
   contado: 'contado',
   esperado: 'esperado',
   diferencia: 'diferencia',
-  totalMercadoPago: 'totalMercadoPago',
+  totalTarjeta: 'totalTarjeta',
   totalTransferencia: 'totalTransferencia',
   pendiente: 'pendiente',
   ocurridaEn: 'ocurridaEn',

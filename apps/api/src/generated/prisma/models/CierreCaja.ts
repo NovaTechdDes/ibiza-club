@@ -35,7 +35,7 @@ export type CierreCajaAvgAggregateOutputType = {
   contado: number | null
   esperado: number | null
   diferencia: number | null
-  totalMercadoPago: number | null
+  totalTarjeta: number | null
   totalTransferencia: number | null
 }
 
@@ -48,7 +48,7 @@ export type CierreCajaSumAggregateOutputType = {
   contado: number | null
   esperado: number | null
   diferencia: number | null
-  totalMercadoPago: number | null
+  totalTarjeta: number | null
   totalTransferencia: number | null
 }
 
@@ -61,7 +61,7 @@ export type CierreCajaMinAggregateOutputType = {
   contado: number | null
   esperado: number | null
   diferencia: number | null
-  totalMercadoPago: number | null
+  totalTarjeta: number | null
   totalTransferencia: number | null
   pendiente: boolean | null
   ocurridaEn: Date | null
@@ -77,7 +77,7 @@ export type CierreCajaMaxAggregateOutputType = {
   contado: number | null
   esperado: number | null
   diferencia: number | null
-  totalMercadoPago: number | null
+  totalTarjeta: number | null
   totalTransferencia: number | null
   pendiente: boolean | null
   ocurridaEn: Date | null
@@ -93,7 +93,7 @@ export type CierreCajaCountAggregateOutputType = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente: number
   ocurridaEn: number
@@ -111,7 +111,7 @@ export type CierreCajaAvgAggregateInputType = {
   contado?: true
   esperado?: true
   diferencia?: true
-  totalMercadoPago?: true
+  totalTarjeta?: true
   totalTransferencia?: true
 }
 
@@ -124,7 +124,7 @@ export type CierreCajaSumAggregateInputType = {
   contado?: true
   esperado?: true
   diferencia?: true
-  totalMercadoPago?: true
+  totalTarjeta?: true
   totalTransferencia?: true
 }
 
@@ -137,7 +137,7 @@ export type CierreCajaMinAggregateInputType = {
   contado?: true
   esperado?: true
   diferencia?: true
-  totalMercadoPago?: true
+  totalTarjeta?: true
   totalTransferencia?: true
   pendiente?: true
   ocurridaEn?: true
@@ -153,7 +153,7 @@ export type CierreCajaMaxAggregateInputType = {
   contado?: true
   esperado?: true
   diferencia?: true
-  totalMercadoPago?: true
+  totalTarjeta?: true
   totalTransferencia?: true
   pendiente?: true
   ocurridaEn?: true
@@ -169,7 +169,7 @@ export type CierreCajaCountAggregateInputType = {
   contado?: true
   esperado?: true
   diferencia?: true
-  totalMercadoPago?: true
+  totalTarjeta?: true
   totalTransferencia?: true
   pendiente?: true
   ocurridaEn?: true
@@ -272,7 +272,7 @@ export type CierreCajaGroupByOutputType = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente: boolean
   ocurridaEn: Date
@@ -311,7 +311,7 @@ export type CierreCajaWhereInput = {
   contado?: Prisma.IntFilter<"CierreCaja"> | number
   esperado?: Prisma.IntFilter<"CierreCaja"> | number
   diferencia?: Prisma.IntFilter<"CierreCaja"> | number
-  totalMercadoPago?: Prisma.IntFilter<"CierreCaja"> | number
+  totalTarjeta?: Prisma.IntFilter<"CierreCaja"> | number
   totalTransferencia?: Prisma.IntFilter<"CierreCaja"> | number
   pendiente?: Prisma.BoolFilter<"CierreCaja"> | boolean
   ocurridaEn?: Prisma.DateTimeFilter<"CierreCaja"> | Date | string
@@ -330,7 +330,7 @@ export type CierreCajaOrderByWithRelationInput = {
   contado?: Prisma.SortOrder
   esperado?: Prisma.SortOrder
   diferencia?: Prisma.SortOrder
-  totalMercadoPago?: Prisma.SortOrder
+  totalTarjeta?: Prisma.SortOrder
   totalTransferencia?: Prisma.SortOrder
   pendiente?: Prisma.SortOrder
   ocurridaEn?: Prisma.SortOrder
@@ -353,7 +353,7 @@ export type CierreCajaWhereUniqueInput = Prisma.AtLeast<{
   contado?: Prisma.IntFilter<"CierreCaja"> | number
   esperado?: Prisma.IntFilter<"CierreCaja"> | number
   diferencia?: Prisma.IntFilter<"CierreCaja"> | number
-  totalMercadoPago?: Prisma.IntFilter<"CierreCaja"> | number
+  totalTarjeta?: Prisma.IntFilter<"CierreCaja"> | number
   totalTransferencia?: Prisma.IntFilter<"CierreCaja"> | number
   pendiente?: Prisma.BoolFilter<"CierreCaja"> | boolean
   ocurridaEn?: Prisma.DateTimeFilter<"CierreCaja"> | Date | string
@@ -372,7 +372,7 @@ export type CierreCajaOrderByWithAggregationInput = {
   contado?: Prisma.SortOrder
   esperado?: Prisma.SortOrder
   diferencia?: Prisma.SortOrder
-  totalMercadoPago?: Prisma.SortOrder
+  totalTarjeta?: Prisma.SortOrder
   totalTransferencia?: Prisma.SortOrder
   pendiente?: Prisma.SortOrder
   ocurridaEn?: Prisma.SortOrder
@@ -396,7 +396,7 @@ export type CierreCajaScalarWhereWithAggregatesInput = {
   contado?: Prisma.IntWithAggregatesFilter<"CierreCaja"> | number
   esperado?: Prisma.IntWithAggregatesFilter<"CierreCaja"> | number
   diferencia?: Prisma.IntWithAggregatesFilter<"CierreCaja"> | number
-  totalMercadoPago?: Prisma.IntWithAggregatesFilter<"CierreCaja"> | number
+  totalTarjeta?: Prisma.IntWithAggregatesFilter<"CierreCaja"> | number
   totalTransferencia?: Prisma.IntWithAggregatesFilter<"CierreCaja"> | number
   pendiente?: Prisma.BoolWithAggregatesFilter<"CierreCaja"> | boolean
   ocurridaEn?: Prisma.DateTimeWithAggregatesFilter<"CierreCaja"> | Date | string
@@ -408,7 +408,7 @@ export type CierreCajaCreateInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -427,7 +427,7 @@ export type CierreCajaUncheckedCreateInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -439,7 +439,7 @@ export type CierreCajaUpdateInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -458,7 +458,7 @@ export type CierreCajaUncheckedUpdateInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -473,7 +473,7 @@ export type CierreCajaCreateManyInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -485,7 +485,7 @@ export type CierreCajaUpdateManyMutationInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -501,7 +501,7 @@ export type CierreCajaUncheckedUpdateManyInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -537,7 +537,7 @@ export type CierreCajaCountOrderByAggregateInput = {
   contado?: Prisma.SortOrder
   esperado?: Prisma.SortOrder
   diferencia?: Prisma.SortOrder
-  totalMercadoPago?: Prisma.SortOrder
+  totalTarjeta?: Prisma.SortOrder
   totalTransferencia?: Prisma.SortOrder
   pendiente?: Prisma.SortOrder
   ocurridaEn?: Prisma.SortOrder
@@ -553,7 +553,7 @@ export type CierreCajaAvgOrderByAggregateInput = {
   contado?: Prisma.SortOrder
   esperado?: Prisma.SortOrder
   diferencia?: Prisma.SortOrder
-  totalMercadoPago?: Prisma.SortOrder
+  totalTarjeta?: Prisma.SortOrder
   totalTransferencia?: Prisma.SortOrder
 }
 
@@ -566,7 +566,7 @@ export type CierreCajaMaxOrderByAggregateInput = {
   contado?: Prisma.SortOrder
   esperado?: Prisma.SortOrder
   diferencia?: Prisma.SortOrder
-  totalMercadoPago?: Prisma.SortOrder
+  totalTarjeta?: Prisma.SortOrder
   totalTransferencia?: Prisma.SortOrder
   pendiente?: Prisma.SortOrder
   ocurridaEn?: Prisma.SortOrder
@@ -582,7 +582,7 @@ export type CierreCajaMinOrderByAggregateInput = {
   contado?: Prisma.SortOrder
   esperado?: Prisma.SortOrder
   diferencia?: Prisma.SortOrder
-  totalMercadoPago?: Prisma.SortOrder
+  totalTarjeta?: Prisma.SortOrder
   totalTransferencia?: Prisma.SortOrder
   pendiente?: Prisma.SortOrder
   ocurridaEn?: Prisma.SortOrder
@@ -598,7 +598,7 @@ export type CierreCajaSumOrderByAggregateInput = {
   contado?: Prisma.SortOrder
   esperado?: Prisma.SortOrder
   diferencia?: Prisma.SortOrder
-  totalMercadoPago?: Prisma.SortOrder
+  totalTarjeta?: Prisma.SortOrder
   totalTransferencia?: Prisma.SortOrder
 }
 
@@ -723,7 +723,7 @@ export type CierreCajaCreateWithoutCajaInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -740,7 +740,7 @@ export type CierreCajaUncheckedCreateWithoutCajaInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -784,7 +784,7 @@ export type CierreCajaScalarWhereInput = {
   contado?: Prisma.IntFilter<"CierreCaja"> | number
   esperado?: Prisma.IntFilter<"CierreCaja"> | number
   diferencia?: Prisma.IntFilter<"CierreCaja"> | number
-  totalMercadoPago?: Prisma.IntFilter<"CierreCaja"> | number
+  totalTarjeta?: Prisma.IntFilter<"CierreCaja"> | number
   totalTransferencia?: Prisma.IntFilter<"CierreCaja"> | number
   pendiente?: Prisma.BoolFilter<"CierreCaja"> | boolean
   ocurridaEn?: Prisma.DateTimeFilter<"CierreCaja"> | Date | string
@@ -796,7 +796,7 @@ export type CierreCajaCreateWithoutCerradoPorInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -813,7 +813,7 @@ export type CierreCajaUncheckedCreateWithoutCerradoPorInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -850,7 +850,7 @@ export type CierreCajaCreateWithoutAperturaInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -867,7 +867,7 @@ export type CierreCajaUncheckedCreateWithoutAperturaInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -895,7 +895,7 @@ export type CierreCajaUpdateWithoutAperturaInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -912,7 +912,7 @@ export type CierreCajaUncheckedUpdateWithoutAperturaInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -926,7 +926,7 @@ export type CierreCajaCreateManyCajaInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -938,7 +938,7 @@ export type CierreCajaUpdateWithoutCajaInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -955,7 +955,7 @@ export type CierreCajaUncheckedUpdateWithoutCajaInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -970,7 +970,7 @@ export type CierreCajaUncheckedUpdateManyWithoutCajaInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -984,7 +984,7 @@ export type CierreCajaCreateManyCerradoPorInput = {
   contado: number
   esperado: number
   diferencia: number
-  totalMercadoPago: number
+  totalTarjeta: number
   totalTransferencia: number
   pendiente?: boolean
   ocurridaEn: Date | string
@@ -996,7 +996,7 @@ export type CierreCajaUpdateWithoutCerradoPorInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1013,7 +1013,7 @@ export type CierreCajaUncheckedUpdateWithoutCerradoPorInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1028,7 +1028,7 @@ export type CierreCajaUncheckedUpdateManyWithoutCerradoPorInput = {
   contado?: Prisma.IntFieldUpdateOperationsInput | number
   esperado?: Prisma.IntFieldUpdateOperationsInput | number
   diferencia?: Prisma.IntFieldUpdateOperationsInput | number
-  totalMercadoPago?: Prisma.IntFieldUpdateOperationsInput | number
+  totalTarjeta?: Prisma.IntFieldUpdateOperationsInput | number
   totalTransferencia?: Prisma.IntFieldUpdateOperationsInput | number
   pendiente?: Prisma.BoolFieldUpdateOperationsInput | boolean
   ocurridaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1046,7 +1046,7 @@ export type CierreCajaSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   contado?: boolean
   esperado?: boolean
   diferencia?: boolean
-  totalMercadoPago?: boolean
+  totalTarjeta?: boolean
   totalTransferencia?: boolean
   pendiente?: boolean
   ocurridaEn?: boolean
@@ -1067,14 +1067,14 @@ export type CierreCajaSelectScalar = {
   contado?: boolean
   esperado?: boolean
   diferencia?: boolean
-  totalMercadoPago?: boolean
+  totalTarjeta?: boolean
   totalTransferencia?: boolean
   pendiente?: boolean
   ocurridaEn?: boolean
   recibidaEn?: boolean
 }
 
-export type CierreCajaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cajaId" | "idLocal" | "aperturaId" | "cerradoPorId" | "contado" | "esperado" | "diferencia" | "totalMercadoPago" | "totalTransferencia" | "pendiente" | "ocurridaEn" | "recibidaEn", ExtArgs["result"]["cierreCaja"]>
+export type CierreCajaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cajaId" | "idLocal" | "aperturaId" | "cerradoPorId" | "contado" | "esperado" | "diferencia" | "totalTarjeta" | "totalTransferencia" | "pendiente" | "ocurridaEn" | "recibidaEn", ExtArgs["result"]["cierreCaja"]>
 export type CierreCajaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   caja?: boolean | Prisma.CajaDefaultArgs<ExtArgs>
   apertura?: boolean | Prisma.AperturaCajaDefaultArgs<ExtArgs>
@@ -1097,7 +1097,7 @@ export type $CierreCajaPayload<ExtArgs extends runtime.Types.Extensions.Internal
     contado: number
     esperado: number
     diferencia: number
-    totalMercadoPago: number
+    totalTarjeta: number
     totalTransferencia: number
     pendiente: boolean
     ocurridaEn: Date
@@ -1482,7 +1482,7 @@ export interface CierreCajaFieldRefs {
   readonly contado: Prisma.FieldRef<"CierreCaja", 'Int'>
   readonly esperado: Prisma.FieldRef<"CierreCaja", 'Int'>
   readonly diferencia: Prisma.FieldRef<"CierreCaja", 'Int'>
-  readonly totalMercadoPago: Prisma.FieldRef<"CierreCaja", 'Int'>
+  readonly totalTarjeta: Prisma.FieldRef<"CierreCaja", 'Int'>
   readonly totalTransferencia: Prisma.FieldRef<"CierreCaja", 'Int'>
   readonly pendiente: Prisma.FieldRef<"CierreCaja", 'Boolean'>
   readonly ocurridaEn: Prisma.FieldRef<"CierreCaja", 'DateTime'>
