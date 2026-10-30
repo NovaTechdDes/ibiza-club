@@ -6,3 +6,4 @@ export const LARGO_NOMBRE = 100; // 100 caracteres
 export const LARGO_NOMBRE_CORTO = 50; // 50 caracteres
 export const ZONA_HORARIA_MIN = -180;
 export const HORA_CORTE_JORNADA = 10;
+export const LETRAS_TICKET = "ABCDEFGHJKLMNPRSTUVWXYZ";

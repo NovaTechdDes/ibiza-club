@@ -18,3 +18,7 @@ export * from './schemas/auth.js';
 
 
 export * from './logica/jornada.js';
+export * from './logica/letra.js';
+export * from './logica/promos/descuento.js';
+export * from './logica/promos/vigencia.js'
+export * from './logica/promos/aplicar.js'
