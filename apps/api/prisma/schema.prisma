@@ -217,7 +217,7 @@ model CierreCaja {
   contado            Int
   esperado           Int
   diferencia         Int
-  totalMercadoPago   Int
+  totalTarjeta       Int
   totalTransferencia Int
   pendiente          Boolean  @default(false)
   ocurridaEn         DateTime
