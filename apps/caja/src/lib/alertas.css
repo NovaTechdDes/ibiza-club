@@ -1,0 +1,12 @@
+.swal2-popup .swal2-styled {
+  min-width: 150px;
+  min-height: var(--tactil-min);
+  border-radius: var(--radio);
+  font-family: var(--fuente);
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.swal2-popup .swal2-confirm {
+  color: var(--color-sobre-acento);
+}
