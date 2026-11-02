@@ -109,7 +109,6 @@ export const ventasPorCaja = async(rango: RangoReporte) => {
     return { ...rango, cajas, barras, anuladas };
 };
 
-
 export const ventasPorPromo = async(rango: RangoReporte) => {
     const grupos = await prisma.itemVenta.groupBy({
         by: ['promocionId'],
@@ -150,4 +149,57 @@ export const ventasPorPromo = async(rango: RangoReporte) => {
     }
 
 
+};
+
+export const arqueo = async (rango: RangoReporte) => {
+    const aperturas = await prisma.aperturaCaja.findMany({
+        where: { ocurridaEn: instantes(rango)},
+        select: {
+            id: true,
+            fondo: true,
+            ocurridaEn: true,
+            caja: { select: { nombre: true, barra: true}},
+            cajero: {select: { nombre: true}},
+            cierre: {
+                select: {
+                    contado: true, esperado: true, diferencia: true,
+                    totalTarjeta: true, totalTransferencia: true,
+                    pendiente: true, ocurridaEn: true,
+                    cerradoPor: { select: {nombre: true}}
+                }
+            }
+        },
+        orderBy: { ocurridaEn: 'asc'}
+    })
+
+    const arqueos = aperturas.map((a => {
+        return {
+            aperturaId: a.id,
+            caja: a.caja.nombre,
+            fondo: a.fondo,
+            apertura: a.ocurridaEn,
+            barra: a.caja.barra,
+            cajero: a.cajero.nombre,
+            contado: a.cierre?.contado ?? null,
+            esperado: a.cierre?.esperado ?? null,
+            diferencia: a.cierre?.diferencia ?? null,
+            totalTarjeta: a.cierre?.totalTarjeta ?? null,
+            totalTransferencia: a.cierre?.totalTransferencia ?? null,
+            cerradoPor: a.cierre?.cerradoPor.nombre ?? null,
+            cierre: a.cierre?.ocurridaEn ?? null,
+            estado: !a.cierre ? 'ABIERTA' : a.cierre.pendiente ? 'PENDIENTE' : 'CERRADA'
+        };
+    }));
+
+    const totales = arqueos.reduce((acc, a) => ({
+        contado:  acc.contado + (a.contado ?? 0),
+        esperado: acc.esperado + (a.esperado ?? 0),
+        diferencia: acc.diferencia + (a.diferencia ?? 0),
+        abiertas: acc.abiertas + (a.estado === 'ABIERTA' ? 1 : 0)
+    }),
+    {contado: 0, esperado: 0, diferencia: 0, abiertas: 0})
+
+    return {
+        ...rango, arqueos, totales
+    }
 }

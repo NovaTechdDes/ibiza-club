@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { RangoReporteQuerySchema, type RangoReporte } from "@ibiza/shared";
 import { validar } from "../../middleware/validar.js";
-import { ventasPorCaja, ventasPorMedioPago, ventasPorPromo } from "./reporte.service.js";
+import { arqueo, ventasPorCaja, ventasPorMedioPago, ventasPorPromo } from "./reporte.service.js";
 
 export const reporteRouter: Router = Router();
 
@@ -16,4 +16,8 @@ reporteRouter.get('/ventas/caja', validar({query: RangoReporteQuerySchema}), asy
 
 reporteRouter.get('/ventas/promo', validar({ query: RangoReporteQuerySchema}), async (req, res) => {
     res.json(await ventasPorPromo(req.query as RangoReporte))
+});
+
+reporteRouter.get('/arqueo', validar({ query: RangoReporteQuerySchema}), async (req, res) => {
+    res.json(await arqueo(req.query as RangoReporte))
 })
