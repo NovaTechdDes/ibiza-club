@@ -8,7 +8,10 @@ const adapter = new PrismaMssql({
     user: env.DB_USER,
     password: env.DB_PASSWORD,
     database: env.DB_NAME,
-    options: { encrypt: true, trustServerCertificate: true }
+    options: { 
+        encrypt: true, 
+        trustServerCertificate: env.NODE_ENV !== 'production'
+    }
 });
 
 export const prisma = new PrismaClient({ adapter });
