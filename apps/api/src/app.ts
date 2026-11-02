@@ -1,13 +1,17 @@
 import { prisma } from "./db/prisma.js";
 import express, { Express } from "express";
-import { CajaInputSchema, PromocionInputSchema } from "@ibiza/shared";
+import helmet from "helmet";
 import { rutaNoEncontrada } from "./middleware/no-encontrado.js";
 import { errorHandler } from "./middleware/error-handler.js";
-import { validar } from "./middleware/validar.js";
 import { apiRouter } from "./routes.js";
+import { corsMiddleware } from "./middleware/cors.js";
 
 export const app: Express = express();
 
+app.use(helmet());
+// Antes que express.json y las rutas: si no, un JSON mal formado responde sin headers de CORS
+// y el navegador oculta el error; y el preflight tiene que contestarse sin pasar por la autenticación.
+app.use(corsMiddleware);
 app.use(express.json());
 
 app.get("/health", (req, res) => {
@@ -23,15 +27,6 @@ app.get("/health/db", async (req, res) => {
         console.error(error);
         res.status(503).json({ ok: false });
     }
-});
-
-
-app.post("/dev/validar-caja",validar({ body: CajaInputSchema}), (req, res) => {
-    res.json(req.body);
-});
-
-app.post("/dev/validar-promocion",validar({ body: PromocionInputSchema}), (req, res) => {
-    res.json(req.body);
 });
 
 app.use('/api', apiRouter)
