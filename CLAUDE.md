@@ -175,7 +175,7 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 - [x] **Paso 13** — Lógica de promos y letra de la semana en `shared`, con tests (Vitest).
 - [x] **Paso 14** — Endpoints de reportes (ventas por jornada, caja, medio de pago, promos, arqueos, estado de sincronización por caja).
 - [x] **Paso 15** — Seguridad y operación: CORS, helmet, rate limit, logs estructurados.
-- [ ] **Paso 16** — Deploy en Azure: App Service, Azure SQL serverless, variables de entorno, migraciones en producción.
+- [x] **Paso 16** — Deploy en Azure: App Service, Azure SQL serverless, variables de entorno, migraciones en producción, con GitHub Actions (`.github/workflows/deploy-api.yml`).
 
 Después del backend: app de escritorio (Electron + SQLite + impresión + sincronización), pantalla de cobro y panel web del dueño.
 
@@ -236,4 +236,13 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 - ¿Se mantiene Transferencia como medio de pago (4 botones) o queda afuera?
 - Consumiciones: ¿cómo llegan a la barra (vale/pulsera/entrada)? ¿Quién las autoriza? ¿Hay tope por persona? ¿Se cuentan aparte en el cierre?
 - ¿En Efectivo se muestra "paga con" y vuelto (montos rápidos en botones)?
-- Updater: ¿actualización obligatoria u opcional? ¿Repo público o privado? ¿Cómo se maneja SmartScreen sin certificado?
+- Updater: ¿actualización obligatoria u opcional? ¿Cómo se maneja SmartScreen sin certificado? El repo va a ser **privado**: evaluar un repo público aparte solo para los releases, porque un token de lectura quedaría dentro de la app instalada.
+
+### Producción (antes de abrir el boliche)
+
+- **Primer admin**: la base de producción está vacía y el seed no se corre ahí (tiene PINs de desarrollo). Hace falta una forma segura de crear el primer usuario admin.
+- **Azure SQL**: hoy usa la oferta gratis; al agotarse el límite, la base se pausa hasta el mes siguiente. Pasarla a paga antes de operar.
+- **App Service**: confirmar que `novatech-plan-br` alcance (lo comparte con otras apps) y tenga Always On.
+- **`CORS_ORIGENES`**: poner la URL real del panel cuando exista; hoy tiene la de la propia API.
+- **Application Insights**: previsto en el stack, todavía sin activar.
+- **Clave de la letra de la semana**: definir dónde se guarda y cómo les llega a las cajas. No puede ir en el código.
