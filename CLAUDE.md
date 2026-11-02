@@ -218,16 +218,22 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
    - **Cobro en un toque:** debajo del carrito hay **3 botones de medio de pago: Efectivo, Transferencia y Tarjeta**. Al tocar uno se registra el medio y se cierra la venta (imprime ticket); no hay un paso previo de "COBRAR".
    - Botones grandes, pensados para usar de noche y con apuro; "Vaciar" carrito alejado de los botones de pago o con confirmación.
    - **Cambio de medios de pago:** el tercer medio pasa a ser **Tarjeta** (antes estaba "Mercado Pago (QR)"). Pendiente de confirmar si Mercado Pago/QR queda como parte de "Tarjeta" o como otro botón, y si en Efectivo se muestra "paga con" y vuelto (eso sí necesitaría números; hacerlo con montos rápidos en botones).
+6. **Respuestas del cliente (reunión 31/10/2026).** Tienen prioridad sobre los puntos 1, 3 y 5 donde contradigan.
+   - **Sin facturación fiscal**: el ticket es solo un comprobante interno para la barra. No hay integración con ARCA/AFIP.
+   - **5 cajas**, una por PC, cada una con su **propio cierre y arqueo** (opción (a) del punto 3). No hace falta agrupar el dinero por barra.
+   - **Jornada: sí quieren el paso de abrir la noche.** Se mantiene el modo configurable, pero por defecto queda **activado**. Horario real: aprox. 21:00 a 06:00; el corte se fija con margen (propuesta: **18:00 a 10:00**).
+   - **Medios de pago**: Efectivo, **Mercado Pago (QR)** y **Tarjeta** van como **botones separados**. Transferencia: falta confirmar si se mantiene (serían 4 botones). `CierreCaja` necesita un total por cada medio (agregar `totalTarjeta`; `totalMercadoPago` se mantiene).
+   - **Consumiciones**: puede haber (ej: incluidas en la entrada, cortesías). Hay que modelarlas como una venta registrada pero sin cobro (ver pendientes).
+   - **Internet**: hay, y llega a todas las barras. La red local queda como respaldo, no como camino principal.
+   - **Todavía no hay equipamiento**: el boliche no está operativo y no tiene PCs, pantallas ni impresoras. Hay que **recomendar qué comprar** (PC/all-in-one táctil, impresora térmica 80 mm ESC/POS, UPS, cajón de dinero) y conseguir una impresora para probar temprano.
 
 ## Pendientes y preguntas abiertas
 
 - Integración con Mercado Pago (consultar al cliente).
-- Modelo de impresora térmica (conseguir una y probar).
-- Prisma vs Drizzle para el SQLite de las cajas.
-- Horario exacto de corte de la jornada.
+- Recomendar equipamiento para comprar (PCs táctiles, impresoras, UPS, cajones) y conseguir una impresora para probar.
+- Confirmar horario de corte de la jornada (propuesta 18:00 a 10:00).
 - Diseño de la pantalla de cobro.
-- ¿"Tarjeta" incluye Mercado Pago/QR o va como botón aparte? (hoy `CierreCaja` tiene `totalMercadoPago`, habría que renombrarlo según la respuesta).
+- ¿Se mantiene Transferencia como medio de pago (4 botones) o queda afuera?
+- Consumiciones: ¿cómo llegan a la barra (vale/pulsera/entrada)? ¿Quién las autoriza? ¿Hay tope por persona? ¿Se cuentan aparte en el cierre?
 - ¿En Efectivo se muestra "paga con" y vuelto (montos rápidos en botones)?
-- Cuántas cajas hay y cómo están repartidas por barra; si el dinero de una barra con varias PCs se cuenta junto o por separado.
-- ¿El cliente quiere el paso de abrir jornada? (modo opcional, ver Cambios de rumbo 1).
 - Updater: ¿actualización obligatoria u opcional? ¿Repo público o privado? ¿Cómo se maneja SmartScreen sin certificado?
