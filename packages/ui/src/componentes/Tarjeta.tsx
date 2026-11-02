@@ -8,3 +8,4 @@ export function Tarjeta({
   const clases = `${estilos.tarjeta} ${className}`;
   return <div className={clases} {...resto} />;
 }
+ 
