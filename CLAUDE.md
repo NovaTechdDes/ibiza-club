@@ -177,7 +177,44 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 - [x] **Paso 15** — Seguridad y operación: CORS, helmet, rate limit, logs estructurados.
 - [x] **Paso 16** — Deploy en Azure: App Service, Azure SQL serverless, variables de entorno, migraciones en producción, con GitHub Actions (`.github/workflows/deploy-api.yml`).
 
-Después del backend: app de escritorio (Electron + SQLite + impresión + sincronización), pantalla de cobro y panel web del dueño.
+## Hoja de ruta del frontend
+
+Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en el título.
+
+### Bloque A: caja que vende sin internet
+
+- [x] **F1** — Crear `apps/caja` con Tauri + React + TypeScript dentro del monorepo, usando `@ibiza/shared`.
+- [ ] **F2** — Base del frontend: crear `packages/ui`, tema oscuro táctil y componentes base; sumar Zustand, TanStack Query, Axios y SweetAlert; pantalla principal vacía y ventana con el tamaño de trabajo.
+- [ ] **F3** — SQLite local con `tauri-plugin-sql`: tablas de catálogo, operaciones y cola, y migraciones.
+- [ ] **F4** — Vincular la PC con su caja: cargar y guardar el token de dispositivo y la URL de la API; sumar los orígenes de Tauri a `CORS_ORIGENES` (`http://localhost:1420` y `http://tauri.localhost`).
+- [ ] **F5** — Sincronización de bajada: pedir cambios desde la versión guardada, aplicarlos en una transacción y manejar el conflicto de versión (borrar y pedir desde 0).
+- [ ] **F6** — Ingreso del cajero con PIN y teclado en pantalla, validando contra el `pinHash` local sin internet.
+- [ ] **F7** — Apertura de caja y jornada (incluye backend): fondo de cambio con PIN de encargado, modo jornada configurable, fecha operativa y letra. Definir cómo llega la clave de la letra a las cajas.
+- [ ] **F8** — Pantalla de venta: productos con sus variantes a la izquierda, carrito a la derecha y promos con la lógica de `shared`.
+- [ ] **F9** — Cobro en un toque: Efectivo, Transferencia y Tarjeta; correlativo; la venta y su entrada en la cola se guardan en la misma transacción.
+- [ ] **F10** — Impresión del ticket ESC/POS de 80 mm desde Rust, probada en una impresora real.
+- [ ] **F11** — Sincronización de subida: lotes con reintentos y espera creciente, orden de dependencias, e indicador "Sincronizado / N pendientes / Sin internet".
+- [ ] **F12** — Operación durante la noche: retiros con comprobante, cambio de cajero, anulación y auditoría.
+- [ ] **F13** — Cierre con arqueo ciego y recuperación tras un corte de luz. Con esto la caja queda completa para vender.
+
+### Bloque B: administración compartida
+
+- [ ] **F14** — Backend, login de administración: agregar email y contraseña a `Usuario`, login para Admin y Encargado, rol en el JWT y permisos por rol en cada ruta. Forma segura de crear el primer admin.
+- [ ] **F15** — Backend, usuarios y cajas: CRUD de usuarios (sube la versión global y baja a las cajas) y alta y edición de cajas.
+- [ ] **F16** — Base de administración en `packages/ui`: login, sesión, menú según el rol y aviso cuando no hay internet.
+- [ ] **F17** — Pantallas de catálogo: categorías, productos, envases, variantes y precios.
+- [ ] **F18** — Pantalla de promociones.
+- [ ] **F19** — Pantallas de reportes: ventas por caja, medio de pago y promo, arqueos y estado de sincronización.
+- [ ] **F20** — Pantallas de usuarios y cajas, incluido generar y revocar el token de cada caja.
+- [ ] **F21** — Imágenes de productos (incluye backend): subida a Blob Storage, carga desde administración y caché local en las cajas para vender sin internet.
+- [ ] **F22** — Integrar la administración al escritorio: acceso desde el menú lateral, login propio, cerrar sesión al volver a la venta y comprobar que un cambio llega a las cajas.
+- [ ] **F23** — Crear `apps/panel` (React + Vite, sin Tauri ni SQLite) con las pantallas de `packages/ui`.
+- [ ] **F24** — Publicar el panel en Azure con GitHub Actions y poner su URL real en `CORS_ORIGENES`.
+
+### Bloque C: instalación y actualizaciones
+
+- [ ] **F25** — Actualización automática con `tauri-plugin-updater` y GitHub Releases: firma, workflow por tag y modal que nunca interrumpe una venta.
+- [ ] **F26** — Instalador y puesta a punto en el equipo real: pantalla completa, inicio automático, SmartScreen y prueba de una noche completa sin internet.
 
 ## Cambios de rumbo
 
@@ -226,6 +263,17 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
    - **Consumiciones**: puede haber (ej: incluidas en la entrada, cortesías). Hay que modelarlas como una venta registrada pero sin cobro (ver pendientes).
    - **Internet**: hay, y llega a todas las barras. La red local queda como respaldo, no como camino principal.
    - **Todavía no hay equipamiento**: el boliche no está operativo y no tiene PCs, pantallas ni impresoras. Hay que **recomendar qué comprar** (PC/all-in-one táctil, impresora térmica 80 mm ESC/POS, UPS, cajón de dinero) y conseguir una impresora para probar temprano.
+7. **Medios de pago definitivos (02/11/2026).** Tiene prioridad sobre los puntos 5 y 6 y sobre la sección "Pagos".
+   - Son **3 botones: Efectivo, Transferencia y Tarjeta**. No hay un medio de pago `MERCADO_PAGO`: un pago con Mercado Pago (QR) se registra como **Transferencia**.
+   - `CierreCaja` guarda `totalTarjeta` y `totalTransferencia`; no lleva `totalMercadoPago`. Los reportes no separan Mercado Pago de las demás transferencias.
+8. **Web y escritorio comparten la administración (02/11/2026).** Tiene prioridad sobre lo anterior donde contradiga.
+   - **Web (`apps/panel`)**: misma interfaz que el escritorio, sin ventas y sin SQLite. Lee y escribe directo en Azure por la API.
+   - **Escritorio (`apps/caja`)**: todo lo de la web con login de administración, más ventas, SQLite y sincronización.
+   - **Las pantallas de administración se escriben una sola vez** en `packages/ui` y las usan las dos apps. `packages/ui` se suma a la estructura del monorepo y `apps/panel` se crea en el paso F23.
+   - **La administración requiere internet, también en el escritorio.** Sin internet se sigue vendiendo, pero no se cambian precios ni se ven reportes. Un cambio hecho en administración llega a las cajas por la sincronización de bajada.
+   - Quedan sin efecto el punto 3 del protocolo de sincronización (cambio de precio desde una caja) y el aviso de precios por red local.
+   - **Dos logins distintos**: email y contraseña para la administración (Admin y Encargado), y PIN para operar la caja. El PIN no sirve para entrar a la administración.
+   - **Permisos en administración**: el Encargado solo cambia precios y promos. Altas y bajas de productos, usuarios, cajas y reportes quedan para el Admin.
 
 ## Pendientes y preguntas abiertas
 
@@ -233,7 +281,7 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 - Recomendar equipamiento para comprar (PCs táctiles, impresoras, UPS, cajones) y conseguir una impresora para probar.
 - Confirmar horario de corte de la jornada (propuesta 18:00 a 10:00).
 - Diseño de la pantalla de cobro.
-- ¿Se mantiene Transferencia como medio de pago (4 botones) o queda afuera?
+- Avisarle al cliente que Mercado Pago va dentro de Transferencia (en la reunión del 31/10 se había hablado de botones separados).
 - Consumiciones: ¿cómo llegan a la barra (vale/pulsera/entrada)? ¿Quién las autoriza? ¿Hay tope por persona? ¿Se cuentan aparte en el cierre?
 - ¿En Efectivo se muestra "paga con" y vuelto (montos rápidos en botones)?
 - Updater: ¿actualización obligatoria u opcional? ¿Cómo se maneja SmartScreen sin certificado? El repo va a ser **privado**: evaluar un repo público aparte solo para los releases, porque un token de lectura quedaría dentro de la app instalada.
