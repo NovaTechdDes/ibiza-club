@@ -1,6 +1,7 @@
 import { MEDIOS_PAGO, type MedioPago, type RangoReporte, rangoJornada } from '@ibiza/shared';
 import { Prisma } from '../../generated/prisma/client.js';
 import { prisma } from '../../db/prisma.js';
+import { number } from 'zod';
 const instantes = ({desde, hasta}: RangoReporte) => ({
     gte: rangoJornada(desde).inicio,
     lt: rangoJornada(hasta).fin
@@ -107,3 +108,46 @@ export const ventasPorCaja = async(rango: RangoReporte) => {
 
     return { ...rango, cajas, barras, anuladas };
 };
+
+
+export const ventasPorPromo = async(rango: RangoReporte) => {
+    const grupos = await prisma.itemVenta.groupBy({
+        by: ['promocionId'],
+        where: {
+            promocionId: { not: null},
+            venta: ventasValidas(rango)
+        },
+        _count: { _all: true},
+        _sum: { cantidad: true, descuento: true}
+    });
+
+    const ids = grupos.map((g) => g.promocionId).filter((id): id is number => id !== null);
+
+    const listaPromociones = await prisma.promocion.findMany({
+        select: { id: true, nombre: true, tipo: true},
+        where: {id: {in: ids}}
+    });
+
+    const promociones = listaPromociones.map((promocion) => {
+        const g = grupos.find((x) => x.promocionId === promocion.id);
+
+        return {
+            promocionId: promocion.id,
+            nombre: promocion.nombre,
+            tipo: promocion.tipo,
+            lineas: g?._count._all ?? 0,
+            unidades: g?._sum.cantidad ?? 0,
+            descuento: g?._sum.descuento ?? 0
+        }
+    })
+    
+    promociones.sort((a, b) => b.descuento - a.descuento)
+
+    const totalDescuento = promociones.reduce((acc, g) => acc + g.descuento, 0)
+
+    return {
+        ...rango, promos: promociones, totalDescuento
+    }
+
+
+}
