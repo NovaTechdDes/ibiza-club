@@ -1,0 +1,40 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body, #root{
+    height: 100%;
+    margin: 0;
+}
+
+:root {
+    --color-fondo: #17132b;
+    --color-superficie: #241e3f;
+    --color-superficie-alta: #332b57;
+    --color-borde: #4a4175;
+    --color-texto: #f6f1ff;
+    --color-texto-suave: #b9b0d6;
+    --color-acento: #ffb000;
+    --color-sobre-acento: #17132b;
+    --color-exito: #3ddc97;
+    --color-peligro: #ff5c6c;
+
+
+    --tactil-min: 64px;
+    --radio: 12px;
+    --espacio: 16px;
+
+    --fuente: "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+
+    
+}
+
+body {
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    font-family: var(--fuente);
+    font-size: 18px;
+    user-select: none;
+    touch-action: manipulation;
+    font-variant-numeric: tabular-nums;
+}
