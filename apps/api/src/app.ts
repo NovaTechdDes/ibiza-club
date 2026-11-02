@@ -7,8 +7,11 @@ import { apiRouter } from "./routes.js";
 import { corsMiddleware } from "./middleware/cors.js";
 import { limiteGeneral } from "./middleware/rate-limit.js";
 import { env } from "./config/env.js";
+import { logHttp } from "./middleware/log-http.js";
 
 export const app: Express = express();
+
+app.use(logHttp)
 
 // Solo detrás del proxy de Azure: sin proxy, cualquiera podría falsificar su IP con X-Forwarded-For.
 if (env.NODE_ENV === "production") {
@@ -34,7 +37,7 @@ app.get("/health/db", async (req, res) => {
         const cajas = await prisma.caja.count();
         res.json({ ok: true, cajas });
     } catch (error) {
-        console.error(error);
+        req.log.error({ err: error }, "Falló el chequeo de la base");
         res.status(503).json({ ok: false });
     }
 });

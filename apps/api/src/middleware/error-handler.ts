@@ -34,7 +34,8 @@ export const errorHandler = (err: unknown, req: Request, res: Response, next: Ne
         })
     }
 
-    console.error(err);
+    // pino-http lo escribe en una sola línea, junto con los datos del pedido
+    res.err = err as Error;
 
     res.status(500).json({
         error: {

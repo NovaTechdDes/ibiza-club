@@ -1,4 +1,5 @@
 import { prisma } from "../../db/prisma.js";
+import { logger } from "../../config/logger.js";
 
 type DatosContacto = {
     versionCatalogo?: number;
@@ -16,6 +17,6 @@ export const registrarContacto = async (cajaId: number, datos: DatosContacto = {
             update: { ultimoContactoEn, ...datos }
         });
     } catch (error) {
-        console.error(`No se pudo registrar el contacto de la caja ${cajaId}`, error);
+        logger.error({ err: error, cajaId }, "No se pudo registrar el contacto de la caja");
     }
 };

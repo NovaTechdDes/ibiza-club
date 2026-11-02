@@ -10,7 +10,8 @@ const envSchema = z.object({
     DB_NAME: z.string().min(1),
     JWT_SECRET: z.string().min(32),
     JWT_EXPIRA_EN: z.string().default("8h"),
-    CORS_ORIGENES: z.string().transform((val) => val.split(',').map((origen) => origen.trim())).pipe(z.array(z.url()).min(1))
+    CORS_ORIGENES: z.string().transform((val) => val.split(',').map((origen) => origen.trim())).pipe(z.array(z.url()).min(1)),
+    LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info")
 });
 
 export const env = envSchema.parse(process.env);
