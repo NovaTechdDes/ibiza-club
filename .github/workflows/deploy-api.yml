@@ -1,0 +1,53 @@
+name: Deploy API
+
+on:
+  push:
+    branches: [main]
+    paths: 
+      - "apps/api/**"
+      - "packages/shared/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/deploy-api.yml"
+  workflow_dispatch:
+
+permissions: 
+  contents: read
+
+jobs: 
+  build:
+    runs-on: "ubuntu-latest"
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with: 
+          node-version: 24
+          cache: pnpm
+      
+      - run: pnpm install --frozen-lockfile
+
+      - name: Generar Cliente de prisma
+        run: pnpm --filter @ibiza/api db:generate
+
+      - name: Compilar shared
+        run: pnpm --filter @ibiza/shared build
+
+      - name: Tests de shared
+        run: pnpm --filter @ibiza/shared test
+      
+      - name: Compilar API
+        run: pnpm --filter @ibiza/api build
+
+      - name: Armar paquete de produccion
+        run: pnpm --config.node-linker=hoisted --filter @ibiza/api deploy --prod salida
+
+      - name: Comprimir
+        run: cd salida && zip -qry ../api.zip .
+      
+      - uses: actions/upload-artifact@v7
+        with: 
+          name: api
+          path: api.zip
+          retention-days: 3
