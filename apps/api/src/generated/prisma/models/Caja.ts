@@ -250,6 +250,7 @@ export type CajaWhereInput = {
   anulaciones?: Prisma.AnulacionListRelationFilter
   movimientos?: Prisma.MovimientoCajaListRelationFilter
   auditorias?: Prisma.AuditoriaCajaListRelationFilter
+  estadoSync?: Prisma.XOR<Prisma.EstadoSyncCajaNullableScalarRelationFilter, Prisma.EstadoSyncCajaWhereInput> | null
 }
 
 export type CajaOrderByWithRelationInput = {
@@ -267,6 +268,7 @@ export type CajaOrderByWithRelationInput = {
   anulaciones?: Prisma.AnulacionOrderByRelationAggregateInput
   movimientos?: Prisma.MovimientoCajaOrderByRelationAggregateInput
   auditorias?: Prisma.AuditoriaCajaOrderByRelationAggregateInput
+  estadoSync?: Prisma.EstadoSyncCajaOrderByWithRelationInput
 }
 
 export type CajaWhereUniqueInput = Prisma.AtLeast<{
@@ -287,6 +289,7 @@ export type CajaWhereUniqueInput = Prisma.AtLeast<{
   anulaciones?: Prisma.AnulacionListRelationFilter
   movimientos?: Prisma.MovimientoCajaListRelationFilter
   auditorias?: Prisma.AuditoriaCajaListRelationFilter
+  estadoSync?: Prisma.XOR<Prisma.EstadoSyncCajaNullableScalarRelationFilter, Prisma.EstadoSyncCajaWhereInput> | null
 }, "id" | "nombre">
 
 export type CajaOrderByWithAggregationInput = {
@@ -333,6 +336,7 @@ export type CajaCreateInput = {
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUncheckedCreateInput = {
@@ -350,6 +354,7 @@ export type CajaUncheckedCreateInput = {
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUpdateInput = {
@@ -366,6 +371,7 @@ export type CajaUpdateInput = {
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateInput = {
@@ -383,6 +389,7 @@ export type CajaUncheckedUpdateInput = {
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaCreateManyInput = {
@@ -564,6 +571,20 @@ export type CajaUpdateOneRequiredWithoutAuditoriasNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutAuditoriasInput, Prisma.CajaUpdateWithoutAuditoriasInput>, Prisma.CajaUncheckedUpdateWithoutAuditoriasInput>
 }
 
+export type CajaCreateNestedOneWithoutEstadoSyncInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutEstadoSyncInput, Prisma.CajaUncheckedCreateWithoutEstadoSyncInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutEstadoSyncInput
+  connect?: Prisma.CajaWhereUniqueInput
+}
+
+export type CajaUpdateOneRequiredWithoutEstadoSyncNestedInput = {
+  create?: Prisma.XOR<Prisma.CajaCreateWithoutEstadoSyncInput, Prisma.CajaUncheckedCreateWithoutEstadoSyncInput>
+  connectOrCreate?: Prisma.CajaCreateOrConnectWithoutEstadoSyncInput
+  upsert?: Prisma.CajaUpsertWithoutEstadoSyncInput
+  connect?: Prisma.CajaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.CajaUpdateToOneWithWhereWithoutEstadoSyncInput, Prisma.CajaUpdateWithoutEstadoSyncInput>, Prisma.CajaUncheckedUpdateWithoutEstadoSyncInput>
+}
+
 export type CajaCreateWithoutAperturasInput = {
   nombre: string
   activo?: boolean
@@ -577,6 +598,7 @@ export type CajaCreateWithoutAperturasInput = {
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUncheckedCreateWithoutAperturasInput = {
@@ -593,6 +615,7 @@ export type CajaUncheckedCreateWithoutAperturasInput = {
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedCreateNestedOneWithoutCajaInput
 }
 
 export type CajaCreateOrConnectWithoutAperturasInput = {
@@ -624,6 +647,7 @@ export type CajaUpdateWithoutAperturasInput = {
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateWithoutAperturasInput = {
@@ -640,6 +664,7 @@ export type CajaUncheckedUpdateWithoutAperturasInput = {
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaCreateWithoutCierresInput = {
@@ -655,6 +680,7 @@ export type CajaCreateWithoutCierresInput = {
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUncheckedCreateWithoutCierresInput = {
@@ -671,6 +697,7 @@ export type CajaUncheckedCreateWithoutCierresInput = {
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedCreateNestedOneWithoutCajaInput
 }
 
 export type CajaCreateOrConnectWithoutCierresInput = {
@@ -702,6 +729,7 @@ export type CajaUpdateWithoutCierresInput = {
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateWithoutCierresInput = {
@@ -718,6 +746,7 @@ export type CajaUncheckedUpdateWithoutCierresInput = {
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaCreateWithoutVentasInput = {
@@ -733,6 +762,7 @@ export type CajaCreateWithoutVentasInput = {
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUncheckedCreateWithoutVentasInput = {
@@ -749,6 +779,7 @@ export type CajaUncheckedCreateWithoutVentasInput = {
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedCreateNestedOneWithoutCajaInput
 }
 
 export type CajaCreateOrConnectWithoutVentasInput = {
@@ -780,6 +811,7 @@ export type CajaUpdateWithoutVentasInput = {
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateWithoutVentasInput = {
@@ -796,6 +828,7 @@ export type CajaUncheckedUpdateWithoutVentasInput = {
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaCreateWithoutAnulacionesInput = {
@@ -811,6 +844,7 @@ export type CajaCreateWithoutAnulacionesInput = {
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUncheckedCreateWithoutAnulacionesInput = {
@@ -827,6 +861,7 @@ export type CajaUncheckedCreateWithoutAnulacionesInput = {
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedCreateNestedOneWithoutCajaInput
 }
 
 export type CajaCreateOrConnectWithoutAnulacionesInput = {
@@ -858,6 +893,7 @@ export type CajaUpdateWithoutAnulacionesInput = {
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateWithoutAnulacionesInput = {
@@ -874,6 +910,7 @@ export type CajaUncheckedUpdateWithoutAnulacionesInput = {
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaCreateWithoutMovimientosInput = {
@@ -889,6 +926,7 @@ export type CajaCreateWithoutMovimientosInput = {
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUncheckedCreateWithoutMovimientosInput = {
@@ -905,6 +943,7 @@ export type CajaUncheckedCreateWithoutMovimientosInput = {
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
   auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedCreateNestedOneWithoutCajaInput
 }
 
 export type CajaCreateOrConnectWithoutMovimientosInput = {
@@ -936,6 +975,7 @@ export type CajaUpdateWithoutMovimientosInput = {
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateWithoutMovimientosInput = {
@@ -952,6 +992,7 @@ export type CajaUncheckedUpdateWithoutMovimientosInput = {
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
   auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaCreateWithoutAuditoriasInput = {
@@ -967,6 +1008,7 @@ export type CajaCreateWithoutAuditoriasInput = {
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaCreateNestedOneWithoutCajaInput
 }
 
 export type CajaUncheckedCreateWithoutAuditoriasInput = {
@@ -983,6 +1025,7 @@ export type CajaUncheckedCreateWithoutAuditoriasInput = {
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedCreateNestedOneWithoutCajaInput
 }
 
 export type CajaCreateOrConnectWithoutAuditoriasInput = {
@@ -1014,6 +1057,7 @@ export type CajaUpdateWithoutAuditoriasInput = {
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUpdateOneWithoutCajaNestedInput
 }
 
 export type CajaUncheckedUpdateWithoutAuditoriasInput = {
@@ -1030,6 +1074,89 @@ export type CajaUncheckedUpdateWithoutAuditoriasInput = {
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+  estadoSync?: Prisma.EstadoSyncCajaUncheckedUpdateOneWithoutCajaNestedInput
+}
+
+export type CajaCreateWithoutEstadoSyncInput = {
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaCreateNestedManyWithoutCajaInput
+}
+
+export type CajaUncheckedCreateWithoutEstadoSyncInput = {
+  id?: number
+  nombre: string
+  activo?: boolean
+  barra?: string | null
+  tokenHash?: string | null
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutCajaInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutCajaInput
+}
+
+export type CajaCreateOrConnectWithoutEstadoSyncInput = {
+  where: Prisma.CajaWhereUniqueInput
+  create: Prisma.XOR<Prisma.CajaCreateWithoutEstadoSyncInput, Prisma.CajaUncheckedCreateWithoutEstadoSyncInput>
+}
+
+export type CajaUpsertWithoutEstadoSyncInput = {
+  update: Prisma.XOR<Prisma.CajaUpdateWithoutEstadoSyncInput, Prisma.CajaUncheckedUpdateWithoutEstadoSyncInput>
+  create: Prisma.XOR<Prisma.CajaCreateWithoutEstadoSyncInput, Prisma.CajaUncheckedCreateWithoutEstadoSyncInput>
+  where?: Prisma.CajaWhereInput
+}
+
+export type CajaUpdateToOneWithWhereWithoutEstadoSyncInput = {
+  where?: Prisma.CajaWhereInput
+  data: Prisma.XOR<Prisma.CajaUpdateWithoutEstadoSyncInput, Prisma.CajaUncheckedUpdateWithoutEstadoSyncInput>
+}
+
+export type CajaUpdateWithoutEstadoSyncInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUpdateManyWithoutCajaNestedInput
+}
+
+export type CajaUncheckedUpdateWithoutEstadoSyncInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  barra?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tokenHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutCajaNestedInput
+  auditorias?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutCajaNestedInput
 }
 
 
@@ -1123,6 +1250,7 @@ export type CajaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   anulaciones?: boolean | Prisma.Caja$anulacionesArgs<ExtArgs>
   movimientos?: boolean | Prisma.Caja$movimientosArgs<ExtArgs>
   auditorias?: boolean | Prisma.Caja$auditoriasArgs<ExtArgs>
+  estadoSync?: boolean | Prisma.Caja$estadoSyncArgs<ExtArgs>
   _count?: boolean | Prisma.CajaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["caja"]>
 
@@ -1147,6 +1275,7 @@ export type CajaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   anulaciones?: boolean | Prisma.Caja$anulacionesArgs<ExtArgs>
   movimientos?: boolean | Prisma.Caja$movimientosArgs<ExtArgs>
   auditorias?: boolean | Prisma.Caja$auditoriasArgs<ExtArgs>
+  estadoSync?: boolean | Prisma.Caja$estadoSyncArgs<ExtArgs>
   _count?: boolean | Prisma.CajaCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1159,6 +1288,7 @@ export type $CajaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     anulaciones: Prisma.$AnulacionPayload<ExtArgs>[]
     movimientos: Prisma.$MovimientoCajaPayload<ExtArgs>[]
     auditorias: Prisma.$AuditoriaCajaPayload<ExtArgs>[]
+    estadoSync: Prisma.$EstadoSyncCajaPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1515,6 +1645,7 @@ export interface Prisma__CajaClient<T, Null = never, ExtArgs extends runtime.Typ
   anulaciones<T extends Prisma.Caja$anulacionesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$anulacionesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AnulacionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   movimientos<T extends Prisma.Caja$movimientosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$movimientosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditorias<T extends Prisma.Caja$auditoriasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$auditoriasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditoriaCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  estadoSync<T extends Prisma.Caja$estadoSyncArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Caja$estadoSyncArgs<ExtArgs>>): Prisma.Prisma__EstadoSyncCajaClient<runtime.Types.Result.GetResult<Prisma.$EstadoSyncCajaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2040,6 +2171,25 @@ export type Caja$auditoriasArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   distinct?: Prisma.AuditoriaCajaScalarFieldEnum | Prisma.AuditoriaCajaScalarFieldEnum[]
+}
+
+/**
+ * Caja.estadoSync
+ */
+export type Caja$estadoSyncArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the EstadoSyncCaja
+   */
+  select?: Prisma.EstadoSyncCajaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the EstadoSyncCaja
+   */
+  omit?: Prisma.EstadoSyncCajaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.EstadoSyncCajaInclude<ExtArgs> | null
+  where?: Prisma.EstadoSyncCajaWhereInput
 }
 
 /**

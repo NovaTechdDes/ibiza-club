@@ -172,8 +172,8 @@ Desarrollo: SQL Server instalado local en Windows (con SSMS, **sin Docker**), ba
 - [x] **Paso 10** — Autenticación: login del panel (admin, JWT) y token de dispositivo por caja.
 - [x] **Paso 11** — Endpoint de sincronización de bajada (cambios desde versión X).
 - [x] **Paso 12** — Endpoint de sincronización de subida (lotes idempotentes de operaciones, orden de dependencias).
-- [ ] **Paso 13** — Lógica de promos y letra de la semana en `shared`, con tests (Vitest).
-- [ ] **Paso 14** — Endpoints de reportes (ventas por jornada, caja, medio de pago, promos, arqueos, estado de sincronización por caja).
+- [x] **Paso 13** — Lógica de promos y letra de la semana en `shared`, con tests (Vitest).
+- [x] **Paso 14** — Endpoints de reportes (ventas por jornada, caja, medio de pago, promos, arqueos, estado de sincronización por caja).
 - [ ] **Paso 15** — Seguridad y operación: CORS, helmet, rate limit, logs estructurados.
 - [ ] **Paso 16** — Deploy en Azure: App Service, Azure SQL serverless, variables de entorno, migraciones en producción.
 

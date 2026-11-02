@@ -28,6 +28,7 @@ model Caja {
   anulaciones Anulacion[]
   movimientos MovimientoCaja[]
   auditorias  AuditoriaCaja[]
+  estadoSync  EstadoSyncCaja?
 
   @@index([version])
 }
@@ -339,4 +340,14 @@ model AuditoriaPanel {
   usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@index([creadaEn])
+}
+
+// Monitoreo: una fila por caja que se pisa en cada contacto. No es configuración, no baja a las cajas.
+model EstadoSyncCaja {
+  cajaId           Int       @id
+  ultimoContactoEn DateTime
+  versionCatalogo  Int?
+  ultimaSubidaEn   DateTime?
+
+  caja Caja @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

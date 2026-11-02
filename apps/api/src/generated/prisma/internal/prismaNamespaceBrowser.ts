@@ -69,7 +69,8 @@ export const ModelName = {
   Anulacion: 'Anulacion',
   MovimientoCaja: 'MovimientoCaja',
   AuditoriaCaja: 'AuditoriaCaja',
-  AuditoriaPanel: 'AuditoriaPanel'
+  AuditoriaPanel: 'AuditoriaPanel',
+  EstadoSyncCaja: 'EstadoSyncCaja'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -358,6 +359,16 @@ export const AuditoriaPanelScalarFieldEnum = {
 } as const
 
 export type AuditoriaPanelScalarFieldEnum = (typeof AuditoriaPanelScalarFieldEnum)[keyof typeof AuditoriaPanelScalarFieldEnum]
+
+
+export const EstadoSyncCajaScalarFieldEnum = {
+  cajaId: 'cajaId',
+  ultimoContactoEn: 'ultimoContactoEn',
+  versionCatalogo: 'versionCatalogo',
+  ultimaSubidaEn: 'ultimaSubidaEn'
+} as const
+
+export type EstadoSyncCajaScalarFieldEnum = (typeof EstadoSyncCajaScalarFieldEnum)[keyof typeof EstadoSyncCajaScalarFieldEnum]
 
 
 export const SortOrder = {

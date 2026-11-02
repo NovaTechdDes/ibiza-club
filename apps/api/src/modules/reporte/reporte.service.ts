@@ -203,3 +203,60 @@ export const arqueo = async (rango: RangoReporte) => {
         ...rango, arqueos, totales
     }
 }
+
+// La caja pregunta por cambios cada 1-2 minutos: con 5 ya se perdieron varios contactos seguidos
+const MINUTOS_SIN_CONTACTO = 5;
+
+const estadoConexion = (ultimoContactoEn: Date | null, ahora: Date) => {
+    if (!ultimoContactoEn) return 'NUNCA';
+    const minutos = (ahora.getTime() - ultimoContactoEn.getTime()) / 60_000;
+    return minutos <= MINUTOS_SIN_CONTACTO ? 'CONECTADA' : 'SIN_CONTACTO';
+};
+
+// Foto del momento: no lleva rango de fechas. Solo cajas activas, las dadas de baja no se vigilan
+export const estadoSincronizacion = async () => {
+    const [{ actual: versionActual }, listaCajas, ultimasVentas] = await Promise.all([
+        prisma.versionConfig.findUniqueOrThrow({ where: { id: 1 } }),
+        prisma.caja.findMany({
+            where: { activo: true },
+            select: {
+                id: true, nombre: true, barra: true,
+                estadoSync: { select: { ultimoContactoEn: true, versionCatalogo: true, ultimaSubidaEn: true } }
+            },
+            orderBy: { nombre: 'asc' }
+        }),
+        prisma.venta.groupBy({
+            by: ['cajaId'],
+            _max: { recibidaEn: true }
+        })
+    ]);
+
+    const ahora = new Date();
+
+    const cajas = listaCajas.map((caja) => {
+        const versionCatalogo = caja.estadoSync?.versionCatalogo ?? null;
+        const ultimoContactoEn = caja.estadoSync?.ultimoContactoEn ?? null;
+
+        return {
+            cajaId: caja.id,
+            nombre: caja.nombre,
+            barra: caja.barra,
+            estado: estadoConexion(ultimoContactoEn, ahora),
+            ultimoContactoEn,
+            ultimaSubidaEn: caja.estadoSync?.ultimaSubidaEn ?? null,
+            ultimaVentaRecibidaEn: ultimasVentas.find((v) => v.cajaId === caja.id)?._max.recibidaEn ?? null,
+            versionCatalogo,
+            // versionCatalogo es lo que la caja tenía al preguntar: lo que baje en esa respuesta se ve recién en el contacto siguiente.
+            // Math.max porque una caja con versión mayor a la nube no está atrasada: ese caso lo resuelve el 409 de la bajada
+            versionesAtrasadas: versionCatalogo === null ? null : Math.max(versionActual - versionCatalogo, 0)
+        };
+    });
+
+    const totales = {
+        conectadas: cajas.filter((c) => c.estado === 'CONECTADA').length,
+        sinContacto: cajas.filter((c) => c.estado === 'SIN_CONTACTO').length,
+        nunca: cajas.filter((c) => c.estado === 'NUNCA').length
+    };
+
+    return { generadoEn: ahora, versionActual, cajas, totales };
+};
