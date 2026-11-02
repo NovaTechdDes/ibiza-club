@@ -4,10 +4,11 @@ import { validar } from "../../middleware/validar.js";
 import { loginAdmin } from "./auth.service.js";
 
 import { requerirAdmin } from "../../middleware/requerir-admin.js";
+import { limiteLogin } from "../../middleware/rate-limit.js";
 
 export const authRouter: Router = Router();
 
-authRouter.post('/login', validar({ body: LoginInputSchema }), async (req, res) => {
+authRouter.post('/login',limiteLogin, validar({ body: LoginInputSchema }), async (req, res) => {
     const { usuarioId, pin } = req.body;
     res.json(await loginAdmin(usuarioId, pin));
 });

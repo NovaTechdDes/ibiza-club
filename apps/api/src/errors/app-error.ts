@@ -1,4 +1,4 @@
-export type CodigoError = | 'VALIDACION' | 'NO_ENCONTRADO' | 'NO_AUTORIZADO' | 'CONFLICTO' | 'INTERNO' | 'PROHIBIDO';
+export type CodigoError = | 'VALIDACION' | 'DEMASIADOS_INTENTOS' | 'NO_ENCONTRADO' | 'NO_AUTORIZADO' | 'CONFLICTO' | 'INTERNO' | 'PROHIBIDO';
 
 export class AppError extends Error {
     constructor(public readonly status: number, public readonly codigo: CodigoError, mensaje: string, public readonly detalle?: unknown){
