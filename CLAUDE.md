@@ -185,7 +185,7 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 
 - [x] **F1** — Crear `apps/caja` con Tauri + React + TypeScript dentro del monorepo, usando `@ibiza/shared`.
 - [x] **F2** — Base del frontend: crear `packages/ui`, tema oscuro táctil y componentes base; sumar Zustand, TanStack Query, Axios y SweetAlert; pantalla principal vacía y ventana con el tamaño de trabajo.
-- [ ] **F3** — SQLite local con `tauri-plugin-sql`: tablas de catálogo, operaciones y cola, y migraciones.
+- [x] **F3** — SQLite local con `tauri-plugin-sql`: tablas de catálogo, operaciones y cola, y migraciones.
 - [ ] **F4** — Vincular la PC con su caja: cargar y guardar el token de dispositivo y la URL de la API; sumar los orígenes de Tauri a `CORS_ORIGENES` (`http://localhost:1420` y `http://tauri.localhost`).
 - [ ] **F5** — Sincronización de bajada: pedir cambios desde la versión guardada, aplicarlos en una transacción y manejar el conflicto de versión (borrar y pedir desde 0).
 - [ ] **F6** — Ingreso del cajero con PIN y teclado en pantalla, validando contra el `pinHash` local sin internet.
