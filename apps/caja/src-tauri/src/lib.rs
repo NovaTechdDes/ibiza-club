@@ -1,5 +1,6 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 
+mod pin;
 mod transaccion;
 
 // La misma clave para las migraciones, el load de JS y este comando
@@ -40,7 +41,11 @@ pub fn run() {
                 .add_migrations(BASE, migraciones)
                 .build(),
         )
-        .invoke_handler(tauri::generate_handler![greet, transaccion::transaccion])
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            transaccion::transaccion,
+            pin::verificar_pin
+        ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

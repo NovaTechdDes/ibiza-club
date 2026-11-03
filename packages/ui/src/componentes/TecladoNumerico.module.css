@@ -1,0 +1,11 @@
+.teclado {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  font-size: 28px; /* Boton usa font: inherit, así que toma este tamaño */
+}
+
+/* Deja libre la primera columna: el 0 queda debajo del 8, como en un teclado de teléfono */
+.cero {
+  grid-column: 2;
+}

@@ -6,6 +6,7 @@ import { confirmar } from "../lib/alertas";
 import estilos from "./PantallaVenta.module.css";
 import type { Vinculacion } from "../db/ajustes";
 import { useBajada } from "../hooks/useBajada";
+import { useSesion } from "../stores/sesion";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -13,6 +14,8 @@ interface Props {
 
 export function PantallaVenta({ vinculacion }: Props) {
   const { isPending, isError } = useBajada(vinculacion);
+  const usuario = useSesion((estado) => estado.usuario);
+  const salir = useSesion((estado) => estado.salir);
 
   const cantidad = useCarrito((estado) => estado.cantidad);
   const vaciar = useCarrito((estado) => estado.vaciar);
@@ -33,6 +36,12 @@ export function PantallaVenta({ vinculacion }: Props) {
               ? "Sin sincronizar"
               : "Catálogo al día"}
         </span>
+        <div className={estilos.sesion}>
+          <span>{usuario?.nombre}</span>
+          <Boton variante="secundario" disabled={cantidad > 0} onClick={salir}>
+            Salir
+          </Boton>
+        </div>
       </header>
 
       <Tarjeta className={estilos.productos}>
