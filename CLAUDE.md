@@ -188,6 +188,10 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F3** — SQLite local con `tauri-plugin-sql`: tablas de catálogo, operaciones y cola, y migraciones.
 - [x] **F4** — Vincular la PC con su caja: cargar y guardar el token de dispositivo y la URL de la API; sumar los orígenes de Tauri a `CORS_ORIGENES` (`http://localhost:1420` y `http://tauri.localhost`).
 - [ ] **F5** — Sincronización de bajada: pedir cambios desde la versión guardada, aplicarlos en una transacción y manejar el conflicto de versión (borrar y pedir desde 0).
+  - [x] **F5.a** y **F5.b** — `pedirCambios` en `lib/api.ts`; `leerVersion` y `aplicarCambios` en `db/catalogo.ts`.
+  - [ ] **F5.c** — `sync/bajada.ts`: leer la versión, pedir cambios y aplicarlos. Ante un 409, pedir desde 0 y aplicar con `remplazar = true`: borrar y cargar en la misma transacción, para que un corte de internet no deje la caja sin catálogo.
+  - [ ] **F5.d** — Hook que repite la bajada cada 60 s y muestra el estado en el encabezado de `PantallaVenta`. Si cambia `cajaNombre`, actualizar la vinculación en pantalla.
+  - Al terminar F5: marcar F5 como hecho y borrar estos subítems.
 - [ ] **F6** — Ingreso del cajero con PIN y teclado en pantalla, validando contra el `pinHash` local sin internet.
 - [ ] **F7** — Apertura de caja y jornada (incluye backend): fondo de cambio con PIN de encargado, modo jornada configurable, fecha operativa y letra. Definir cómo llega la clave de la letra a las cajas.
 - [ ] **F8** — Pantalla de venta: productos con sus variantes a la izquierda, carrito a la derecha y promos con la lógica de `shared`.

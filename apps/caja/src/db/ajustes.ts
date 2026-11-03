@@ -1,10 +1,15 @@
-import { obtenerDb, transaccion } from "./conexion";
+import { obtenerDb, Sentencia, transaccion } from "./conexion";
 
 export type Vinculacion = {
     apiUrl: string;
     token: string;
     cajaNombre: string;
 };
+
+export const sentenciaAjuste = (clave: string, valor: string): Sentencia => ({
+    sql: `INSERT INTO Ajustes (clave, valor) VALUES ($1, $2) ON CONFLICT (clave) DO UPDATE SET valor = excluded.valor`,
+    valores: [clave, valor]
+})
 
 export const leerVinculacion = async (): Promise<Vinculacion | null> => {
     const db = await obtenerDb();
@@ -26,8 +31,5 @@ export const leerVinculacion = async (): Promise<Vinculacion | null> => {
 
 export const guardarVinculacion = (vinculacion: Vinculacion) => 
     transaccion(
-        Object.entries(vinculacion).map(([clave, valor]) => ({
-            sql: `INSERT INTO Ajustes (clave, valor) VALUES ($1, $2) ON CONFLICT (clave) DO UPDATE SET valor = excluded.valor`,
-            valores: [clave, valor]
-        }))
+        Object.entries(vinculacion).map(([clave, valor]) => sentenciaAjuste(clave, valor))
     );

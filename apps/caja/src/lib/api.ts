@@ -6,6 +6,17 @@ type CajaRemota = {
     barra: string | null;
 };
 
+type Fila = Record<string, unknown>;
+
+export type Cambios = Record< | "envases" | "categorias" | "productos" | "variantes" | "promociones" | "promocionAlcances" | "promocionEnvases" | "usuarios", Fila[]>
+
+export type RespuestaBajada = {
+    version: number;
+    ahora: string;
+    caja: CajaRemota;
+    cambios: Cambios
+}
+
 export const crearApi = (apiUrl: string, token: string) => 
     axios.create({
         baseURL: `${apiUrl}/api`,
@@ -13,10 +24,15 @@ export const crearApi = (apiUrl: string, token: string) =>
         timeout: 60_000
     });
 
-export const pedirCaja = async (apiUrl: string, token: string) => {
-    const { data } = await crearApi(apiUrl, token).get<{ caja: CajaRemota}>(
+export const pedirCambios = async (apiUrl: string, token: string, desde: number) => {
+    const { data } = await crearApi(apiUrl, token).get<RespuestaBajada>(
         "/sync/bajada",
-        {params: {desde: 0}}
+        {params: {desde}}
     );
-    return data.caja
-}
+    return data
+};
+
+export const pedirCaja = async (apiUrl: string, token: string) => {
+    const { caja } = await pedirCambios(apiUrl, token, 0);
+    return caja;
+};
