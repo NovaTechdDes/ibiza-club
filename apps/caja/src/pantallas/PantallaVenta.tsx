@@ -5,7 +5,11 @@ import { confirmar } from "../lib/alertas";
 
 import estilos from "./PantallaVenta.module.css";
 
-export function PantallaVenta() {
+type PantallaVentaProps = {
+  cajaNombre: string;
+}
+
+export function PantallaVenta({cajaNombre}:PantallaVentaProps) {
   const cantidad = useCarrito((estado) => estado.cantidad);
   const vaciar = useCarrito((estado) => estado.vaciar);
   const agregar = useCarrito((estado) => estado.agregar);
@@ -17,7 +21,7 @@ export function PantallaVenta() {
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
-        <span>Caja sin vincular</span>
+        <span>{cajaNombre}</span>
         <span>Sin sincronizar</span>
       </header>
 

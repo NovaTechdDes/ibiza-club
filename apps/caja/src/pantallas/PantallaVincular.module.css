@@ -1,0 +1,25 @@
+.pantalla {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: var(--espacio);
+}
+
+.tarjeta {
+  width: min(600px, 100%);
+}
+
+.titulo {
+  margin: 0 0 var(--espacio);
+  font-size: 28px;
+}
+
+.formulario {
+  display: grid;
+  gap: var(--espacio);
+}
+
+.error {
+  margin: 0;
+  color: var(--color-peligro);
+}
