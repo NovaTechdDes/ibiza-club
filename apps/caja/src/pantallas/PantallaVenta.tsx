@@ -4,12 +4,16 @@ import { MEDIOS_PAGO } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 
 import estilos from "./PantallaVenta.module.css";
+import type { Vinculacion } from "../db/ajustes";
+import { useBajada } from "../hooks/useBajada";
 
-type PantallaVentaProps = {
-  cajaNombre: string;
+interface Props {
+  vinculacion: Vinculacion;
 }
 
-export function PantallaVenta({cajaNombre}:PantallaVentaProps) {
+export function PantallaVenta({ vinculacion }: Props) {
+  const { isPending, isError } = useBajada(vinculacion);
+
   const cantidad = useCarrito((estado) => estado.cantidad);
   const vaciar = useCarrito((estado) => estado.vaciar);
   const agregar = useCarrito((estado) => estado.agregar);
@@ -21,8 +25,14 @@ export function PantallaVenta({cajaNombre}:PantallaVentaProps) {
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
-        <span>{cajaNombre}</span>
-        <span>Sin sincronizar</span>
+        <span>{vinculacion.cajaNombre}</span>
+        <span>
+          {isPending
+            ? "Sincronizando..."
+            : isError
+              ? "Sin sincronizar"
+              : "Catálogo al día"}
+        </span>
       </header>
 
       <Tarjeta className={estilos.productos}>
