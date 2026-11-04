@@ -16,7 +16,10 @@
 
 .productos {
   min-height: 0;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow: hidden;
 }
 
 .carrito {
@@ -48,4 +51,36 @@
   display: flex;
   align-items: center;
   gap: var(--espacio);
+}
+
+.grilla{
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-content: start;
+}
+
+.resumen {
+  display: grid;
+  gap: 4px;
+  padding-top: var(--espacio);
+  border-top: 1px solid var(--color-borde);
+}
+
+.descuento {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-exito);
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-acento);
 }

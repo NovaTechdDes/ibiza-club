@@ -1,0 +1,26 @@
+.tarjeta {
+    display: flex;
+    gap: var(--espacio);
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.variantes {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.variante {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 12px 8px;
+}
+
+.precio {
+    font-size: 1.25rem;
+    color: var(--color-acento)
+}
+
+ .nombre { font-size: 1.25rem; }

@@ -1,0 +1,9 @@
+.barra{
+    display: flex;
+    overflow-x: auto;
+    gap: 8px
+}
+
+.barra > * {
+    flex-shrink: 0;
+}

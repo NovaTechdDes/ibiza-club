@@ -6,8 +6,13 @@ import { confirmar } from "../lib/alertas";
 import estilos from "./PantallaVenta.module.css";
 import { type Vinculacion } from "../db/ajustes";
 import { useBajada } from "../hooks/useBajada";
-import { useCategoriaVenta, usePromos } from "../hooks/useCatalogo";
+import { useCategoriaVenta } from "../hooks/useCatalogo";
 import { useSesion } from "../stores/sesion";
+import { useState } from "react";
+import { BarraCategorias } from "../componentes/BarraCategorias";
+import { TarjetaProducto } from "../componentes/TarjetaProducto";
+import { useCarritoCalculado } from "../hooks/useCarritoCalculado";
+import { LineaCarrito } from "../componentes/LineaCarrito";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -18,14 +23,17 @@ export function PantallaVenta({ vinculacion }: Props) {
   const usuario = useSesion((estado) => estado.usuario);
   const salir = useSesion((estado) => estado.salir);
 
-  const cantidad = useCarrito((estado) => estado.cantidad);
+  const carrito = useCarritoCalculado();
   const vaciar = useCarrito((estado) => estado.vaciar);
   const agregar = useCarrito((estado) => estado.agregar);
+  const cambiarCantidad = useCarrito((estado) => estado.cambiarCantidad);
 
-  // Temporal (F8.a): para probar la lectura del catálogo
+  const [categoriaId, setCategoriaId] = useState<number | null>(null);
+
   const { data: categorias } = useCategoriaVenta();
-  const { data: promos } = usePromos();
-  console.log({ categorias, promos });
+
+  const categoriaActual =
+    categorias?.find((c) => c.id === categoriaId) ?? categorias?.[0];
 
   async function pedirVaciar() {
     if (await confirmar("¿Vaciar el carrito?", "Vaciar")) vaciar();
@@ -44,38 +52,77 @@ export function PantallaVenta({ vinculacion }: Props) {
         </span>
         <div className={estilos.sesion}>
           <span>{usuario?.nombre}</span>
-          <Boton variante="secundario" disabled={cantidad > 0} onClick={salir}>
+          <Boton
+            variante="secundario"
+            disabled={carrito.cantidad > 0}
+            onClick={salir}
+          >
             Salir
           </Boton>
         </div>
       </header>
 
       <Tarjeta className={estilos.productos}>
-        <p>
-          {categorias?.length ?? 0} categorías · {promos?.length ?? 0} promos
-        </p>
-        <Boton onClick={agregar} variante="secundario">
-          Agregar de prueba
-        </Boton>
+        {categorias && categoriaActual ? (
+          <>
+            <BarraCategorias
+              categorias={categorias}
+              seleccionadaId={categoriaActual.id}
+              onElegir={setCategoriaId}
+            />
+            <div className={estilos.grilla}>
+              {categoriaActual.productos.map((producto) => (
+                <TarjetaProducto
+                  key={producto.id}
+                  producto={producto}
+                  onElegir={(variante) => agregar(producto, variante)}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <p>Todavía no hay productos. Esperá la sincronización.</p>
+        )}
       </Tarjeta>
 
       <Tarjeta className={estilos.carrito}>
         <div className={estilos.carritoEncabezado}>
-          <strong>Carrito: {cantidad}</strong>
+          <strong>Carrito: {carrito.cantidad}</strong>
           <Boton
             variante="secundario"
-            disabled={cantidad === 0}
+            disabled={carrito.cantidad === 0}
             onClick={pedirVaciar}
           >
             Vaciar
           </Boton>
         </div>
 
-        <div className={estilos.items}></div>
+        <div className={estilos.items}>
+          {carrito.lineas.map((linea) => (
+            <LineaCarrito
+              linea={linea}
+              key={linea.varianteId}
+              onCambiar={(cambio) => cambiarCantidad(linea.varianteId, cambio)}
+            />
+          ))}
+        </div>
+
+        <div className={estilos.resumen}>
+          {carrito.descuento > 0 && (
+            <div className={estilos.descuento}>
+              <span>Descuento</span>
+              <span>-$ {carrito.descuento.toLocaleString("es-AR")}</span>
+            </div>
+          )}
+          <div className={estilos.total}>
+            <span>TOTAL</span>
+            <span>$ {carrito.total.toLocaleString("es-AR")}</span>
+          </div>
+        </div>
 
         <div className={estilos.pagos}>
           {MEDIOS_PAGO.map((elem) => (
-            <Boton disabled={cantidad === 0} key={elem}>
+            <Boton disabled={carrito.cantidad === 0} key={elem}>
               {elem}
             </Boton>
           ))}
