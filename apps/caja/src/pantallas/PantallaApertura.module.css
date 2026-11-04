@@ -1,0 +1,40 @@
+.pantalla {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: var(--espacio);
+}
+
+.tarjeta {
+  width: min(480px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.titulo {
+  margin: 0 0 var(--espacio);
+  font-size: 28px;
+  text-align: center;
+}
+
+
+.error {
+  min-height: 1.5em;
+  margin: 12px 0;
+  color: var(--color-peligro);
+  text-align: center;
+}
+
+.monto {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.acciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: var(--espacio);
+}

@@ -189,7 +189,7 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F4** — Vincular la PC con su caja: cargar y guardar el token de dispositivo y la URL de la API; sumar los orígenes de Tauri a `CORS_ORIGENES` (`http://localhost:1420` y `http://tauri.localhost`).
 - [x] **F5** — Sincronización de bajada: pedir cambios desde la versión guardada, aplicarlos en una transacción y manejar el conflicto de versión (borrar y pedir desde 0).
 - [x] **F6** — Ingreso del cajero con PIN y teclado en pantalla, validando contra el `pinHash` local sin internet.
-- [ ] **F7** — Apertura de caja y jornada (incluye backend): fondo de cambio con PIN de encargado, modo jornada configurable, fecha operativa y letra. Definir cómo llega la clave de la letra a las cajas.
+- [x] **F7** — Apertura de caja y jornada (incluye backend): fondo de cambio con PIN de encargado, modo jornada configurable, fecha operativa y letra. Definir cómo llega la clave de la letra a las cajas.
 - [ ] **F8** — Pantalla de venta: productos con sus variantes a la izquierda, carrito a la derecha y promos con la lógica de `shared`.
 - [ ] **F9** — Cobro en un toque: Efectivo, Transferencia y Tarjeta; correlativo; la venta y su entrada en la cola se guardan en la misma transacción.
 - [ ] **F10** — Impresión del ticket ESC/POS de 80 mm desde Rust, probada en una impresora real.

@@ -4,12 +4,9 @@ import { MEDIOS_PAGO } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 
 import estilos from "./PantallaVenta.module.css";
-import { leerConfigCaja, type Vinculacion } from "../db/ajustes";
+import { type Vinculacion } from "../db/ajustes";
 import { useBajada } from "../hooks/useBajada";
 import { useSesion } from "../stores/sesion";
-// TEMPORAL: prueba de F7 parte B
-import { crearApertura, leerAperturaAbierta } from "../db/apertura";
-import { calcularJornada } from "../lib/jornada";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -26,22 +23,6 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   async function pedirVaciar() {
     if (await confirmar("¿Vaciar el carrito?", "Vaciar")) vaciar();
-  }
-
-  // TEMPORAL: prueba de F7 parte B
-  async function probarApertura() {
-    const config = await leerConfigCaja();
-    if (!config || !usuario) return;
-    const jornada = config.jornadaActiva
-      ? await calcularJornada(new Date(), config.claveLetra)
-      : null;
-    await crearApertura({
-      cajeroId: usuario.id,
-      encargadoId: usuario.id,
-      fondo: 50000,
-      jornada,
-    });
-    console.log(await leerAperturaAbierta());
   }
 
   return (
@@ -67,10 +48,6 @@ export function PantallaVenta({ vinculacion }: Props) {
         <p>Acá van los productos</p>
         <Boton onClick={agregar} variante="secundario">
           Agregar de prueba
-        </Boton>
-        {/* TEMPORAL: prueba de F7 parte B */}
-        <Boton onClick={probarApertura} variante="secundario">
-          Probar apertura
         </Boton>
       </Tarjeta>
 
