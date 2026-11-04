@@ -28,8 +28,25 @@ export const leerVinculacion = async (): Promise<Vinculacion | null> => {
     return {apiUrl, token, cajaNombre}
 };
 
+export const leerConfigCaja = async (): Promise<{claveLetra: string, jornadaActiva: boolean} | null> => {
+    const db = await obtenerDb();
+    const filas = await db.select<{clave: string; valor: string}[]>(
+        "SELECT clave, valor FROM Ajustes WHERE clave IN ('claveLetra', 'jornadaActiva')"
+    );
+
+    const ajustes = new Map(filas.map((fila) => [fila.clave, fila.valor]));
+
+    const claveLetra = ajustes.get('claveLetra');
+    const jornadaActiva = ajustes.get('jornadaActiva');
+
+    if(!claveLetra || !jornadaActiva) return null;
+
+    return {
+        claveLetra, jornadaActiva: jornadaActiva === 'true'
+    }
+}
 
 export const guardarVinculacion = (vinculacion: Vinculacion) => 
     transaccion(
         Object.entries(vinculacion).map(([clave, valor]) => sentenciaAjuste(clave, valor))
-    );
+);

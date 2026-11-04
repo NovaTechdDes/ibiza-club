@@ -4,9 +4,10 @@ import { MEDIOS_PAGO } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 
 import estilos from "./PantallaVenta.module.css";
-import type { Vinculacion } from "../db/ajustes";
+import { leerConfigCaja, type Vinculacion } from "../db/ajustes";
 import { useBajada } from "../hooks/useBajada";
 import { useSesion } from "../stores/sesion";
+import { useEffect } from "react";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -24,6 +25,12 @@ export function PantallaVenta({ vinculacion }: Props) {
   async function pedirVaciar() {
     if (await confirmar("¿Vaciar el carrito?", "Vaciar")) vaciar();
   }
+
+  useEffect(() => {
+    leerConfigCaja().then((config) => {
+      console.log(config?.jornadaActiva, typeof config?.jornadaActiva);
+    });
+  }, []);
 
   return (
     <div className={estilos.pantalla}>

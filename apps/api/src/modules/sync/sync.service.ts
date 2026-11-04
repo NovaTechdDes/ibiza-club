@@ -1,3 +1,4 @@
+import { env } from "../../config/env.js";
 import { prisma } from "../../db/prisma.js"
 import { AppError } from "../../errors/app-error.js";
 
@@ -56,6 +57,11 @@ export const obtenerCambios = async (cajaId: number, desde: number) => {
         version: hasta,
         ahora: new Date().toISOString(),
         caja,
+        config: {
+            jornadaActiva: env.JORNADA_ACTIVA,
+            claveLetra: env.CLAVE_LETRA
+        },
         cambios: { envases, categorias, productos, variantes, promociones, promocionAlcances, promocionEnvases, usuarios}
     };
 };
+

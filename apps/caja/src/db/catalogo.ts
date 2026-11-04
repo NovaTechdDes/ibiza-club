@@ -24,7 +24,7 @@ export const leerVersion = async () => {
     return Number(filas[0]?.valor ?? 0);
 }
 
-export const aplicarCambios = ({version, caja, cambios}: RespuestaBajada, remplazar = false) => {
+export const aplicarCambios = ({version, caja, cambios, config}: RespuestaBajada, remplazar = false) => {
     const sentencias: Sentencia[] = [];
 
     for(const clave of Object.keys(TABLAS) as (keyof Cambios)[]){
@@ -42,7 +42,9 @@ export const aplicarCambios = ({version, caja, cambios}: RespuestaBajada, rempla
     }
 
     sentencias.push(sentenciaAjuste("versionCatalogo", String(version)))
-    sentencias.push(sentenciaAjuste("cajaNombre", caja.nombre))
+    sentencias.push(sentenciaAjuste("cajaNombre", caja.nombre));
+    sentencias.push(sentenciaAjuste('jornadaActiva', String(config.jornadaActiva)))
+    sentencias.push(sentenciaAjuste('claveLetra', config.claveLetra))
 
     return transaccion(sentencias)
 }

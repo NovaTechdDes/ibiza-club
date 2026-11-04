@@ -14,7 +14,11 @@ export type RespuestaBajada = {
     version: number;
     ahora: string;
     caja: CajaRemota;
-    cambios: Cambios
+    cambios: Cambios;
+    config: {
+        jornadaActiva: boolean,
+        claveLetra: string
+    }
 }
 
 export const crearApi = (apiUrl: string, token: string) => 
