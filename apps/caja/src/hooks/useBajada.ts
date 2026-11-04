@@ -3,6 +3,7 @@ import { bajarCatalogo } from "../sync/bajada";
 import  type { Vinculacion } from "../db/ajustes";
 import { CLAVE_VINCULACION } from "./useVinculacion";
 import { CLAVE_USUARIOS } from "./useUsuarios";
+import { CLAVE_CATALOGO } from "./useCatalogo";
 
 export const CLAVE_BAJADA = ["bajada"];
 
@@ -15,6 +16,7 @@ export const useBajada = (vinculacion: Vinculacion) => {
             const resultado = await bajarCatalogo(vinculacion)
 
             queryClient.invalidateQueries({ queryKey: CLAVE_USUARIOS})
+            queryClient.invalidateQueries({ queryKey: CLAVE_CATALOGO})
             queryClient.setQueryData(CLAVE_VINCULACION, {...vinculacion, cajaNombre: resultado.cajaNombre})
 
             return resultado;

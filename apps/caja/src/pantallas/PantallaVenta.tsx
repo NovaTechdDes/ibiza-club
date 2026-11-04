@@ -6,6 +6,7 @@ import { confirmar } from "../lib/alertas";
 import estilos from "./PantallaVenta.module.css";
 import { type Vinculacion } from "../db/ajustes";
 import { useBajada } from "../hooks/useBajada";
+import { useCategoriaVenta, usePromos } from "../hooks/useCatalogo";
 import { useSesion } from "../stores/sesion";
 
 interface Props {
@@ -20,6 +21,11 @@ export function PantallaVenta({ vinculacion }: Props) {
   const cantidad = useCarrito((estado) => estado.cantidad);
   const vaciar = useCarrito((estado) => estado.vaciar);
   const agregar = useCarrito((estado) => estado.agregar);
+
+  // Temporal (F8.a): para probar la lectura del catálogo
+  const { data: categorias } = useCategoriaVenta();
+  const { data: promos } = usePromos();
+  console.log({ categorias, promos });
 
   async function pedirVaciar() {
     if (await confirmar("¿Vaciar el carrito?", "Vaciar")) vaciar();
@@ -45,7 +51,9 @@ export function PantallaVenta({ vinculacion }: Props) {
       </header>
 
       <Tarjeta className={estilos.productos}>
-        <p>Acá van los productos</p>
+        <p>
+          {categorias?.length ?? 0} categorías · {promos?.length ?? 0} promos
+        </p>
         <Boton onClick={agregar} variante="secundario">
           Agregar de prueba
         </Boton>

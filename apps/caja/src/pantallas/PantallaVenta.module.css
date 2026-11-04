@@ -44,7 +44,7 @@
 }
 
 
-.session {
+.sesion {
   display: flex;
   align-items: center;
   gap: var(--espacio);
