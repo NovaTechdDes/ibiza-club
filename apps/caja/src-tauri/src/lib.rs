@@ -1,6 +1,9 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 
+mod escpos;
+mod impresora;
 mod pin;
+mod ticket;
 mod transaccion;
 
 // La misma clave para las migraciones, el load de JS y este comando
@@ -44,7 +47,9 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             greet,
             transaccion::transaccion,
-            pin::verificar_pin
+            pin::verificar_pin,
+            impresora::imprimir_prueba,
+            impresora::imprimir_ticket,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

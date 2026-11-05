@@ -1,7 +1,7 @@
 import { Boton, Tarjeta } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
 import { MEDIOS_PAGO } from "@ibiza/shared";
-import { confirmar } from "../lib/alertas";
+import { avisaError, confirmar } from "../lib/alertas";
 
 import estilos from "./PantallaVenta.module.css";
 import { type Vinculacion } from "../db/ajustes";
@@ -14,6 +14,44 @@ import { TarjetaProducto } from "../componentes/TarjetaProducto";
 import { useCarritoCalculado } from "../hooks/useCarritoCalculado";
 import { LineaCarrito } from "../componentes/LineaCarrito";
 import { useCobrar } from "../hooks/useCobrar";
+import { imprimirTicket, type Ticket } from "../lib/impresora";
+
+// Temporal (F10.b): se borra en F10.c, cuando el ticket salga de la venta real.
+// Fuera del componente para no recrearlo en cada render.
+// Total: 8.000 - 4.000 + 6.000 + 3.500 = 13.500
+const ticketDePrueba: Ticket = {
+  letra: "S",
+  fecha: "VIE 23/10",
+  caja: "Caja 2",
+  numero: 147,
+  lineas: [
+    {
+      cantidad: 2,
+      nombre: "Vodka c/ speed (vaso)",
+      precioUnitario: 4000,
+      promocionNombre: "Promo 2x1",
+      descuento: 4000,
+    },
+    {
+      cantidad: 1,
+      nombre: "Fernet (tanque)",
+      precioUnitario: 6000,
+      promocionNombre: null,
+      descuento: 0,
+    },
+    {
+      // Más de 42 caracteres: tiene que recortarse sin pisar el monto
+      cantidad: 1,
+      nombre: "Gin tonic con pepino, frutos rojos y romero (vaso)",
+      precioUnitario: 3500,
+      promocionNombre: null,
+      descuento: 0,
+    },
+  ],
+  total: 13500,
+  medioPago: "Efectivo",
+  hora: "23:47",
+};
 
 interface Props {
   vinculacion: Vinculacion;
@@ -55,6 +93,17 @@ export function PantallaVenta({ vinculacion }: Props) {
               ? "Sin sincronizar"
               : "Catálogo al día"}
         </span>
+
+        <Boton
+          onClick={() =>
+            imprimirTicket("192.168.0.15", 6001, 42, ticketDePrueba).catch(
+              avisaError,
+            )
+          }
+        >
+          Probar Ticket
+        </Boton>
+
         <div className={estilos.sesion}>
           <span>{usuario?.nombre}</span>
           <Boton
