@@ -54,6 +54,50 @@ fn a_los_costados(izquierda: &str, derecha: &str, ancho: usize) -> String {
     format!("{izquierda}{}{derecha}\n", " ".repeat(espacios))
 }
 
+// Los renglones que siguen a un ítem (y la promo) van corridos para que se lean como parte de él
+const SANGRIA: &str = "    ";
+
+// Parte el texto en renglones cortando entre palabras. El primero mide `primero` y los
+// demás `siguientes` (el primero es más corto porque a la derecha va el monto).
+// Una palabra que no entra ni en un renglón entero se corta donde haga falta.
+fn partir(texto: &str, primero: usize, siguientes: usize) -> Vec<String> {
+    let mut renglones: Vec<String> = Vec::new();
+    let mut actual = String::new();
+
+    for palabra in texto.split_whitespace() {
+        let mut resto: Vec<char> = palabra.chars().collect();
+        while !resto.is_empty() {
+            let lugar = if renglones.is_empty() {
+                primero
+            } else {
+                siguientes
+            }
+            .max(1);
+            let ocupado = actual.chars().count();
+            let espacio = if ocupado == 0 { 0 } else { 1 };
+
+            if ocupado + espacio + resto.len() <= lugar {
+                if espacio == 1 {
+                    actual.push(' ');
+                }
+                actual.extend(resto.drain(..));
+            } else if ocupado > 0 {
+                // No entra en este renglón: se cierra y la palabra pasa al siguiente
+                renglones.push(std::mem::take(&mut actual));
+            } else {
+                // No entra ni sola: se llena el renglón con el principio de la palabra
+                actual.extend(resto.drain(..lugar));
+                renglones.push(std::mem::take(&mut actual));
+            }
+        }
+    }
+
+    if !actual.is_empty() || renglones.is_empty() {
+        renglones.push(actual);
+    }
+    renglones
+}
+
 pub fn armar_ticket(ticket: &Ticket, ancho: usize) -> Vec<u8> {
     let mut datos = Vec::new();
     let separador = format!("{}\n", "-".repeat(ancho));
@@ -77,11 +121,24 @@ pub fn armar_ticket(ticket: &Ticket, ancho: usize) -> Vec<u8> {
     for linea in &ticket.lineas {
         let detalle = format!("{} x {}", linea.cantidad, linea.nombre);
         let importe = plata(linea.precio_unitario * i64::from(linea.cantidad));
-        datos.extend(a_cp850(&a_los_costados(&detalle, &importe, ancho)));
+
+        // El nombre no se recorta: el envase va al final y es lo que mira el preparador
+        let renglones = partir(
+            &detalle,
+            ancho.saturating_sub(importe.chars().count() + 1),
+            ancho.saturating_sub(SANGRIA.len()),
+        );
+        let (primero, siguientes) = renglones
+            .split_first()
+            .expect("partir siempre da un renglón");
+        datos.extend(a_cp850(&a_los_costados(primero, &importe, ancho)));
+        for renglon in siguientes {
+            datos.extend(a_cp850(&format!("{SANGRIA}{renglon}\n")));
+        }
 
         if let Some(promo) = &linea.promocion_nombre {
             if linea.descuento > 0 {
-                let detalle = format!("    {promo}");
+                let detalle = format!("{SANGRIA}{promo}");
                 datos.extend(a_cp850(&a_los_costados(
                     &detalle,
                     &plata(-linea.descuento),
@@ -137,6 +194,57 @@ mod pruebas {
     fn recorta_el_texto_largo_y_no_el_monto() {
         let renglon = a_los_costados("2 x Vodka con speed (tanque grande)", "$8.000", 20);
         assert_eq!(renglon, "2 x Vodka con $8.000\n");
+    }
+
+    #[test]
+    fn parte_entre_palabras_con_el_primer_renglon_mas_corto() {
+        let renglones = partir(
+            "1 x Gin tonic con pepino, frutos rojos y romero (vaso)",
+            35,
+            38,
+        );
+        assert_eq!(
+            renglones,
+            ["1 x Gin tonic con pepino, frutos", "rojos y romero (vaso)"]
+        );
+    }
+
+    #[test]
+    fn un_texto_corto_queda_en_un_renglon() {
+        assert_eq!(
+            partir("1 x Fernet (tanque)", 35, 38),
+            ["1 x Fernet (tanque)"]
+        );
+        assert_eq!(partir("", 35, 38), [""]);
+    }
+
+    #[test]
+    fn corta_una_palabra_que_no_entra_en_ningun_renglon() {
+        assert_eq!(partir("Superespumante", 5, 6), ["Super", "espuma", "nte"]);
+    }
+
+    #[test]
+    fn el_ticket_no_pierde_el_envase() {
+        let ticket = Ticket {
+            letra: "S".into(),
+            fecha: "VIE 23/10".into(),
+            caja: "Caja 2".into(),
+            numero: 1,
+            lineas: vec![LineaTicket {
+                cantidad: 1,
+                nombre: "Gin tonic con pepino, frutos rojos y romero (vaso)".into(),
+                precio_unitario: 3500,
+                promocion_nombre: None,
+                descuento: 0,
+            }],
+            total: 3500,
+            medio_pago: "Efectivo".into(),
+            hora: "23:47".into(),
+        };
+        let datos = armar_ticket(&ticket, 42);
+        let texto = String::from_utf8_lossy(&datos);
+        assert!(texto.contains("1 x Gin tonic con pepino, frutos    $3.500\n"));
+        assert!(texto.contains("\n    rojos y romero (vaso)\n"));
     }
 
     #[test]

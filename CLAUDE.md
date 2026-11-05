@@ -192,7 +192,7 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F7** — Apertura de caja y jornada (incluye backend): fondo de cambio con PIN de encargado, modo jornada configurable, fecha operativa y letra. Definir cómo llega la clave de la letra a las cajas.
 - [x] **F8** — Pantalla de venta: productos con sus variantes a la izquierda, carrito a la derecha y promos con la lógica de `shared`.
 - [x] **F9** — Cobro en un toque: Efectivo, Transferencia y Tarjeta; correlativo; la venta y su entrada en la cola se guardan en la misma transacción.
-- [ ] **F10** — Impresión del ticket ESC/POS de 80 mm desde Rust, probada en una impresora real.
+- [x] **F10** — Impresión del ticket ESC/POS de 80 mm desde Rust, probada en una impresora real.
 - [ ] **F11** — Sincronización de subida: lotes con reintentos y espera creciente, orden de dependencias, e indicador "Sincronizado / N pendientes / Sin internet".
 - [ ] **F12** — Operación durante la noche: retiros con comprobante, cambio de cajero, anulación y auditoría.
 - [ ] **F13** — Cierre con arqueo ciego y recuperación tras un corte de luz. Con esto la caja queda completa para vender.
