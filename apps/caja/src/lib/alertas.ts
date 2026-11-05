@@ -20,4 +20,16 @@ export async function confirmar(titulo: string, textoConfirmar: string) {
     return isConfirmed;
 
 
-}
+};
+
+export async function avisaError(mensaje: string) {
+    await Swal.fire({
+        title: mensaje,
+        icon: 'error',
+        confirmButtonText: 'Aceptar',
+        heightAuto: false,
+        background: "var(--color-superficie)",
+        confirmButtonColor: "var(--color-peligro)",
+        color: "var(--color-texto)"
+    });
+};

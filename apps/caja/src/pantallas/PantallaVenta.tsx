@@ -13,6 +13,7 @@ import { BarraCategorias } from "../componentes/BarraCategorias";
 import { TarjetaProducto } from "../componentes/TarjetaProducto";
 import { useCarritoCalculado } from "../hooks/useCarritoCalculado";
 import { LineaCarrito } from "../componentes/LineaCarrito";
+import { useCobrar } from "../hooks/useCobrar";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -21,12 +22,15 @@ interface Props {
 export function PantallaVenta({ vinculacion }: Props) {
   const { isPending, isError } = useBajada(vinculacion);
   const usuario = useSesion((estado) => estado.usuario);
+
   const salir = useSesion((estado) => estado.salir);
 
   const carrito = useCarritoCalculado();
   const vaciar = useCarrito((estado) => estado.vaciar);
   const agregar = useCarrito((estado) => estado.agregar);
   const cambiarCantidad = useCarrito((estado) => estado.cambiarCantidad);
+
+  const cobrar = useCobrar();
 
   const [categoriaId, setCategoriaId] = useState<number | null>(null);
 
@@ -42,6 +46,7 @@ export function PantallaVenta({ vinculacion }: Props) {
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
+        {cobrar.data && <span>Ultima Venta: #{cobrar.data}</span>}
         <span>{vinculacion.cajaNombre}</span>
         <span>
           {isPending
@@ -90,7 +95,7 @@ export function PantallaVenta({ vinculacion }: Props) {
           <strong>Carrito: {carrito.cantidad}</strong>
           <Boton
             variante="secundario"
-            disabled={carrito.cantidad === 0}
+            disabled={carrito.cantidad === 0 || cobrar.isPending}
             onClick={pedirVaciar}
           >
             Vaciar
@@ -122,7 +127,11 @@ export function PantallaVenta({ vinculacion }: Props) {
 
         <div className={estilos.pagos}>
           {MEDIOS_PAGO.map((elem) => (
-            <Boton disabled={carrito.cantidad === 0} key={elem}>
+            <Boton
+              disabled={cobrar.isPending || carrito.cantidad === 0}
+              key={elem}
+              onClick={() => cobrar.mutate(elem)}
+            >
               {elem}
             </Boton>
           ))}

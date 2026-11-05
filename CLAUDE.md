@@ -190,12 +190,8 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F5** — Sincronización de bajada: pedir cambios desde la versión guardada, aplicarlos en una transacción y manejar el conflicto de versión (borrar y pedir desde 0).
 - [x] **F6** — Ingreso del cajero con PIN y teclado en pantalla, validando contra el `pinHash` local sin internet.
 - [x] **F7** — Apertura de caja y jornada (incluye backend): fondo de cambio con PIN de encargado, modo jornada configurable, fecha operativa y letra. Definir cómo llega la clave de la letra a las cajas.
-- [ ] **F8** — Pantalla de venta: productos con sus variantes a la izquierda, carrito a la derecha y promos con la lógica de `shared`.
-  <!-- Al terminar F8.c: borrar esta nota y los subpasos F8.a, F8.b y F8.c, y marcar F8 como hecho. -->
-  - [ ] **F8.a** — Leer de SQLite los productos y las promos (`db/productos.ts`, `db/promociones.ts`, `hooks/useCatalogo.ts`) y refrescarlos con la bajada. Código escrito; falta probarlo en la app.
-  - [ ] **F8.b** — Mostrar las categorías y las tarjetas de productos, con un botón por envase.
-  - [ ] **F8.c** — Armar el carrito real, con promos y total, usando `aplicarPromos` de `shared`.
-- [ ] **F9** — Cobro en un toque: Efectivo, Transferencia y Tarjeta; correlativo; la venta y su entrada en la cola se guardan en la misma transacción.
+- [x] **F8** — Pantalla de venta: productos con sus variantes a la izquierda, carrito a la derecha y promos con la lógica de `shared`.
+- [x] **F9** — Cobro en un toque: Efectivo, Transferencia y Tarjeta; correlativo; la venta y su entrada en la cola se guardan en la misma transacción.
 - [ ] **F10** — Impresión del ticket ESC/POS de 80 mm desde Rust, probada en una impresora real.
 - [ ] **F11** — Sincronización de subida: lotes con reintentos y espera creciente, orden de dependencias, e indicador "Sincronizado / N pendientes / Sin internet".
 - [ ] **F12** — Operación durante la noche: retiros con comprobante, cambio de cajero, anulación y auditoría.
