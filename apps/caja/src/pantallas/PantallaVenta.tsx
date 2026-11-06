@@ -5,7 +5,6 @@ import { confirmar } from "../lib/alertas";
 
 import estilos from "./PantallaVenta.module.css";
 import { type Vinculacion } from "../db/ajustes";
-import { useBajada } from "../hooks/useBajada";
 import { useCategoriaVenta } from "../hooks/useCatalogo";
 import { useSesion } from "../stores/sesion";
 import { useState } from "react";
@@ -16,6 +15,7 @@ import { LineaCarrito } from "../componentes/LineaCarrito";
 import { useCobrar } from "../hooks/useCobrar";
 import { PedirPin } from "../componentes/PedirPin";
 import { PantallaImpresora } from "./PantallaImpresora";
+import { IndicadorSync } from "../componentes/IndicadorSync";
 
 // Cambiar la impresora en plena noche puede dejar la caja sin tickets
 const ROLES_CONFIGURAN: Rol[] = ["ENCARGADO", "ADMIN"];
@@ -25,7 +25,6 @@ interface Props {
 }
 
 export function PantallaVenta({ vinculacion }: Props) {
-  const { isPending, isError } = useBajada(vinculacion);
   const usuario = useSesion((estado) => estado.usuario);
 
   const salir = useSesion((estado) => estado.salir);
@@ -78,13 +77,7 @@ export function PantallaVenta({ vinculacion }: Props) {
           Impresora
         </Boton>
         <span>{vinculacion.cajaNombre}</span>
-        <span>
-          {isPending
-            ? "Sincronizando..."
-            : isError
-              ? "Sin sincronizar"
-              : "Catálogo al día"}
-        </span>
+        <IndicadorSync />
 
         <div className={estilos.sesion}>
           <span>{usuario?.nombre}</span>

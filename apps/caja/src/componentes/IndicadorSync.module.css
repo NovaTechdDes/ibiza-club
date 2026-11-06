@@ -1,0 +1,51 @@
+.indicador {
+  --color-estado: var(--color-texto-suave);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border: 1px solid var(--color-borde);
+  border-radius: 999px;
+  background: var(--color-superficie);
+  color: var(--color-estado);
+  font: inherit;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* Puntito de color: el estado se distingue de un vistazo */
+.indicador::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--color-estado);
+}
+
+/* disabled solo quiere decir "no hay detalle para mostrar": no se apaga */
+.indicador:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.indicador:not(:disabled) {
+  cursor: pointer;
+  border-color: var(--color-estado);
+}
+
+.suave {
+  --color-estado: var(--color-texto-suave);
+}
+
+.exito {
+  --color-estado: var(--color-exito);
+}
+
+.acento {
+  --color-estado: var(--color-acento);
+}
+
+.peligro {
+  --color-estado: var(--color-peligro);
+}

@@ -2,7 +2,7 @@ import { TAMANO_LOTE } from "@ibiza/shared";
 import type { Vinculacion } from "../db/ajustes";
 import { leerLote, marcarConfirmadas, marcarRechazada, type Rechazada } from "../db/cola";
 import { enviarLote } from "../lib/api";
-type ResultadoSubida = {subidas: number; rechazada: Rechazada | null};
+export type ResultadoSubida ={subidas: number; rechazada: Rechazada | null};
 
 export const subirPendientes = async({apiUrl, token}: Vinculacion): Promise<ResultadoSubida> => {
     let subidas = 0;
