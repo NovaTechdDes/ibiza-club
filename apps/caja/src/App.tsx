@@ -7,15 +7,16 @@ import { PantallaVenta } from "./pantallas/PantallaVenta";
 import { PantallaVincular } from "./pantallas/PantallaVincular";
 import { PantallaApertura } from "./pantallas/PantallaApertura";
 import { useSesion } from "./stores/sesion";
+import { useSubida } from "./hooks/useSubida";
 
 function CajaVinculada({ vinculacion }: { vinculacion: Vinculacion }) {
   useBajada(vinculacion);
+  useSubida(vinculacion);
   const { data, isPending, isError } = useApertura();
   const usuario = useSesion((estado) => estado.usuario);
 
   if (isPending) return null;
-  if (isError)
-    return <p>No se pudo abrir la caja. Reiniciá la aplicación.</p>;
+  if (isError) return <p>No se pudo abrir la caja. Reiniciá la aplicación.</p>;
   if (!usuario) return <PantallaPin />;
   if (!data) return <PantallaApertura cajero={usuario} />;
 

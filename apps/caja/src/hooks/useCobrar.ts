@@ -1,5 +1,5 @@
 import type { MedioPago } from "@ibiza/shared";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { leerConfigCaja } from "../db/ajustes";
 import type { Apertura, Jornada } from "../db/apertura";
@@ -14,6 +14,10 @@ import { useApertura } from "./useApertura";
 import { useCarritoCalculado } from "./useCarritoCalculado";
 import { useImpresora } from "./useImpresora";
 import { useVinculacion } from "./useVinculacion";
+import { avisarOperacionNueva } from "./useSubida";
+
+
+
 
 // Con jornada, la letra y la fecha quedaron fijas al abrir la caja.
 // Sin jornada, salen de la hora de la venta, sin ningún paso manual.
@@ -30,6 +34,7 @@ const jornadaDelTicket = async (
 };
 
 export const useCobrar = () => {
+  const queryClient = useQueryClient();
   const { data: apertura } = useApertura();
   const { data: vinculacion } = useVinculacion();
   const { data: impresora } = useImpresora();
@@ -71,7 +76,10 @@ export const useCobrar = () => {
       return numero;
     },
     // Se vacía recién al final: mientras imprime, el carrito sigue a la vista
-    onSuccess: () => vaciar(),
+    onSuccess: () => {
+      vaciar()
+      avisarOperacionNueva(queryClient)
+    },
     onError: () => avisaError("No se pudo registrar la venta"),
   });
 };

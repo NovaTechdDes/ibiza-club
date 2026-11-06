@@ -12,6 +12,7 @@ import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
 
 import estilos from "./PantallaApertura.module.css";
 import { PedirPin } from "../componentes/PedirPin";
+import { avisarOperacionNueva } from "../hooks/useSubida";
 
 const ROLES_AUTORIZAN: Rol[] = ["ENCARGADO", "ADMIN"];
 const FONDO_MAXIMO = 99_999_999;
@@ -41,8 +42,10 @@ export function PantallaApertura({ cajero }: { cajero: Usuario }) {
   const abrir = useMutation({
     mutationFn: (encargado: Usuario) =>
       abrirCaja(cajero.id, encargado.id, fondo),
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: CLAVE_APERTURA }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: CLAVE_APERTURA });
+      avisarOperacionNueva(queryClient);
+    },
   });
 
   function teclear(digito: string) {
