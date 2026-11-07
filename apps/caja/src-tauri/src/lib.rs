@@ -3,6 +3,7 @@ use tauri_plugin_sql::{Migration, MigrationKind};
 mod escpos;
 mod impresora;
 mod pin;
+mod retiro;
 mod ticket;
 mod transaccion;
 
@@ -50,6 +51,7 @@ pub fn run() {
             pin::verificar_pin,
             impresora::imprimir_prueba,
             impresora::imprimir_ticket,
+            impresora::imprimir_retiro,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

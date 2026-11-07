@@ -42,7 +42,7 @@ export async function preguntarReintento(titulo: string, texto: string) {
         icon: 'error',
         showCancelButton: true,
         confirmButtonText: 'Reintentar',
-        cancelButtonText: 'Seguir sin ticket',
+        cancelButtonText: 'Seguir sin imprimir',
         reverseButtons: true,
         // Un toque sin querer fuera de la alerta no tiene que decidir por el cajero
         allowOutsideClick: false,

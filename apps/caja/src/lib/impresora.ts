@@ -23,28 +23,49 @@ export type Ticket = {
     hora: string;
 };
 
+export type Retiro = {
+    numero: number,
+    caja: string,
+    fecha: string,
+    hora: string,
+    monto: number,
+    motivo: string,
+    cajero: string,
+    autorizo: string,
+}
+
+type Impresion = {
+    titulo: string;
+    aclaracion: string;
+    imprimir: (config: ConfigImpresora) => Promise<void>
+}
+
 export const imprimirTicket = (ip: string, puerto: number, ancho: number, ticket: Ticket) =>
     invoke<void>("imprimir_ticket", { ip, puerto, ancho, ticket });
+
+export const imprimirRetiro = (ip: string, puerto: number, ancho: number, retiro: Retiro) =>
+    invoke<void>('imprimir_retiro', {ip, puerto, ancho, retiro})
 
 export const imprimirPrueba = (ip: string, puerto: number) =>
     invoke<void>("imprimir_prueba", { ip, puerto });
 
-// Se llama con la venta ya guardada: por eso NUNCA tira error, solo avisa y deja reintentar
-export const imprimirConReintento = async (config: ConfigImpresora | null, ticket: Ticket) => {
+// Se llama con la operación ya guardada (venta, retiro...): por eso NUNCA tira error,
+// solo avisa y deja reintentar. No sabe qué imprime: eso lo decide quien la llama.
+export const imprimirConReintento = async (
+    config: ConfigImpresora | null,
+    { titulo, aclaracion, imprimir }: Impresion,
+) => {
     if (!config) {
-        await avisaError(`Esta PC no tiene impresora configurada. La venta #${ticket.numero} quedó guardada sin ticket.`);
+        await avisaError(`Esta PC no tiene impresora configurada. ${aclaracion}`);
         return;
     }
 
     while (true) {
         try {
-            await imprimirTicket(config.ip, config.puerto, config.ancho, ticket);
+            await imprimir(config);
             return;
         } catch (error) {
-            const reintentar = await preguntarReintento(
-                `No se imprimió el ticket #${ticket.numero}`,
-                `${String(error)}. La venta ya quedó guardada.`
-            );
+            const reintentar = await preguntarReintento(titulo, `${String(error)}. ${aclaracion}`);
             if (!reintentar) return;
         }
     }

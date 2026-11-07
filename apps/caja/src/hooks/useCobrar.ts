@@ -5,7 +5,7 @@ import { leerConfigCaja } from "../db/ajustes";
 import type { Apertura, Jornada } from "../db/apertura";
 import { registrarVenta } from "../db/ventas";
 import { avisaError } from "../lib/alertas";
-import { imprimirConReintento } from "../lib/impresora";
+import { imprimirConReintento, imprimirTicket } from "../lib/impresora";
 import { calcularJornada } from "../lib/jornada";
 import { armarTicket } from "../lib/ticket";
 import { useCarrito } from "../stores/carrito";
@@ -71,7 +71,11 @@ export const useCobrar = () => {
         medioPago,
         instante,
       });
-      await imprimirConReintento(impresora ?? null, ticket);
+      await imprimirConReintento(impresora ?? null, {
+        titulo: `No se imprimió el ticket #${numero}`,
+        aclaracion: "La venta ya quedó guardada.",
+        imprimir: (c) => imprimirTicket(c.ip, c.puerto, c.ancho, ticket),
+      });
 
       return numero;
     },

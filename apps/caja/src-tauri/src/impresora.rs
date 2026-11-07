@@ -6,6 +6,7 @@ use crate::escpos::{
     AVANZAR_Y_CORTAR, CENTRADO, INICIAR, IZQUIERDA, TABLA_CP850, TEXTO_GRANDE, TEXTO_NORMAL,
     a_cp850,
 };
+use crate::retiro::{Retiro, armar_retiro};
 use crate::ticket::{Ticket, armar_ticket};
 
 const ESPERA: Duration = Duration::from_secs(3);
@@ -67,4 +68,14 @@ pub fn imprimir_ticket(
     ticket: Ticket,
 ) -> Result<(), String> {
     enviar(&ip, puerto, &armar_ticket(&ticket, ancho))
+}
+
+#[tauri::command(async)]
+pub fn imprimir_retiro(
+    ip: String,
+    puerto: u16,
+    ancho: usize,
+    retiro: Retiro,
+) -> Result<(), String> {
+    enviar(&ip, puerto, &armar_retiro(&retiro, ancho))
 }

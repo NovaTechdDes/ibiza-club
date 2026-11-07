@@ -9,7 +9,15 @@ import { avisarOperacionNueva } from "../hooks/useSubida";
 import estilos from "./PantallaRetiro.module.css";
 import type { Usuario } from "../db/usuario";
 import { PedirPin } from "../componentes/PedirPin";
-import type { Rol } from "@ibiza/shared";
+import { fechaOperativa, horaLocal, type Rol } from "@ibiza/shared";
+import {
+  imprimirConReintento,
+  imprimirRetiro,
+  type Retiro,
+} from "../lib/impresora";
+import { useVinculacion } from "../hooks/useVinculacion";
+import { useImpresora } from "../hooks/useImpresora";
+import { fechaTicket } from "../lib/ticket";
 
 interface Props {
   onVolver: () => void;
@@ -27,6 +35,9 @@ const MOTIVOS_RETIRO = [
 export const PantallaRetiro = ({ onVolver }: Props) => {
   const queryClient = useQueryClient();
 
+  const { data: vinculacion } = useVinculacion();
+  const { data: config } = useImpresora();
+
   const [monto, setMonto] = useState<number>(0);
   const [motivo, setMotivo] = useState<string | null>(null);
   const [pidiendoPin, setPidiendoPin] = useState<boolean>(false);
@@ -35,16 +46,38 @@ export const PantallaRetiro = ({ onVolver }: Props) => {
   const usuario = useSesion((estado) => estado.usuario);
 
   const retirar = useMutation({
-    mutationFn: (encargado: Usuario) => {
-      if (!apertura || !usuario) throw new Error("Falta Apertura o el cajero");
+    mutationFn: async (encargado: Usuario) => {
+      if (!apertura || !usuario || !vinculacion || !motivo)
+        throw new Error(
+          "Falta Apertura o el cajero, la vinculacion o el motivo",
+        );
 
-      return registrarMovimiento({
+      const { id, ocurridaEn } = await registrarMovimiento({
         tipo: "RETIRO",
         aperturaId: apertura.id,
         monto: monto,
         usuarioId: usuario.id,
         autorizoId: encargado.id,
         motivo: motivo,
+      });
+
+      const instante = new Date(ocurridaEn);
+
+      const retiro: Retiro = {
+        numero: id,
+        caja: vinculacion.cajaNombre,
+        monto,
+        motivo,
+        cajero: usuario.nombre,
+        autorizo: encargado.nombre,
+        fecha: fechaTicket(fechaOperativa(instante, 0)),
+        hora: horaLocal(instante),
+      };
+
+      return imprimirConReintento(config ?? null, {
+        titulo: `No se imprimió el retiro #${id}`,
+        aclaracion: `El retiro ya quedó guardado.`,
+        imprimir: (c) => imprimirRetiro(c.ip, c.puerto, c.ancho, retiro),
       });
     },
     onSuccess: () => {

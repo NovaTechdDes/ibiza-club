@@ -1,5 +1,5 @@
 import { TipoMovimiento } from "@ibiza/shared";
-import { transaccion } from "./conexion";
+import { obtenerDb, transaccion } from "./conexion";
 
 type NuevoMovimiento = {
     aperturaId: number;
@@ -13,10 +13,11 @@ type NuevoMovimiento = {
 
 // Sirve para retiros y conteos parciales: misma tabla misma cola
 export const registrarMovimiento = async(movimiento: NuevoMovimiento) => {
+    const db = await obtenerDb();
     const { aperturaId, tipo, monto, motivo, usuarioId, autorizoId} = movimiento;
 
     if(!Number.isInteger(monto) || monto < 0) throw new Error("monto invalido");
-    if (tipo === "RETIRO" && monto === 0) throw new Error('El retiro tiene que se mayor a 0');
+    if (tipo === "RETIRO" && monto === 0) throw new Error('El retiro tiene que ser mayor a 0');
     if (tipo === "RETIRO" && (!motivo || !autorizoId)){
         throw new Error("El retiro necesita motivo y quien lo autoriza");
     }
@@ -34,4 +35,12 @@ export const registrarMovimiento = async(movimiento: NuevoMovimiento) => {
             valores: [ahora]
         }
     ])
+
+    const [fila]  = await db.select<{id: number}[]>(
+        `SELECT MAX(id) as id FROM MovimientoCaja`
+    );
+
+    return {
+        id: fila?.id ?? 0, ocurridaEn: ahora
+    }
 }

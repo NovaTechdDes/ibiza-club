@@ -31,7 +31,7 @@ pub struct Ticket {
 }
 
 // 10000 -> "$10.000", -4000 -> "-$4.000"
-fn plata(monto: i64) -> String {
+pub(crate) fn plata(monto: i64) -> String {
     let digitos = monto.unsigned_abs().to_string();
     let mut con_puntos = String::new();
     for (posicion, digito) in digitos.chars().enumerate() {
@@ -46,7 +46,7 @@ fn plata(monto: i64) -> String {
 
 // Texto a la izquierda, monto pegado a la derecha. Si no entra, se recorta el texto:
 // el monto nunca se corta. Se cuentan caracteres, no bytes ("ñ" son 2 bytes en UTF-8).
-fn a_los_costados(izquierda: &str, derecha: &str, ancho: usize) -> String {
+pub(crate) fn a_los_costados(izquierda: &str, derecha: &str, ancho: usize) -> String {
     let largo_derecha = derecha.chars().count();
     let lugar = ancho.saturating_sub(largo_derecha + 1);
     let izquierda: String = izquierda.chars().take(lugar).collect();
