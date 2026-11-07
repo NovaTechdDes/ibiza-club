@@ -15,6 +15,7 @@ import { LineaCarrito } from "../componentes/LineaCarrito";
 import { useCobrar } from "../hooks/useCobrar";
 import { PedirPin } from "../componentes/PedirPin";
 import { PantallaImpresora } from "./PantallaImpresora";
+import { PantallaRetiro } from "./PantallaRetiro";
 import { IndicadorSync } from "../componentes/IndicadorSync";
 
 // Cambiar la impresora en plena noche puede dejar la caja sin tickets
@@ -37,7 +38,9 @@ export function PantallaVenta({ vinculacion }: Props) {
   const cobrar = useCobrar();
 
   const [categoriaId, setCategoriaId] = useState<number | null>(null);
-  const [vista, setVista] = useState<"venta" | "pin" | "impresora">("venta");
+  const [vista, setVista] = useState<
+    "venta" | "pin" | "impresora" | "retiro"
+  >("venta");
 
   const { data: categorias } = useCategoriaVenta();
 
@@ -65,6 +68,10 @@ export function PantallaVenta({ vinculacion }: Props) {
     return <PantallaImpresora onVolver={() => setVista("venta")} />;
   }
 
+  if (vista === "retiro") {
+    return <PantallaRetiro onVolver={() => setVista("venta")} />;
+  }
+
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
@@ -75,6 +82,14 @@ export function PantallaVenta({ vinculacion }: Props) {
           onClick={() => setVista("pin")}
         >
           Impresora
+        </Boton>
+        {/* Con productos en el carrito no se sale de la venta: se perdería la compra en curso */}
+        <Boton
+          variante="secundario"
+          disabled={carrito.cantidad > 0}
+          onClick={() => setVista("retiro")}
+        >
+          Retiro
         </Boton>
         <span>{vinculacion.cajaNombre}</span>
         <IndicadorSync />

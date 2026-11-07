@@ -1,4 +1,4 @@
-import { type MedioPago, type OperacionSubida, TAMANO_LOTE } from "@ibiza/shared";
+import { type MedioPago, type OperacionSubida, TAMANO_LOTE, type TipoMovimiento } from "@ibiza/shared";
 import { obtenerDb, transaccion } from "./conexion";
 
 type Tipo = OperacionSubida["tipo"];
@@ -38,6 +38,17 @@ type FilaItem = {
     promocionId: number | null;
     promocionNombre: string | null;
     descuento: number;
+}
+
+type FilaMovimiento = {
+    id: number;
+    aperturaId: number;
+    tipo: TipoMovimiento;
+    monto: number;
+    motivo: string | null;
+    usuarioId: number;
+    autorizoId: number | null;
+    ocurridaEn: string
 }
 
 const armarApertura = async (idLocal: number): Promise<OperacionSubida> => {
@@ -95,11 +106,34 @@ const armar = (fila: FilaCola): Promise<OperacionSubida> => {
             return armarApertura(fila.idLocal);
         case "VENTA":
             return armarVenta(fila.idLocal);
+        case "MOVIMIENTO":
+            return armarMovimiento(fila.idLocal)
         default:
             throw new Error(`Todavia no se sabe subir operaciones ${fila.tipo}`)
     }
 }
 
+const armarMovimiento = async(idLocal: number): Promise<OperacionSubida> => {
+    const db = await obtenerDb();
+    const [m] = await db.select<FilaMovimiento[]>(
+        `SELECT id, aperturaId, tipo, monto, motivo, usuarioId, autorizoId, ocurridaEn
+        FROM MovimientoCaja where id = $1`, [idLocal]
+    )
+
+    if(!m) throw new Error(`El movimiento ${idLocal} esta en acola pero no en la base`)
+
+    return {
+        tipo: "MOVIMIENTO",
+        idLocal: m.id,
+        monto: m.monto,
+        motivo: m.motivo ?? undefined,
+        autorizoId: m.autorizoId ?? undefined,
+        aperturaIdLocal: m.aperturaId,
+        tipoMovimiento: m.tipo,
+        usuarioId: m.usuarioId,
+        ocurridaEn: m.ocurridaEn
+    }
+}
 
 // El orden de la cola a respeta las dependecias: la apertura se guarda antes que las ventas
 export const leerLote = async (): Promise<OperacionSubida[]> => {
@@ -138,4 +172,5 @@ export const contarPendientes = async() => {
     )
 
     return fila?.cantidad ?? 0
-}
+};
+
