@@ -59,6 +59,28 @@ type FilaAuditoria = {
     ocurridaEn: string;
 };
 
+type FilaAnulacion = {
+    id: number; ventaId: number; encargadoId: number;
+    motivo: string; ocurridaEn: string;
+};
+
+const armarAnulacion = async (idLocal: number): Promise<OperacionSubida> => {
+    const db = await obtenerDb();
+    const [ a ] = await db.select<FilaAnulacion[]>(
+        ` SELECT id, ventaId, encargadoId, motivo, ocurridaEn FROM Anulacion WHERE id = $1`,
+        [idLocal]
+    );
+    if(!a) throw new Error(`La anulacion ${idLocal} esta en la cola pero no en la base`);
+    return {
+        tipo: "ANULACION",
+        idLocal: a.id,
+        ventaIdLocal: a.ventaId,
+        encargadoId: a.encargadoId,
+        motivo: a.motivo,
+        ocurridaEn: a.ocurridaEn
+    }
+}
+
 const armarApertura = async (idLocal: number): Promise<OperacionSubida> => {
     const db = await obtenerDb();
     const [ a ] = await db.select<FilaApertura[]>(
@@ -118,6 +140,8 @@ const armar = (fila: FilaCola): Promise<OperacionSubida> => {
             return armarMovimiento(fila.idLocal)
         case "AUDITORIA":
             return armarAuditoria(fila.idLocal);
+        case "ANULACION":
+            return armarAnulacion(fila.idLocal)
         default:
             throw new Error(`Todavia no se sabe subir operaciones ${fila.tipo}`)
     }

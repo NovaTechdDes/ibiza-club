@@ -19,6 +19,7 @@ import { PantallaRetiro } from "./PantallaRetiro";
 import { IndicadorSync } from "../componentes/IndicadorSync";
 import { registrarAuditoria } from "../db/auditoria";
 import { PantallaCambioCajero } from "./PantallaCambioCajero";
+import { PantallaAnulacion } from "./PantallaAnulacion";
 
 // Cambiar la impresora en plena noche puede dejar la caja sin tickets
 const ROLES_CONFIGURAN: Rol[] = ["ENCARGADO", "ADMIN"];
@@ -39,7 +40,7 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   const [categoriaId, setCategoriaId] = useState<number | null>(null);
   const [vista, setVista] = useState<
-    "venta" | "pin" | "impresora" | "retiro" |"cambio"
+    "venta" | "pin" | "impresora" | "retiro" |"cambio" | 'anulacion'
   >("venta");
 
   const { data: categorias } = useCategoriaVenta();
@@ -66,6 +67,10 @@ export function PantallaVenta({ vinculacion }: Props) {
         }}
       />
     );
+  }
+
+  if(vista === "anulacion"){
+    return <PantallaAnulacion onVolver={() => setVista("venta")} />
   }
 
   if(vista === "cambio"){
@@ -98,6 +103,13 @@ export function PantallaVenta({ vinculacion }: Props) {
           onClick={() => setVista("retiro")}
         >
           Retiro
+        </Boton>
+        <Boton
+          variante="secundario"
+          disabled={carrito.cantidad > 0}
+          onClick={() => setVista("anulacion")}
+        >
+          Anulacion
         </Boton>
         <span>{vinculacion.cajaNombre}</span>
         <IndicadorSync />

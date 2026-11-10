@@ -194,7 +194,7 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F9** — Cobro en un toque: Efectivo, Transferencia y Tarjeta; correlativo; la venta y su entrada en la cola se guardan en la misma transacción.
 - [x] **F10** — Impresión del ticket ESC/POS de 80 mm desde Rust, probada en una impresora real.
 - [x] **F11** — Sincronización de subida: lotes con reintentos y espera creciente, orden de dependencias, e indicador "Sincronizado / N pendientes / Sin internet".
-- [ ] **F12** — Operación durante la noche: retiros con comprobante, cambio de cajero, anulación y auditoría.
+- [x] **F12** — Operación durante la noche: retiros con comprobante, cambio de cajero, anulación y auditoría.
 - [ ] **F13** — Cierre con arqueo ciego y recuperación tras un corte de luz. Con esto la caja queda completa para vender.
 
 ### Bloque B: administración compartida
