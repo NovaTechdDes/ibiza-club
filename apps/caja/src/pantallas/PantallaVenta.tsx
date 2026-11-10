@@ -17,6 +17,7 @@ import { PedirPin } from "../componentes/PedirPin";
 import { PantallaImpresora } from "./PantallaImpresora";
 import { PantallaRetiro } from "./PantallaRetiro";
 import { IndicadorSync } from "../componentes/IndicadorSync";
+import { registrarAuditoria } from "../db/auditoria";
 
 // Cambiar la impresora en plena noche puede dejar la caja sin tickets
 const ROLES_CONFIGURAN: Rol[] = ["ENCARGADO", "ADMIN"];
@@ -59,7 +60,11 @@ export function PantallaVenta({ vinculacion }: Props) {
         titulo="¿Quién configura la impresora?"
         roles={ROLES_CONFIGURAN}
         onCancelar={() => setVista("venta")}
-        onCorrecto={() => setVista("impresora")}
+        onCorrecto={(encargado) => {
+          registrarAuditoria({accion: "CONFIG_IMPRESORA", usuarioId: encargado.id})
+          .catch(console.error);
+          setVista("impresora")
+        }}
       />
     );
   }

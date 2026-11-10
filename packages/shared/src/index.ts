@@ -4,6 +4,8 @@ export * from './medio-pago.js'
 export * from './roles.js'
 export * from './tipo-promocion.js'
 export * from './tipo-movimiento.js'
+export * from './accion-auditoria.js'
+
 
 
 export * from './schemas/envase.js';

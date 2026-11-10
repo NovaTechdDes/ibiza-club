@@ -51,6 +51,14 @@ type FilaMovimiento = {
     ocurridaEn: string
 }
 
+type FilaAuditoria = {
+    id: number;
+    usuarioId: number | null;
+    accion: string;
+    detalle: string | null;
+    ocurridaEn: string;
+};
+
 const armarApertura = async (idLocal: number): Promise<OperacionSubida> => {
     const db = await obtenerDb();
     const [ a ] = await db.select<FilaApertura[]>(
@@ -108,6 +116,8 @@ const armar = (fila: FilaCola): Promise<OperacionSubida> => {
             return armarVenta(fila.idLocal);
         case "MOVIMIENTO":
             return armarMovimiento(fila.idLocal)
+        case "AUDITORIA":
+            return armarAuditoria(fila.idLocal);
         default:
             throw new Error(`Todavia no se sabe subir operaciones ${fila.tipo}`)
     }
@@ -174,3 +184,20 @@ export const contarPendientes = async() => {
     return fila?.cantidad ?? 0
 };
 
+const armarAuditoria = async (idLocal: number): Promise<OperacionSubida> => {
+    const db = await obtenerDb();
+    const [ a ] = await db.select<FilaAuditoria[]>(
+        `SELECT id, usuarioId, accion, detalle, ocurridaEn FROM AuditoriaCaja Where id = $1`,
+        [idLocal]
+    );
+    if(!a) throw new Error(`La auditoria ${idLocal} esta en la cola pero no en la base`);
+
+    return {
+        tipo: 'AUDITORIA',
+        idLocal: a.id,
+        usuarioId: a.usuarioId,
+        accion: a.accion,
+        detalle: a.detalle ?? undefined,
+        ocurridaEn: a.ocurridaEn
+    };
+};

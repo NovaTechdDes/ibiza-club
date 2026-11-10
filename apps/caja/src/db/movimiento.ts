@@ -1,5 +1,6 @@
 import { TipoMovimiento } from "@ibiza/shared";
 import { obtenerDb, transaccion } from "./conexion";
+import { sentenciasAuditoria } from "./auditoria";
 
 type NuevoMovimiento = {
     aperturaId: number;
@@ -33,7 +34,8 @@ export const registrarMovimiento = async(movimiento: NuevoMovimiento) => {
         {
             sql: `INSERT INTO ColaSync (tipo, idLocal, creadaEn) VALUES ('MOVIMIENTO', last_insert_rowid(), $1)`,
             valores: [ahora]
-        }
+        },
+        ...(tipo === "RETIRO" ? sentenciasAuditoria({ accion: 'RETIRO', usuarioId: autorizoId, detalle: {monto, motivo, cajeroId: usuarioId}}, ahora) : [])
     ])
 
     const [fila]  = await db.select<{id: number}[]>(
