@@ -64,6 +64,19 @@ type FilaAnulacion = {
     motivo: string; ocurridaEn: string;
 };
 
+type FilaCierre = {
+    id: number;
+    aperturaId: number;
+    cerradoPorId: number;
+    contado: number;
+    esperado: number;
+    diferencia: number;
+    totalTarjeta: number;
+    totalTransferencia: number;
+    pendiente: number;   // 0 o 1 en SQLite
+    ocurridaEn: string;
+}
+
 const armarAnulacion = async (idLocal: number): Promise<OperacionSubida> => {
     const db = await obtenerDb();
     const [ a ] = await db.select<FilaAnulacion[]>(
@@ -142,6 +155,8 @@ const armar = (fila: FilaCola): Promise<OperacionSubida> => {
             return armarAuditoria(fila.idLocal);
         case "ANULACION":
             return armarAnulacion(fila.idLocal)
+        case "CIERRE":
+            return armarCierre(fila.idLocal)
         default:
             throw new Error(`Todavia no se sabe subir operaciones ${fila.tipo}`)
     }
@@ -166,6 +181,33 @@ const armarMovimiento = async(idLocal: number): Promise<OperacionSubida> => {
         tipoMovimiento: m.tipo,
         usuarioId: m.usuarioId,
         ocurridaEn: m.ocurridaEn
+    }
+};
+
+const armarCierre = async(idLocal: number): Promise<OperacionSubida> => {
+    const db = await obtenerDb();
+    const [c] = await db.select<FilaCierre[]>(
+        `
+        SELECT id, aperturaId, cerradoPorId, contado, esperado, diferencia, totalTarjeta, totalTransferencia, pendiente, ocurridaEn
+        FROM CierreCaja WHERE id = $1
+        `,
+        [idLocal]
+    )
+
+    if(!c) throw new Error(`El cierre ${idLocal} esta en la cola pero no en la base`);
+
+    return {
+         tipo: "CIERRE",
+        idLocal: c.id,
+        aperturaIdLocal: c.aperturaId,
+        cerradoPorId: c.cerradoPorId,
+        contado: c.contado,
+        esperado: c.esperado,
+        diferencia: c.diferencia,
+        totalTarjeta: c.totalTarjeta,
+        totalTransferencia: c.totalTransferencia,
+        pendiente: c.pendiente === 1,
+        ocurridaEn: c.ocurridaEn,
     }
 }
 
