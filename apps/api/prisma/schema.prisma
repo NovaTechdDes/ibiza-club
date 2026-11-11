@@ -52,6 +52,7 @@ model Usuario {
   movimientosAutorizados MovimientoCaja[] @relation("MovimientoAutorizo")
   auditoriasCaja         AuditoriaCaja[]
   auditoriasPanel        AuditoriaPanel[]
+  accesoPanel            AccesoPanel?
 
   @@index([version])
 }
@@ -350,4 +351,15 @@ model EstadoSyncCaja {
   ultimaSubidaEn   DateTime?
 
   caja Caja @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model AccesoPanel {
+  id            Int      @id @default(autoincrement())
+  usuarioId     Int      @unique
+  email         String   @unique @db.NVarChar(254)
+  passwordHash  String   @db.NVarChar(255)
+  creadaEn      DateTime @default(now())
+  actualizadoEn DateTime @updatedAt
+
+  usuario Usuario @relation(fields: [usuarioId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }

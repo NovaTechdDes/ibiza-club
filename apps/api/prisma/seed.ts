@@ -4,7 +4,7 @@
 
 import { Rol, PromocionInputSchema } from "@ibiza/shared";
 import { prisma } from "../src/db/prisma.js";
-import { hashearPin } from "../src/utils/pin.js";
+import {hashearSecreto} from "../src/utils/secreto.js"
 
 // Toda la configuración sembrada nace en la versión 1.
 // Cuando la API cambie configuración (paso 9) subirá este número.
@@ -58,6 +58,13 @@ const USUARIOS: { nombre: string; rol: Rol; pin: string }[] = [
     { nombre: "Admin", rol: "ADMIN", pin: "1234" },
     { nombre: "Encargado", rol: "ENCARGADO", pin: "2345" },
     { nombre: "Cajero", rol: "CAJERO", pin: "3456" },
+];
+
+// Accesos al panel de administración, SOLO de desarrollo (F14).
+// Se enlazan por nombre con USUARIOS. Los cajeros no tienen acceso.
+const ACCESOS: { nombre: string; email: string; password: string }[] = [
+    { nombre: "Admin", email: "admin@ibiza.local", password: "admin1234" },
+    { nombre: "Encargado", email: "encargado@ibiza.local", password: "encargado1234" },
 ];
 
 const ENVASES = [
@@ -155,10 +162,27 @@ const sembrarUsuarios = async () => {
         if (existente) continue;
 
         await prisma.usuario.create({
-            data: { nombre, rol, pinHash: hashearPin(pin), version: VERSION_INICIAL },
+            data: { nombre, rol, pinHash: hashearSecreto(pin), version: VERSION_INICIAL },
         });
     }
     console.log(`Usuarios: ${USUARIOS.length}`);
+};
+
+// usuarioId SÍ es único en AccesoPanel, así que acá sirve upsert.
+// update: {} → si ya existe no se toca (igual que el PIN en sembrarUsuarios).
+// El email va en minúsculas porque el login lo normaliza así antes de buscar.
+const sembrarAccesos = async () => {
+    for (const { nombre, email, password } of ACCESOS) {
+        const usuario = await prisma.usuario.findFirst({ where: { nombre } });
+        if (!usuario) throw new Error(`Seed: no existe el usuario "${nombre}" para su acceso`);
+
+        await prisma.accesoPanel.upsert({
+            where: { usuarioId: usuario.id },
+            create: { usuarioId: usuario.id, email: email.toLowerCase(), passwordHash: hashearSecreto(password) },
+            update: {},
+        });
+    }
+    console.log(`Accesos al panel: ${ACCESOS.length}`);
 };
 
 const sembrarEnvases = async () => {
@@ -268,6 +292,7 @@ const main = async () => {
     await sembrarVersion();
     await sembrarCajas();
     await sembrarUsuarios();
+    await sembrarAccesos();
     const envaseIds = await sembrarEnvases();
     const categoriaIds = await sembrarCategorias();
     const productosIds = await sembrarProductos(categoriaIds, envaseIds);

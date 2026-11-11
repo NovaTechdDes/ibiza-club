@@ -141,3 +141,8 @@ export type AuditoriaPanel = Prisma.AuditoriaPanelModel
  * 
  */
 export type EstadoSyncCaja = Prisma.EstadoSyncCajaModel
+/**
+ * Model AccesoPanel
+ * 
+ */
+export type AccesoPanel = Prisma.AccesoPanelModel

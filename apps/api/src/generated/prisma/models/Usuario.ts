@@ -253,6 +253,7 @@ export type UsuarioWhereInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaListRelationFilter
   auditoriasCaja?: Prisma.AuditoriaCajaListRelationFilter
   auditoriasPanel?: Prisma.AuditoriaPanelListRelationFilter
+  accesoPanel?: Prisma.XOR<Prisma.AccesoPanelNullableScalarRelationFilter, Prisma.AccesoPanelWhereInput> | null
 }
 
 export type UsuarioOrderByWithRelationInput = {
@@ -273,6 +274,7 @@ export type UsuarioOrderByWithRelationInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaOrderByRelationAggregateInput
   auditoriasCaja?: Prisma.AuditoriaCajaOrderByRelationAggregateInput
   auditoriasPanel?: Prisma.AuditoriaPanelOrderByRelationAggregateInput
+  accesoPanel?: Prisma.AccesoPanelOrderByWithRelationInput
 }
 
 export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
@@ -296,6 +298,7 @@ export type UsuarioWhereUniqueInput = Prisma.AtLeast<{
   movimientosAutorizados?: Prisma.MovimientoCajaListRelationFilter
   auditoriasCaja?: Prisma.AuditoriaCajaListRelationFilter
   auditoriasPanel?: Prisma.AuditoriaPanelListRelationFilter
+  accesoPanel?: Prisma.XOR<Prisma.AccesoPanelNullableScalarRelationFilter, Prisma.AccesoPanelWhereInput> | null
 }, "id">
 
 export type UsuarioOrderByWithAggregationInput = {
@@ -345,6 +348,7 @@ export type UsuarioCreateInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateInput = {
@@ -365,6 +369,7 @@ export type UsuarioUncheckedCreateInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUpdateInput = {
@@ -384,6 +389,7 @@ export type UsuarioUpdateInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateInput = {
@@ -404,6 +410,7 @@ export type UsuarioUncheckedUpdateInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateManyInput = {
@@ -620,6 +627,20 @@ export type UsuarioUpdateOneRequiredWithoutAuditoriasPanelNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutAuditoriasPanelInput, Prisma.UsuarioUpdateWithoutAuditoriasPanelInput>, Prisma.UsuarioUncheckedUpdateWithoutAuditoriasPanelInput>
 }
 
+export type UsuarioCreateNestedOneWithoutAccesoPanelInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutAccesoPanelInput, Prisma.UsuarioUncheckedCreateWithoutAccesoPanelInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutAccesoPanelInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+}
+
+export type UsuarioUpdateOneRequiredWithoutAccesoPanelNestedInput = {
+  create?: Prisma.XOR<Prisma.UsuarioCreateWithoutAccesoPanelInput, Prisma.UsuarioUncheckedCreateWithoutAccesoPanelInput>
+  connectOrCreate?: Prisma.UsuarioCreateOrConnectWithoutAccesoPanelInput
+  upsert?: Prisma.UsuarioUpsertWithoutAccesoPanelInput
+  connect?: Prisma.UsuarioWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UsuarioUpdateToOneWithWhereWithoutAccesoPanelInput, Prisma.UsuarioUpdateWithoutAccesoPanelInput>, Prisma.UsuarioUncheckedUpdateWithoutAccesoPanelInput>
+}
+
 export type UsuarioCreateWithoutAperturasComoCajeroInput = {
   nombre: string
   rol: string
@@ -636,6 +657,7 @@ export type UsuarioCreateWithoutAperturasComoCajeroInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAperturasComoCajeroInput = {
@@ -655,6 +677,7 @@ export type UsuarioUncheckedCreateWithoutAperturasComoCajeroInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAperturasComoCajeroInput = {
@@ -678,6 +701,7 @@ export type UsuarioCreateWithoutAperturasComoEncargadoInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAperturasComoEncargadoInput = {
@@ -697,6 +721,7 @@ export type UsuarioUncheckedCreateWithoutAperturasComoEncargadoInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAperturasComoEncargadoInput = {
@@ -731,6 +756,7 @@ export type UsuarioUpdateWithoutAperturasComoCajeroInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAperturasComoCajeroInput = {
@@ -750,6 +776,7 @@ export type UsuarioUncheckedUpdateWithoutAperturasComoCajeroInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutAperturasComoEncargadoInput = {
@@ -779,6 +806,7 @@ export type UsuarioUpdateWithoutAperturasComoEncargadoInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAperturasComoEncargadoInput = {
@@ -798,6 +826,7 @@ export type UsuarioUncheckedUpdateWithoutAperturasComoEncargadoInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutCierresInput = {
@@ -816,6 +845,7 @@ export type UsuarioCreateWithoutCierresInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutCierresInput = {
@@ -835,6 +865,7 @@ export type UsuarioUncheckedCreateWithoutCierresInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutCierresInput = {
@@ -869,6 +900,7 @@ export type UsuarioUpdateWithoutCierresInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutCierresInput = {
@@ -888,6 +920,7 @@ export type UsuarioUncheckedUpdateWithoutCierresInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutVentasInput = {
@@ -906,6 +939,7 @@ export type UsuarioCreateWithoutVentasInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutVentasInput = {
@@ -925,6 +959,7 @@ export type UsuarioUncheckedCreateWithoutVentasInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutVentasInput = {
@@ -959,6 +994,7 @@ export type UsuarioUpdateWithoutVentasInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutVentasInput = {
@@ -978,6 +1014,7 @@ export type UsuarioUncheckedUpdateWithoutVentasInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutAnulacionesInput = {
@@ -996,6 +1033,7 @@ export type UsuarioCreateWithoutAnulacionesInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAnulacionesInput = {
@@ -1015,6 +1053,7 @@ export type UsuarioUncheckedCreateWithoutAnulacionesInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAnulacionesInput = {
@@ -1049,6 +1088,7 @@ export type UsuarioUpdateWithoutAnulacionesInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAnulacionesInput = {
@@ -1068,6 +1108,7 @@ export type UsuarioUncheckedUpdateWithoutAnulacionesInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutMovimientosInput = {
@@ -1086,6 +1127,7 @@ export type UsuarioCreateWithoutMovimientosInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutMovimientosInput = {
@@ -1105,6 +1147,7 @@ export type UsuarioUncheckedCreateWithoutMovimientosInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutMovimientosInput = {
@@ -1128,6 +1171,7 @@ export type UsuarioCreateWithoutMovimientosAutorizadosInput = {
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutUsuarioInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutMovimientosAutorizadosInput = {
@@ -1147,6 +1191,7 @@ export type UsuarioUncheckedCreateWithoutMovimientosAutorizadosInput = {
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutMovimientosAutorizadosInput = {
@@ -1181,6 +1226,7 @@ export type UsuarioUpdateWithoutMovimientosInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutMovimientosInput = {
@@ -1200,6 +1246,7 @@ export type UsuarioUncheckedUpdateWithoutMovimientosInput = {
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUpsertWithoutMovimientosAutorizadosInput = {
@@ -1229,6 +1276,7 @@ export type UsuarioUpdateWithoutMovimientosAutorizadosInput = {
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutMovimientosAutorizadosInput = {
@@ -1248,6 +1296,7 @@ export type UsuarioUncheckedUpdateWithoutMovimientosAutorizadosInput = {
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutAuditoriasCajaInput = {
@@ -1266,6 +1315,7 @@ export type UsuarioCreateWithoutAuditoriasCajaInput = {
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutUsuarioInput
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAuditoriasCajaInput = {
@@ -1285,6 +1335,7 @@ export type UsuarioUncheckedCreateWithoutAuditoriasCajaInput = {
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAuditoriasCajaInput = {
@@ -1319,6 +1370,7 @@ export type UsuarioUpdateWithoutAuditoriasCajaInput = {
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutUsuarioNestedInput
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAuditoriasCajaInput = {
@@ -1338,6 +1390,7 @@ export type UsuarioUncheckedUpdateWithoutAuditoriasCajaInput = {
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioCreateWithoutAuditoriasPanelInput = {
@@ -1356,6 +1409,7 @@ export type UsuarioCreateWithoutAuditoriasPanelInput = {
   movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutUsuarioInput
   movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioUncheckedCreateWithoutAuditoriasPanelInput = {
@@ -1375,6 +1429,7 @@ export type UsuarioUncheckedCreateWithoutAuditoriasPanelInput = {
   movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedCreateNestedOneWithoutUsuarioInput
 }
 
 export type UsuarioCreateOrConnectWithoutAuditoriasPanelInput = {
@@ -1409,6 +1464,7 @@ export type UsuarioUpdateWithoutAuditoriasPanelInput = {
   movimientos?: Prisma.MovimientoCajaUpdateManyWithoutUsuarioNestedInput
   movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUpdateOneWithoutUsuarioNestedInput
 }
 
 export type UsuarioUncheckedUpdateWithoutAuditoriasPanelInput = {
@@ -1428,6 +1484,101 @@ export type UsuarioUncheckedUpdateWithoutAuditoriasPanelInput = {
   movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
   movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
   auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+  accesoPanel?: Prisma.AccesoPanelUncheckedUpdateOneWithoutUsuarioNestedInput
+}
+
+export type UsuarioCreateWithoutAccesoPanelInput = {
+  nombre: string
+  rol: string
+  pinHash: string
+  activo?: boolean
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturasComoCajero?: Prisma.AperturaCajaCreateNestedManyWithoutCajeroInput
+  aperturasComoEncargado?: Prisma.AperturaCajaCreateNestedManyWithoutEncargadoInput
+  cierres?: Prisma.CierreCajaCreateNestedManyWithoutCerradoPorInput
+  ventas?: Prisma.VentaCreateNestedManyWithoutCajeroInput
+  anulaciones?: Prisma.AnulacionCreateNestedManyWithoutEncargadoInput
+  movimientos?: Prisma.MovimientoCajaCreateNestedManyWithoutUsuarioInput
+  movimientosAutorizados?: Prisma.MovimientoCajaCreateNestedManyWithoutAutorizoInput
+  auditoriasCaja?: Prisma.AuditoriaCajaCreateNestedManyWithoutUsuarioInput
+  auditoriasPanel?: Prisma.AuditoriaPanelCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioUncheckedCreateWithoutAccesoPanelInput = {
+  id?: number
+  nombre: string
+  rol: string
+  pinHash: string
+  activo?: boolean
+  version: number
+  creadaEn?: Date | string
+  actualizadoEn?: Date | string
+  aperturasComoCajero?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajeroInput
+  aperturasComoEncargado?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutEncargadoInput
+  cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCerradoPorInput
+  ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajeroInput
+  anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutEncargadoInput
+  movimientos?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutUsuarioInput
+  movimientosAutorizados?: Prisma.MovimientoCajaUncheckedCreateNestedManyWithoutAutorizoInput
+  auditoriasCaja?: Prisma.AuditoriaCajaUncheckedCreateNestedManyWithoutUsuarioInput
+  auditoriasPanel?: Prisma.AuditoriaPanelUncheckedCreateNestedManyWithoutUsuarioInput
+}
+
+export type UsuarioCreateOrConnectWithoutAccesoPanelInput = {
+  where: Prisma.UsuarioWhereUniqueInput
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutAccesoPanelInput, Prisma.UsuarioUncheckedCreateWithoutAccesoPanelInput>
+}
+
+export type UsuarioUpsertWithoutAccesoPanelInput = {
+  update: Prisma.XOR<Prisma.UsuarioUpdateWithoutAccesoPanelInput, Prisma.UsuarioUncheckedUpdateWithoutAccesoPanelInput>
+  create: Prisma.XOR<Prisma.UsuarioCreateWithoutAccesoPanelInput, Prisma.UsuarioUncheckedCreateWithoutAccesoPanelInput>
+  where?: Prisma.UsuarioWhereInput
+}
+
+export type UsuarioUpdateToOneWithWhereWithoutAccesoPanelInput = {
+  where?: Prisma.UsuarioWhereInput
+  data: Prisma.XOR<Prisma.UsuarioUpdateWithoutAccesoPanelInput, Prisma.UsuarioUncheckedUpdateWithoutAccesoPanelInput>
+}
+
+export type UsuarioUpdateWithoutAccesoPanelInput = {
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  rol?: Prisma.StringFieldUpdateOperationsInput | string
+  pinHash?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturasComoCajero?: Prisma.AperturaCajaUpdateManyWithoutCajeroNestedInput
+  aperturasComoEncargado?: Prisma.AperturaCajaUpdateManyWithoutEncargadoNestedInput
+  cierres?: Prisma.CierreCajaUpdateManyWithoutCerradoPorNestedInput
+  ventas?: Prisma.VentaUpdateManyWithoutCajeroNestedInput
+  anulaciones?: Prisma.AnulacionUpdateManyWithoutEncargadoNestedInput
+  movimientos?: Prisma.MovimientoCajaUpdateManyWithoutUsuarioNestedInput
+  movimientosAutorizados?: Prisma.MovimientoCajaUpdateManyWithoutAutorizoNestedInput
+  auditoriasCaja?: Prisma.AuditoriaCajaUpdateManyWithoutUsuarioNestedInput
+  auditoriasPanel?: Prisma.AuditoriaPanelUpdateManyWithoutUsuarioNestedInput
+}
+
+export type UsuarioUncheckedUpdateWithoutAccesoPanelInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  nombre?: Prisma.StringFieldUpdateOperationsInput | string
+  rol?: Prisma.StringFieldUpdateOperationsInput | string
+  pinHash?: Prisma.StringFieldUpdateOperationsInput | string
+  activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  version?: Prisma.IntFieldUpdateOperationsInput | number
+  creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  aperturasComoCajero?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajeroNestedInput
+  aperturasComoEncargado?: Prisma.AperturaCajaUncheckedUpdateManyWithoutEncargadoNestedInput
+  cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCerradoPorNestedInput
+  ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajeroNestedInput
+  anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutEncargadoNestedInput
+  movimientos?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+  movimientosAutorizados?: Prisma.MovimientoCajaUncheckedUpdateManyWithoutAutorizoNestedInput
+  auditoriasCaja?: Prisma.AuditoriaCajaUncheckedUpdateManyWithoutUsuarioNestedInput
+  auditoriasPanel?: Prisma.AuditoriaPanelUncheckedUpdateManyWithoutUsuarioNestedInput
 }
 
 
@@ -1551,6 +1702,7 @@ export type UsuarioSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   movimientosAutorizados?: boolean | Prisma.Usuario$movimientosAutorizadosArgs<ExtArgs>
   auditoriasCaja?: boolean | Prisma.Usuario$auditoriasCajaArgs<ExtArgs>
   auditoriasPanel?: boolean | Prisma.Usuario$auditoriasPanelArgs<ExtArgs>
+  accesoPanel?: boolean | Prisma.Usuario$accesoPanelArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["usuario"]>
 
@@ -1578,6 +1730,7 @@ export type UsuarioInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   movimientosAutorizados?: boolean | Prisma.Usuario$movimientosAutorizadosArgs<ExtArgs>
   auditoriasCaja?: boolean | Prisma.Usuario$auditoriasCajaArgs<ExtArgs>
   auditoriasPanel?: boolean | Prisma.Usuario$auditoriasPanelArgs<ExtArgs>
+  accesoPanel?: boolean | Prisma.Usuario$accesoPanelArgs<ExtArgs>
   _count?: boolean | Prisma.UsuarioCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -1593,6 +1746,7 @@ export type $UsuarioPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     movimientosAutorizados: Prisma.$MovimientoCajaPayload<ExtArgs>[]
     auditoriasCaja: Prisma.$AuditoriaCajaPayload<ExtArgs>[]
     auditoriasPanel: Prisma.$AuditoriaPanelPayload<ExtArgs>[]
+    accesoPanel: Prisma.$AccesoPanelPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -1952,6 +2106,7 @@ export interface Prisma__UsuarioClient<T, Null = never, ExtArgs extends runtime.
   movimientosAutorizados<T extends Prisma.Usuario$movimientosAutorizadosArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$movimientosAutorizadosArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MovimientoCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditoriasCaja<T extends Prisma.Usuario$auditoriasCajaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$auditoriasCajaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditoriaCajaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditoriasPanel<T extends Prisma.Usuario$auditoriasPanelArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$auditoriasPanelArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditoriaPanelPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  accesoPanel<T extends Prisma.Usuario$accesoPanelArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Usuario$accesoPanelArgs<ExtArgs>>): Prisma.Prisma__AccesoPanelClient<runtime.Types.Result.GetResult<Prisma.$AccesoPanelPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2549,6 +2704,25 @@ export type Usuario$auditoriasPanelArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.AuditoriaPanelScalarFieldEnum | Prisma.AuditoriaPanelScalarFieldEnum[]
+}
+
+/**
+ * Usuario.accesoPanel
+ */
+export type Usuario$accesoPanelArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AccesoPanel
+   */
+  select?: Prisma.AccesoPanelSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AccesoPanel
+   */
+  omit?: Prisma.AccesoPanelOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AccesoPanelInclude<ExtArgs> | null
+  where?: Prisma.AccesoPanelWhereInput
 }
 
 /**

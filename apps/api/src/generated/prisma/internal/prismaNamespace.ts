@@ -416,7 +416,8 @@ export const ModelName = {
   MovimientoCaja: 'MovimientoCaja',
   AuditoriaCaja: 'AuditoriaCaja',
   AuditoriaPanel: 'AuditoriaPanel',
-  EstadoSyncCaja: 'EstadoSyncCaja'
+  EstadoSyncCaja: 'EstadoSyncCaja',
+  AccesoPanel: 'AccesoPanel'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -432,7 +433,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "versionConfig" | "caja" | "usuario" | "envase" | "categoria" | "producto" | "variante" | "promocion" | "promocionAlcance" | "promocionEnvase" | "jornada" | "aperturaCaja" | "cierreCaja" | "venta" | "itemVenta" | "anulacion" | "movimientoCaja" | "auditoriaCaja" | "auditoriaPanel" | "estadoSyncCaja"
+    modelProps: "versionConfig" | "caja" | "usuario" | "envase" | "categoria" | "producto" | "variante" | "promocion" | "promocionAlcance" | "promocionEnvase" | "jornada" | "aperturaCaja" | "cierreCaja" | "venta" | "itemVenta" | "anulacion" | "movimientoCaja" | "auditoriaCaja" | "auditoriaPanel" | "estadoSyncCaja" | "accesoPanel"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1756,6 +1757,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    AccesoPanel: {
+      payload: Prisma.$AccesoPanelPayload<ExtArgs>
+      fields: Prisma.AccesoPanelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.AccesoPanelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.AccesoPanelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload>
+        }
+        findFirst: {
+          args: Prisma.AccesoPanelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.AccesoPanelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload>
+        }
+        findMany: {
+          args: Prisma.AccesoPanelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload>[]
+        }
+        create: {
+          args: Prisma.AccesoPanelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload>
+        }
+        createMany: {
+          args: Prisma.AccesoPanelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.AccesoPanelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload>
+        }
+        update: {
+          args: Prisma.AccesoPanelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload>
+        }
+        deleteMany: {
+          args: Prisma.AccesoPanelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.AccesoPanelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.AccesoPanelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$AccesoPanelPayload>
+        }
+        aggregate: {
+          args: Prisma.AccesoPanelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateAccesoPanel>
+        }
+        groupBy: {
+          args: Prisma.AccesoPanelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AccesoPanelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.AccesoPanelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AccesoPanelCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2077,6 +2144,18 @@ export const EstadoSyncCajaScalarFieldEnum = {
 export type EstadoSyncCajaScalarFieldEnum = (typeof EstadoSyncCajaScalarFieldEnum)[keyof typeof EstadoSyncCajaScalarFieldEnum]
 
 
+export const AccesoPanelScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type AccesoPanelScalarFieldEnum = (typeof AccesoPanelScalarFieldEnum)[keyof typeof AccesoPanelScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2304,6 +2383,7 @@ export type GlobalOmitConfig = {
   auditoriaCaja?: Prisma.AuditoriaCajaOmit
   auditoriaPanel?: Prisma.AuditoriaPanelOmit
   estadoSyncCaja?: Prisma.EstadoSyncCajaOmit
+  accesoPanel?: Prisma.AccesoPanelOmit
 }
 
 /* Types for Logging */

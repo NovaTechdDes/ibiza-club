@@ -200,6 +200,8 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 ### Bloque B: administración compartida
 
 - [ ] **F14** — Backend, login de administración: agregar email y contraseña a `Usuario`, login para Admin y Encargado, rol en el JWT y permisos por rol en cada ruta. Forma segura de crear el primer admin.
+  - Decidido (11/11/2026): email y contraseña van en un modelo aparte **`AccesoPanel`** (1 a 1 con `Usuario`), no como columnas de `Usuario`, porque en SQL Server un `UNIQUE` admite un solo `NULL` y los cajeros no tienen email. `AccesoPanel` no baja a las cajas.
+  - Sub-pasos: **F14a** schema y migración · **F14b** login con email y contraseña, rol en el JWT, seed · **F14c** permisos por rol en cada ruta · **F14d** crear el primer admin en producción.
 - [ ] **F15** — Backend, usuarios y cajas: CRUD de usuarios (sube la versión global y baja a las cajas) y alta y edición de cajas.
 - [ ] **F16** — Base de administración en `packages/ui`: login, sesión, menú según el rol y aviso cuando no hay internet.
 - [ ] **F17** — Pantallas de catálogo: categorías, productos, envases, variantes y precios.
@@ -215,6 +217,17 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 
 - [ ] **F25** — Actualización automática con `tauri-plugin-updater` y GitHub Releases: firma, workflow por tag y modal que nunca interrumpe una venta.
 - [ ] **F26** — Instalador y puesta a punto en el equipo real: pantalla completa, inicio automático, SmartScreen y prueba de una noche completa sin internet.
+
+### Observación: qué hace falta para instalar en producción (anotado el 11/11/2026)
+
+Solo para tener en cuenta; **no cambia el orden de la hoja de ruta**. La apertura del boliche está prevista para el **31/12/2026**.
+
+- **Imprescindible antes de instalar**: F14 (primer admin), F15 (crear cajas y usuarios reales), **F25** (updater) y F26 (instalador).
+  - F25 tiene que estar en la **primera** instalación: una versión instalada sin updater no se actualiza sola y obligaría a reinstalar a mano en cada PC.
+- **Para que el cliente administre solo** (cambiar precios y promos sin depender del desarrollador): F16, F17, F18 y un lugar donde usarlas, F22 (escritorio) o F23 + F24 (web).
+- **Puede quedar para después de abrir**: F19 (reportes; las ventas igual quedan en Azure), F20 (si las altas las hace el desarrollador) y F21 (imágenes).
+- **Bloquea aunque no sea un paso**: ver "Producción (antes de abrir el boliche)". Además, `CORS_ORIGENES` de producción tiene que incluir `http://tauri.localhost`.
+- **Si no da el tiempo**: hacer F14 → F15 → F25 → F26, abrir con la administración por API (Postman o scripts) y sumar las pantallas después.
 
 ## Cambios de rumbo
 

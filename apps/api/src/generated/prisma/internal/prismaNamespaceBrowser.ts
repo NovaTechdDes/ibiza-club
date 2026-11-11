@@ -70,7 +70,8 @@ export const ModelName = {
   MovimientoCaja: 'MovimientoCaja',
   AuditoriaCaja: 'AuditoriaCaja',
   AuditoriaPanel: 'AuditoriaPanel',
-  EstadoSyncCaja: 'EstadoSyncCaja'
+  EstadoSyncCaja: 'EstadoSyncCaja',
+  AccesoPanel: 'AccesoPanel'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -369,6 +370,18 @@ export const EstadoSyncCajaScalarFieldEnum = {
 } as const
 
 export type EstadoSyncCajaScalarFieldEnum = (typeof EstadoSyncCajaScalarFieldEnum)[keyof typeof EstadoSyncCajaScalarFieldEnum]
+
+
+export const AccesoPanelScalarFieldEnum = {
+  id: 'id',
+  usuarioId: 'usuarioId',
+  email: 'email',
+  passwordHash: 'passwordHash',
+  creadaEn: 'creadaEn',
+  actualizadoEn: 'actualizadoEn'
+} as const
+
+export type AccesoPanelScalarFieldEnum = (typeof AccesoPanelScalarFieldEnum)[keyof typeof AccesoPanelScalarFieldEnum]
 
 
 export const SortOrder = {
