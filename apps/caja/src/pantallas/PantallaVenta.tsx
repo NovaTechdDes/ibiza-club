@@ -20,6 +20,7 @@ import { IndicadorSync } from "../componentes/IndicadorSync";
 import { registrarAuditoria } from "../db/auditoria";
 import { PantallaCambioCajero } from "./PantallaCambioCajero";
 import { PantallaAnulacion } from "./PantallaAnulacion";
+import { PantallaCierre } from "./PantallaCierre";
 
 // Cambiar la impresora en plena noche puede dejar la caja sin tickets
 const ROLES_CONFIGURAN: Rol[] = ["ENCARGADO", "ADMIN"];
@@ -40,7 +41,7 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   const [categoriaId, setCategoriaId] = useState<number | null>(null);
   const [vista, setVista] = useState<
-    "venta" | "pin" | "impresora" | "retiro" |"cambio" | 'anulacion'
+    "venta" | "pin" | "impresora" | "retiro" |"cambio" | 'anulacion' | 'cierre'
   >("venta");
 
   const { data: categorias } = useCategoriaVenta();
@@ -85,6 +86,10 @@ export function PantallaVenta({ vinculacion }: Props) {
     return <PantallaRetiro onVolver={() => setVista("venta")} />;
   }
 
+  if(vista === 'cierre'){
+    return <PantallaCierre onVolver={() => setVista("venta")} />
+  }
+
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
@@ -122,6 +127,14 @@ export function PantallaVenta({ vinculacion }: Props) {
             onClick={() => setVista("cambio")}
           >
             Cambiar cajero
+          </Boton>
+          {/* Lejos de Retiro/Anulación y en rojo: cerrar la caja no tiene vuelta atrás */}
+          <Boton
+            variante="peligro"
+            disabled={carrito.cantidad > 0}
+            onClick={() => setVista("cierre")}
+          >
+            Cerrar caja
           </Boton>
         </div>
       </header>

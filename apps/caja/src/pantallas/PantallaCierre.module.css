@@ -1,0 +1,49 @@
+.pantalla {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: var(--espacio);
+}
+
+.tarjeta {
+  width: min(480px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.titulo {
+  margin: 0 0 var(--espacio);
+  font-size: 28px;
+  text-align: center;
+}
+
+.monto {
+  margin: 0;
+  font-size: 48px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.error {
+  min-height: 1.5em;
+  margin: 12px 0;
+  color: var(--color-peligro);
+  text-align: center;
+}
+
+.acciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: var(--espacio);
+}
+
+.accionUnica { grid-template-columns: 1fr; }
+.ayuda { opacity: .7; text-align: center; }
+.filas { display: flex; flex-direction: column; gap: .5rem; width: 100%; }
+.fila { display: flex; justify-content: space-between; font-size: 1.2rem; }
+.destacada { font-weight: 700; font-size: 1.4rem; }
+.diferencia { text-align: center; font-size: 2rem; font-weight: 800; }
+.exacto { color: #4ade80; }
+.falta { color: #f87171; }
+.sobra { color: #facc15; }
