@@ -40,6 +40,17 @@ type Impresion = {
     imprimir: (config: ConfigImpresora) => Promise<void>
 }
 
+export type Cierre = {
+    cantVentas: number;
+    cantAnuladas: number;
+    caja: string; fecha: string; hora: string;
+    cajero: string; cerro: string; pendiente: boolean;
+    fondo:number; efectivo: number; dieferencia: number;
+    tarjeta: number; transferencia: number;
+    retiros: number; esperado: number; contado: number;
+    
+}
+
 export const imprimirTicket = (ip: string, puerto: number, ancho: number, ticket: Ticket) =>
     invoke<void>("imprimir_ticket", { ip, puerto, ancho, ticket });
 
@@ -48,6 +59,9 @@ export const imprimirRetiro = (ip: string, puerto: number, ancho: number, retiro
 
 export const imprimirPrueba = (ip: string, puerto: number) =>
     invoke<void>("imprimir_prueba", { ip, puerto });
+
+export const imprimirCierre = (ip: string, puerto: number, ancho: number, cierre: Cierre) => 
+    invoke<void>('imprimir_cierre', {ip, puerto, ancho, cierre})
 
 // Se llama con la operación ya guardada (venta, retiro...): por eso NUNCA tira error,
 // solo avisa y deja reintentar. No sabe qué imprime: eso lo decide quien la llama.

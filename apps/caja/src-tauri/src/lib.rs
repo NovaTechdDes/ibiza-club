@@ -1,5 +1,6 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 
+mod cierre;
 mod escpos;
 mod impresora;
 mod pin;
@@ -52,6 +53,7 @@ pub fn run() {
             impresora::imprimir_prueba,
             impresora::imprimir_ticket,
             impresora::imprimir_retiro,
+            impresora::imprimir_cierre,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

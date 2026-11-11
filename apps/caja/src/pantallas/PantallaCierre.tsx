@@ -10,8 +10,12 @@ import { Boton, Tarjeta, TecladoNumerico } from '@ibiza/ui';
 import estilos from './PantallaCierre.module.css'
 import { PedirPin } from '../componentes/PedirPin';
 import type { Usuario } from '../db/usuario';
-import type { Rol } from '@ibiza/shared';
+import { fechaOperativa, horaLocal, type Rol } from '@ibiza/shared';
 import { confirmar } from '../lib/alertas';
+import { useVinculacion } from '../hooks/useVinculacion';
+import { useImpresora } from '../hooks/useImpresora';
+import { imprimirCierre, imprimirConReintento } from '../lib/impresora';
+import { fechaTicket } from '../lib/ticket';
 
 const MONTO_MAXIMO = 99_999_999;
 const ROLES_AUTORIZAN: Rol[] = ["ENCARGADO", "ADMIN"]
@@ -20,41 +24,66 @@ interface Props {
     onVolver: () => void
 }
 
-export const PantallaCierre = ({onVolver}: Props) => {
+export const PantallaCierre = ({ onVolver }: Props) => {
     const queryClient = useQueryClient();
+
     const [contado, setContado] = useState(0);
     const [pidiendoPin, setPidiendoPin] = useState(false);
     const [resultado, setResultado] = useState<ResultadoCierre | null>(null);
+
+    const { data: vinculacion } = useVinculacion();
+    const { data: config } = useImpresora();
+    const usuario = useSesion((estado) => estado.usuario);
+
     const salir = useSesion((e) => e.salir);
 
     const { data: apertura } = useApertura();
 
     const cerrar = useMutation({
-        mutationFn: (encargado: Usuario) => {
-            if (!apertura) throw new Error("No hay caja abierta")
-            return cerrarCaja({
+        mutationFn: async (encargado: Usuario) => {
+            if (!apertura || !vinculacion || !usuario) throw new Error("Falta la apertura, la vinculación o el cajero")
+                
+            const r = await cerrarCaja({
                 aperturaId: apertura.id,
                 cerradoPorId: encargado.id,
                 contado,
                 pendiente: false
             });
+            const ahora = new Date();
+
+            const fecha = apertura.jornadaFecha ?? fechaOperativa(new Date(apertura.ocurridaEn));
+
+            await imprimirConReintento(config ?? null, {
+                titulo: "No se imprimió el resumen del cierre",
+                aclaracion: "La caja ya quedó cerrada.",
+                imprimir: (c) => imprimirCierre(c.ip, c.puerto, c.ancho, {
+                    ...r,
+                    caja: vinculacion.cajaNombre,
+                    fecha: fechaTicket(fecha),
+                    hora: horaLocal(ahora),
+                    cajero: usuario.nombre,
+                    cerro: encargado.nombre,
+                    pendiente: false,
+                }),
+            });
+            return r
         },
         onSuccess: (r) => {
             setResultado(r);
             avisarOperacionNueva(queryClient)
         }
     })
-    
+
     async function pedirConfirmacion() {
         if (await confirmar(`¿Contaste $ ${contado.toLocaleString("es-AR")}?`, "Sí, cerrar"))
             setPidiendoPin(true);
-        }
+    }
 
     function teclear(digito: string) {
         cerrar.reset();
         setContado((actual) => {
-        const nuevo = actual * 10 + Number(digito);
-        return nuevo > MONTO_MAXIMO ? actual : nuevo;
+            const nuevo = actual * 10 + Number(digito);
+            return nuevo > MONTO_MAXIMO ? actual : nuevo;
         });
     }
 
@@ -63,12 +92,12 @@ export const PantallaCierre = ({onVolver}: Props) => {
         setContado((actual) => Math.floor(actual / 10));
     }
 
-    async function terminar(){
+    async function terminar() {
         salir();
-        await queryClient.invalidateQueries({ queryKey: CLAVE_APERTURA})
+        await queryClient.invalidateQueries({ queryKey: CLAVE_APERTURA })
     }
 
-    if(resultado){
+    if (resultado) {
         const r = resultado;
         const claseDif = r.diferencia === 0 ? estilos.exacto : r.diferencia < 0 ? estilos.falta : estilos.sobra;
         const textoDif = r.diferencia === 0 ? "Exacto" : r.diferencia < 0 ? "Faltan" : "Sobran";
@@ -78,37 +107,37 @@ export const PantallaCierre = ({onVolver}: Props) => {
                 <Tarjeta className={estilos.tarjeta}>
                     <h1 className={estilos.titulo}>Caja cerrada</h1>
 
-                     <div className={estilos.filas}>
+                    <div className={estilos.filas}>
                         <Fila etiqueta="Fondo" monto={r.fondo} />
                         <Fila etiqueta="Ventas en efectivo" monto={r.efectivo} />
                         <Fila etiqueta="Retiros" monto={-r.retiros} />
                         <Fila etiqueta="Esperado" monto={r.esperado} destacada />
                         <Fila etiqueta="Contado" monto={r.contado} destacada />
-                        </div>
+                    </div>
 
                     <p className={`${estilos.diferencia} ${claseDif}`}>
-                    {textoDif}
-                    {r.diferencia !== 0 && ` $ ${Math.abs(r.diferencia).toLocaleString("es-AR")}`}
+                        {textoDif}
+                        {r.diferencia !== 0 && ` $ ${Math.abs(r.diferencia).toLocaleString("es-AR")}`}
                     </p>
 
-                        <div className={estilos.filas}>
-                            <Fila etiqueta="Tarjeta" monto={r.tarjeta} />
-                            <Fila etiqueta="Transferencia" monto={r.transferencia} />
-                            <div className={estilos.fila}>
-                                <span>Ventas / Anuladas</span>
-                                <span>{r.cantVentas} / {r.cantAnuladas}</span>
-                            </div>
+                    <div className={estilos.filas}>
+                        <Fila etiqueta="Tarjeta" monto={r.tarjeta} />
+                        <Fila etiqueta="Transferencia" monto={r.transferencia} />
+                        <div className={estilos.fila}>
+                            <span>Ventas / Anuladas</span>
+                            <span>{r.cantVentas} / {r.cantAnuladas}</span>
                         </div>
+                    </div>
 
                     <div className={`${estilos.acciones} ${estilos.accionUnica}`}>
-                    <Boton variante="primario" onClick={terminar}>Terminar</Boton>
+                        <Boton variante="primario" onClick={terminar}>Terminar</Boton>
                     </div>
                 </Tarjeta>
             </div>
         )
     }
 
-    if(pidiendoPin){
+    if (pidiendoPin) {
         return (
             <PedirPin
                 titulo='¿Quién autoriza el cierre?'
@@ -121,31 +150,31 @@ export const PantallaCierre = ({onVolver}: Props) => {
             />
         )
     }
-  return (
-    <div className={estilos.pantalla}>
-        <Tarjeta className={estilos.tarjeta}>
-            <h1 className={estilos.titulo}>Cierre de caja</h1>
-            <p className={estilos.ayuda}>Contá el efectivo de la caja y cargá el total</p>
-            <p className={estilos.monto}>$ {contado.toLocaleString("es-AR")}</p>
-            <p className={estilos.error}>{cerrar.isError && (cerrar.error instanceof Error ? cerrar.error.message : "No se pudo cerrar la caja")}</p>
-            <TecladoNumerico onDigito={teclear} onBorrar={borrar}/>
-             <div className={estilos.acciones}>
-                <Boton variante="secundario" disabled={cerrar.isPending} onClick={onVolver}>
-                Cancelar
-                </Boton>
-                <Boton variante="primario" disabled={cerrar.isPending} onClick={pedirConfirmacion}>
-                {cerrar.isPending ? "Cerrando" : "Cerrar caja"}
-                </Boton>
-            </div>
-        </Tarjeta>
-    </div>
-  )
+    return (
+        <div className={estilos.pantalla}>
+            <Tarjeta className={estilos.tarjeta}>
+                <h1 className={estilos.titulo}>Cierre de caja</h1>
+                <p className={estilos.ayuda}>Contá el efectivo de la caja y cargá el total</p>
+                <p className={estilos.monto}>$ {contado.toLocaleString("es-AR")}</p>
+                <p className={estilos.error}>{cerrar.isError && (cerrar.error instanceof Error ? cerrar.error.message : "No se pudo cerrar la caja")}</p>
+                <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
+                <div className={estilos.acciones}>
+                    <Boton variante="secundario" disabled={cerrar.isPending} onClick={onVolver}>
+                        Cancelar
+                    </Boton>
+                    <Boton variante="primario" disabled={cerrar.isPending} onClick={pedirConfirmacion}>
+                        {cerrar.isPending ? "Cerrando" : "Cerrar caja"}
+                    </Boton>
+                </div>
+            </Tarjeta>
+        </div>
+    )
 }
 
 
 const Fila = ({ etiqueta, monto, destacada }: { etiqueta: string; monto: number; destacada?: boolean }) => (
-  <div className={`${estilos.fila} ${destacada ? estilos.destacada : ""}`}>
-    <span>{etiqueta}</span>
-    <span>$ {monto.toLocaleString("es-AR")}</span>
-  </div>
+    <div className={`${estilos.fila} ${destacada ? estilos.destacada : ""}`}>
+        <span>{etiqueta}</span>
+        <span>$ {monto.toLocaleString("es-AR")}</span>
+    </div>
 );

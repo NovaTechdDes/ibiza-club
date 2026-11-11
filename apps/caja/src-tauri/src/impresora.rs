@@ -6,6 +6,7 @@ use crate::escpos::{
     AVANZAR_Y_CORTAR, CENTRADO, INICIAR, IZQUIERDA, TABLA_CP850, TEXTO_GRANDE, TEXTO_NORMAL,
     a_cp850,
 };
+use crate::cierre::{Cierre, armar_cierre};
 use crate::retiro::{Retiro, armar_retiro};
 use crate::ticket::{Ticket, armar_ticket};
 
@@ -78,4 +79,14 @@ pub fn imprimir_retiro(
     retiro: Retiro,
 ) -> Result<(), String> {
     enviar(&ip, puerto, &armar_retiro(&retiro, ancho))
+}
+
+#[tauri::command(async)]
+pub fn imprimir_cierre(
+    ip: String,
+    puerto: u16,
+    ancho: usize,
+    cierre: Cierre,
+) -> Result<(), String> {
+    enviar(&ip, puerto, &armar_cierre(&cierre, ancho))
 }
