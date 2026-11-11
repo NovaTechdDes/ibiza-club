@@ -45,7 +45,7 @@ export type Cierre = {
     cantAnuladas: number;
     caja: string; fecha: string; hora: string;
     cajero: string; cerro: string; pendiente: boolean;
-    fondo:number; efectivo: number; dieferencia: number;
+    fondo:number; efectivo: number; diferencia: number;
     tarjeta: number; transferencia: number;
     retiros: number; esperado: number; contado: number;
     

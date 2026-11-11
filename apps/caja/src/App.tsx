@@ -8,17 +8,23 @@ import { PantallaVincular } from "./pantallas/PantallaVincular";
 import { PantallaApertura } from "./pantallas/PantallaApertura";
 import { useSesion } from "./stores/sesion";
 import { useSubida } from "./hooks/useSubida";
+import { PantallaCierre } from "./pantallas/PantallaCierre";
+import { aperturaVencida } from "@ibiza/shared";
 
 function CajaVinculada({ vinculacion }: { vinculacion: Vinculacion }) {
   useBajada(vinculacion);
   useSubida(vinculacion);
+
   const { data, isPending, isError } = useApertura();
   const usuario = useSesion((estado) => estado.usuario);
+  const salir = useSesion((estado) => estado.salir);
 
   if (isPending) return null;
   if (isError) return <p>No se pudo abrir la caja. Reiniciá la aplicación.</p>;
   if (!usuario) return <PantallaPin />;
   if (!data) return <PantallaApertura cajero={usuario} />;
+  if (aperturaVencida(data))
+    return <PantallaCierre pendiente onVolver={salir} />;
 
   return <PantallaVenta vinculacion={vinculacion} />;
 }

@@ -23,6 +23,24 @@ export function horaLocal(instante: Date): string {
     return aHoraArgentina(instante).toISOString().slice(11, 16)
 }
 
+// Lo mínimo de una apertura para saber a qué jornada pertenece
+export type AperturaConFecha = {
+    jornadaFecha: string | null;
+    ocurridaEn: string;
+};
+
+// Fecha de la jornada de una apertura (YYYY-MM-DD).
+// Con jornada activa se guardó al abrir; sin jornada se calcula desde la hora de apertura
+export function fechaDeApertura(apertura: AperturaConFecha, horaCorte: number = HORA_CORTE_JORNADA): string {
+    return apertura.jornadaFecha ?? fechaOperativa(new Date(apertura.ocurridaEn), horaCorte);
+}
+
+// Una apertura está vencida si es de otra jornada que la actual
+// (ej: quedó abierta el viernes por un corte de luz y ya es sábado a la noche)
+export function aperturaVencida(apertura: AperturaConFecha, ahora: Date = new Date(), horaCorte: number = HORA_CORTE_JORNADA): boolean {
+    return fechaDeApertura(apertura, horaCorte) !== fechaOperativa(ahora, horaCorte);
+}
+
 export function rangoJornada(fecha: string, horaCorte = HORA_CORTE_JORNADA): {inicio: Date, fin: Date}{
     
     const [anio, mes, dia] = fecha.split('-').map(Number) as [number, number, number];

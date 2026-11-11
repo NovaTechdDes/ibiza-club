@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { fechaOperativa, horaLocal, rangoJornada } from "./jornada.js";
+import { aperturaVencida, fechaDeApertura, fechaOperativa, horaLocal, rangoJornada } from "./jornada.js";
 
 describe("fechaOperativa", () => {
     it("viernes 23:30 es jornada del viernes", () => {
@@ -66,5 +66,45 @@ describe("rangoJornada", () => {
     })
     it("Respeta otra hora de corte", () => {
        expect(rangoJornada("2026-10-30", 6).inicio.toISOString()).toBe("2026-10-30T09:00:00.000Z")
+    })
+})
+
+
+describe("fechaDeApertura", () => {
+    it("Con jornada activa usa la fecha guardada", () => {
+       const apertura = { jornadaFecha: "2026-10-30", ocurridaEn: "2026-10-31T02:00:00.000Z" }
+       expect(fechaDeApertura(apertura)).toBe("2026-10-30")
+    })
+    it("Sin jornada la calcula desde la hora de apertura", () => {
+       // 01:00 UTC del sabado = 22:00 del viernes en Argentina
+       const apertura = { jornadaFecha: null, ocurridaEn: "2026-10-31T01:00:00.000Z" }
+       expect(fechaDeApertura(apertura)).toBe("2026-10-30")
+    })
+})
+
+describe("aperturaVencida", () => {
+    // Abierta el viernes 30/10 a las 22:00 (hora argentina)
+    const viernes = { jornadaFecha: "2026-10-30", ocurridaEn: "2026-10-31T01:00:00.000Z" }
+
+    it("Un reinicio a las 03:00 del sabado sigue en la misma jornada", () => {
+       expect(aperturaVencida(viernes, new Date("2026-10-31T03:00:00-03:00"))).toBe(false)
+    })
+    it("A las 09:59 del sabado todavia no esta vencida", () => {
+       expect(aperturaVencida(viernes, new Date("2026-10-31T09:59:00-03:00"))).toBe(false)
+    })
+    it("Desde las 10:00 del sabado ya es otra jornada", () => {
+       expect(aperturaVencida(viernes, new Date("2026-10-31T10:00:00-03:00"))).toBe(true)
+    })
+    it("El sabado a la noche esta vencida", () => {
+       expect(aperturaVencida(viernes, new Date("2026-10-31T22:00:00-03:00"))).toBe(true)
+    })
+    it("Sin jornada usa la hora de apertura", () => {
+       const sinJornada = { jornadaFecha: null, ocurridaEn: "2026-10-31T01:00:00.000Z" }
+       expect(aperturaVencida(sinJornada, new Date("2026-10-31T04:00:00-03:00"))).toBe(false)
+       expect(aperturaVencida(sinJornada, new Date("2026-10-31T21:00:00-03:00"))).toBe(true)
+    })
+    it("Respeta otra hora de corte", () => {
+       expect(aperturaVencida(viernes, new Date("2026-10-31T07:00:00-03:00"), 6)).toBe(true)
+       expect(aperturaVencida(viernes, new Date("2026-10-31T05:00:00-03:00"), 6)).toBe(false)
     })
 })
