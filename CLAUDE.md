@@ -199,7 +199,7 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 
 ### Bloque B: administración compartida
 
-- [ ] **F14** — Backend, login de administración: agregar email y contraseña a `Usuario`, login para Admin y Encargado, rol en el JWT y permisos por rol en cada ruta. Forma segura de crear el primer admin.
+- [x] **F14** — Backend, login de administración: agregar email y contraseña a `Usuario`, login para Admin y Encargado, rol en el JWT y permisos por rol en cada ruta. Forma segura de crear el primer admin.
   - Decidido (11/11/2026): email y contraseña van en un modelo aparte **`AccesoPanel`** (1 a 1 con `Usuario`), no como columnas de `Usuario`, porque en SQL Server un `UNIQUE` admite un solo `NULL` y los cajeros no tienen email. `AccesoPanel` no baja a las cajas.
   - Sub-pasos: **F14a** schema y migración · **F14b** login con email y contraseña, rol en el JWT, seed · **F14c** permisos por rol en cada ruta · **F14d** crear el primer admin en producción.
 - [ ] **F15** — Backend, usuarios y cajas: CRUD de usuarios (sube la versión global y baja a las cajas) y alta y edición de cajas.
@@ -301,9 +301,9 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 
 ### Producción (antes de abrir el boliche)
 
-- **Primer admin**: la base de producción está vacía y el seed no se corre ahí (tiene PINs de desarrollo). Hace falta una forma segura de crear el primer usuario admin.
+- **Primer admin**: resuelto (12/11/2026). Se creó con `apps/api/src/scripts/crear-admin.ts`, corrido desde la consola SSH del App Service (`node dist/scripts/crear-admin.js` con `ADMIN_NOMBRE`, `ADMIN_PIN`, `ADMIN_EMAIL` y `ADMIN_PASSWORD`). El script se niega si ya hay un admin con acceso al panel. El seed sigue sin correrse en producción.
 - **Azure SQL**: hoy usa la oferta gratis; al agotarse el límite, la base se pausa hasta el mes siguiente. Pasarla a paga antes de operar.
 - **App Service**: confirmar que `novatech-plan-br` alcance (lo comparte con otras apps) y tenga Always On.
 - **`CORS_ORIGENES`**: poner la URL real del panel cuando exista; hoy tiene la de la propia API.
 - **Application Insights**: previsto en el stack, todavía sin activar.
-- **Clave de la letra de la semana**: definir dónde se guarda y cómo les llega a las cajas. No puede ir en el código.
+- **Clave de la letra de la semana**: en producción vive en la variable `CLAVE_LETRA` del App Service (cargada el 12/11/2026, distinta de la de desarrollo). Si se cambia, cambian las letras de los tickets.
