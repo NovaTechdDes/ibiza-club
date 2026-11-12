@@ -10,7 +10,8 @@
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
-    "db:seed": "tsx --env-file-if-exists=.env prisma/seed.ts"
+    "db:seed": "tsx --env-file-if-exists=.env prisma/seed.ts",
+    "admin:crear": "tsx --env-file-if-exists=.env src/scripts/crear-admin.ts"
   },
   "dependencies": {
     "@ibiza/shared": "workspace:*",
