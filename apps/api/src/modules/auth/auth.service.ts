@@ -30,3 +30,18 @@ export const loginPanel = async(email: string, password: string) => {
     }
 }
 
+export const obtenerYo = async (usuarioId: number) => {
+    const usuario = await prisma.usuario.findUnique({
+        where: {id: usuarioId},
+        include: {accesoPanel: true}
+    });
+
+    if(!usuario) throw AppError.noEncontrado();
+
+    return {
+        id: usuario.id,
+        nombre: usuario.nombre,
+        rol: usuario.rol,
+        email: usuario.accesoPanel?.email
+    }
+}
