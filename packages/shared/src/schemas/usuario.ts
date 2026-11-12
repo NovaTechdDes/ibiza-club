@@ -18,5 +18,17 @@ export const UsuarioSchema = z.object({
     version: z.number().int().min(0)
 });
 
+// Editar: el PIN no va acá, tiene su propia ruta para que quede auditado aparte.
+export const UsuarioUpdateSchema = z.object({
+    nombre: UsuarioInputSchema.shape.nombre.optional(),
+    rol: UsuarioInputSchema.shape.rol.optional()
+});
+
+export const UsuarioPinSchema = z.object({
+    pin: UsuarioInputSchema.shape.pin
+});
+
 export type UsuarioInput = z.infer<typeof UsuarioInputSchema>;
+export type UsuarioUpdate = z.infer<typeof UsuarioUpdateSchema>;
+export type UsuarioPin = z.infer<typeof UsuarioPinSchema>;
 export type Usuario = z.infer<typeof UsuarioSchema>

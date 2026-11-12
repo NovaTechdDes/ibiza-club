@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { cajaRouter } from "./modules/caja/caja.routes.js";
+import { usuarioRouter } from "./modules/usuario/usuario.routes.js";
 import { categoriaRouter } from "./modules/categoria/categoria.routes.js";
 import { envaseRouter } from "./modules/envase/envase.routes.js";
 import { productoRouter } from "./modules/producto/producto.routes.js";
@@ -15,6 +16,7 @@ export const apiRouter: Router = Router();
 
 apiRouter.use('/auth', authRouter);
 apiRouter.use('/cajas', autenticar, soloAdmin, cajaRouter);
+apiRouter.use('/usuarios', autenticar, soloAdmin, usuarioRouter);
 apiRouter.use('/categorias', autenticar, categoriaRouter);
 apiRouter.use('/envases', autenticar, envaseRouter);
 apiRouter.use('/productos', autenticar, productoRouter);

@@ -8,6 +8,12 @@ const host = process.env.TAURI_DEV_HOST;
 export default defineConfig(() => ({
   plugins: [react()],
 
+  // @ibiza/ui se importa como código fuente y trae estas librerías como peer:
+  // sin dedupe podrían cargarse dos copias y la de ui no vería el QueryClientProvider de la app.
+  resolve: {
+    dedupe: ["react", "react-dom", "@tanstack/react-query", "zustand", "axios"],
+  },
+
   // Vite options tailored for Tauri development and only applied in `tauri dev` or `tauri build`
   //
   // 1. prevent Vite from obscuring rust errors

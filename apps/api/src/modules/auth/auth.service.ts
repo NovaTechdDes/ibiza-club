@@ -45,3 +45,20 @@ export const obtenerYo = async (usuarioId: number) => {
         email: usuario.accesoPanel?.email
     }
 }
+
+// Cambia la contraseña del propio usuario. Pide la actual para que un token
+// robado (o una sesión abierta en otra PC) no alcance para quedarse con la cuenta.
+export const cambiarPassword = async (usuarioId: number, actual: string, nueva: string) => {
+    const acceso = await prisma.accesoPanel.findUnique({ where: { usuarioId } });
+    if (!acceso) throw AppError.noEncontrado();
+
+    if (!verificarSecreto(actual, acceso.passwordHash)) {
+        // 400 y no 401: el token es válido, lo que está mal es el dato.
+        throw new AppError(400, 'VALIDACION', 'La contraseña actual no es correcta');
+    }
+
+    await prisma.$transaction([
+        prisma.accesoPanel.update({ where: { usuarioId }, data: { passwordHash: hashearSecreto(nueva) } }),
+        prisma.auditoriaPanel.create({ data: { usuarioId, accion: 'PASSWORD_CAMBIAR' } })
+    ]);
+}

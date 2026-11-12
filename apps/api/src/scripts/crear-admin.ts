@@ -5,7 +5,7 @@
 // Uso (producción): node dist/scripts/crear-admin.js
 
 import z from "zod";
-import { LoginInputSchema, UsuarioInputSchema, type Rol } from "@ibiza/shared";
+import { LoginInputSchema, PasswordNuevaSchema, UsuarioInputSchema, type Rol } from "@ibiza/shared";
 import { prisma } from "../db/prisma.js";
 import { hashearSecreto } from "../utils/secreto.js";
 
@@ -14,7 +14,7 @@ const EntradaSchema = z.object({
     ADMIN_NOMBRE: UsuarioInputSchema.shape.nombre,
     ADMIN_PIN: UsuarioInputSchema.shape.pin,
     ADMIN_EMAIL: LoginInputSchema.shape.email,
-    ADMIN_PASSWORD: z.string().min(12).max(128),
+    ADMIN_PASSWORD: PasswordNuevaSchema,
 });
 
 const ROL_ADMIN: Rol = "ADMIN";

@@ -1,0 +1,32 @@
+.pantalla {
+    height: 100%;
+    display: grid;
+    place-items: center;
+    padding: var(--espacio);
+}
+
+.tarjeta {
+    width: min(480px, 100%);
+    padding: calc(var(--espacio) * 2);
+}
+
+.titulo {
+    margin: 0;
+    font-size: 28px;
+}
+
+.ayuda {
+    margin: 8px 0 calc(var(--espacio) * 1.5);
+    color: var(--color-texto-suave);
+    font-size: 16px;
+}
+
+.formulario {
+    display: grid;
+    gap: var(--espacio);
+}
+
+.error {
+    margin: 0;
+    color: var(--color-peligro);
+}

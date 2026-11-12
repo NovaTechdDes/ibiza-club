@@ -14,3 +14,10 @@ export const CajaSchema = CajaInputSchema.extend({
 
 export type CajaInput = z.infer<typeof CajaInputSchema>
 export type Caja = z.infer<typeof CajaSchema>
+
+// Editar: barra admite null para quitarle la ubicación a la caja.
+export const CajaUpdateSchema = z.object({
+    nombre: CajaInputSchema.shape.nombre.optional(),
+    barra: CajaInputSchema.shape.barra
+});
+export type CajaUpdate = z.infer<typeof CajaUpdateSchema>;

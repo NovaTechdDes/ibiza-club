@@ -202,8 +202,14 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F14** — Backend, login de administración: agregar email y contraseña a `Usuario`, login para Admin y Encargado, rol en el JWT y permisos por rol en cada ruta. Forma segura de crear el primer admin.
   - Decidido (11/11/2026): email y contraseña van en un modelo aparte **`AccesoPanel`** (1 a 1 con `Usuario`), no como columnas de `Usuario`, porque en SQL Server un `UNIQUE` admite un solo `NULL` y los cajeros no tienen email. `AccesoPanel` no baja a las cajas.
   - Sub-pasos: **F14a** schema y migración · **F14b** login con email y contraseña, rol en el JWT, seed · **F14c** permisos por rol en cada ruta · **F14d** crear el primer admin en producción.
-- [ ] **F15** — Backend, usuarios y cajas: CRUD de usuarios (sube la versión global y baja a las cajas) y alta y edición de cajas.
-- [ ] **F16** — Base de administración en `packages/ui`: login, sesión, menú según el rol y aviso cuando no hay internet.
+- [x] **F15** — Backend, usuarios y cajas: CRUD de usuarios (sube la versión global y baja a las cajas) y alta y edición de cajas.
+  - Rutas (todas solo Admin): `/cajas` (alta, edición, baja/alta, token) y `/usuarios` (alta, edición, baja/alta, `PUT /:id/pin`, `PUT` y `DELETE /:id/acceso`). Cada usuario cambia su contraseña con `PUT /auth/password`.
+  - Reglas: un admin no puede darse de baja, cambiarse el rol ni quitarse el acceso a sí mismo; un Cajero no puede tener acceso al panel y, si un usuario pasa a Cajero, su acceso se borra. Contraseñas nuevas de 12 caracteres o más (`PasswordNuevaSchema`). El acceso al panel no sube la versión global.
+- [x] **F16** — Base de administración en `packages/ui`: login, sesión, menú según el rol y aviso cuando no hay internet.
+  - Todo vive en `packages/ui/src/admin/`. Las apps montan `<Administracion apiUrl onVolver? />` dentro de su `QueryClientProvider`.
+  - Para sumar una pantalla (F17 a F20): escribir el componente y ponerlo en `componente` de su entrada en `secciones.ts`. Las pantallas piden la API con `useApiAdmin()` y muestran errores con `mensajeDeError()`.
+  - Sesión en `sessionStorage` (aguanta un F5, muere al cerrar). Un 401 con sesión abierta la cierra sola. El aviso de sin internet sale de pegarle a `/health` cada 15 s, no de `navigator.onLine`.
+  - Vista previa en desarrollo: `pnpm --filter @ibiza/caja dev` y abrir `http://localhost:1420/#admin` en el navegador (está en `apps/caja/src/main.tsx`; se reemplaza en F22).
 - [ ] **F17** — Pantallas de catálogo: categorías, productos, envases, variantes y precios.
 - [ ] **F18** — Pantalla de promociones.
 - [ ] **F19** — Pantallas de reportes: ventas por caja, medio de pago y promo, arqueos y estado de sincronización.

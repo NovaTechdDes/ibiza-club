@@ -300,16 +300,29 @@ importers:
         version: 5.0.5(@types/node@26.6.5)(vite@8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15))
 
   packages/ui:
+    dependencies:
+      '@ibiza/shared':
+        specifier: workspace:*
+        version: link:../shared
     devDependencies:
+      '@tanstack/react-query':
+        specifier: ^5.105.1
+        version: 5.105.1(@types/react@19.3.0)(react@19.3.1)
       '@types/react':
         specifier: ^19.1.8
         version: 19.3.0
+      axios:
+        specifier: ^1.21.0
+        version: 1.21.0(debug@4.4.3)
       react:
         specifier: ^19.1.0
         version: 19.3.1
       vite:
         specifier: ^8.0.16
         version: 8.3.5(@types/node@26.6.5)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)
+      zustand:
+        specifier: ^5.0.16
+        version: 5.0.16(@types/react@19.3.0)(react@19.3.1)
 
 packages:
 

@@ -1,0 +1,149 @@
+.marco {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 280px minmax(0, 1fr);
+}
+
+.lateral {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio);
+    padding: var(--espacio);
+    background: var(--color-superficie);
+    border-right: 1px solid var(--color-borde);
+    min-height: 0;
+}
+
+.marca {
+    display: grid;
+    gap: 2px;
+    padding: 8px 8px var(--espacio);
+    border-bottom: 1px solid var(--color-borde);
+}
+
+.marca strong {
+    font-size: 22px;
+    color: var(--color-acento);
+}
+
+.marca span,
+.usuario span {
+    color: var(--color-texto-suave);
+    font-size: 15px;
+}
+
+.menu {
+    flex: 1;
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    overflow-y: auto;
+}
+
+.item {
+    min-height: var(--tactil-min);
+    padding: 0 var(--espacio);
+    border: 1px solid transparent;
+    border-radius: var(--radio);
+    background: transparent;
+    color: var(--color-texto);
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+}
+
+.item:hover {
+    background: var(--color-superficie-alta);
+}
+
+.item:focus-visible {
+    outline: 2px solid var(--color-acento);
+}
+
+.itemActivo,
+.itemActivo:hover {
+    background: var(--color-superficie-alta);
+    border-color: var(--color-acento);
+    color: var(--color-acento);
+}
+
+.pie {
+    display: grid;
+    gap: 12px;
+    padding-top: var(--espacio);
+    border-top: 1px solid var(--color-borde);
+}
+
+.usuario {
+    display: grid;
+    gap: 2px;
+    padding: 0 8px;
+    overflow-wrap: anywhere;
+}
+
+.contenido {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    min-height: 0;
+}
+
+.aviso {
+    padding: 12px calc(var(--espacio) * 1.5);
+    background: var(--color-peligro);
+    color: var(--color-sobre-acento);
+}
+
+.encabezado {
+    padding: calc(var(--espacio) * 1.5) calc(var(--espacio) * 1.5) var(--espacio);
+}
+
+.encabezado h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.seccion {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding: 0 calc(var(--espacio) * 1.5) calc(var(--espacio) * 1.5);
+}
+
+.vacio {
+    margin: 0;
+    color: var(--color-texto-suave);
+}
+
+/* Pantallas angostas (el panel web en un celular): el menú pasa arriba, en fila. */
+@media (max-width: 760px) {
+    .marco {
+        grid-template-columns: minmax(0, 1fr);
+        grid-template-rows: auto minmax(0, 1fr);
+    }
+
+    .lateral {
+        border-right: 0;
+        border-bottom: 1px solid var(--color-borde);
+    }
+
+    .marca {
+        display: none;
+    }
+
+    .menu {
+        display: flex;
+        flex: none;
+        overflow-x: auto;
+    }
+
+    .item {
+        white-space: nowrap;
+    }
+
+    .pie {
+        grid-template-columns: 1fr auto;
+        align-items: center;
+    }
+}

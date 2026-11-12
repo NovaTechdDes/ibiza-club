@@ -1,11 +1,10 @@
 import { Router } from "express";
-import { LoginInputSchema } from "@ibiza/shared";
+import { CambiarPasswordSchema, LoginInputSchema } from "@ibiza/shared";
 import { validar } from "../../middleware/validar.js";
-import {  loginPanel, obtenerYo } from "./auth.service.js";
+import { cambiarPassword, loginPanel, obtenerYo } from "./auth.service.js";
 
 import { limiteLogin } from "../../middleware/rate-limit.js";
 import { autenticar } from "../../middleware/autenticar.js";
-import { AppError } from "../../errors/app-error.js";
 
 export const authRouter: Router = Router();
 
@@ -17,4 +16,10 @@ authRouter.post('/login',limiteLogin, validar({ body: LoginInputSchema }), async
 
 authRouter.get('/yo', autenticar, async (req, res) => {
     res.json(await obtenerYo(req.usuarioId!))
+})
+
+// limiteLogin: frena a quien pruebe contraseñas actuales con un token robado.
+authRouter.put('/password', limiteLogin, autenticar, validar({ body: CambiarPasswordSchema }), async (req, res) => {
+    await cambiarPassword(req.usuarioId!, req.body.actual, req.body.nueva);
+    res.status(204).end();
 })
