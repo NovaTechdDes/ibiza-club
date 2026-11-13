@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mensajeDeError, useApiAdmin } from "../api";
 import { useSesionAdmin } from "../sesion";
 import { type FormEvent, useState } from "react";
@@ -13,8 +13,7 @@ import { CampoTexto } from "../../componentes/CampoTexto";
 import estilos from "./Catalogo.module.css";
 import { useCategorias } from "./useCategorias";
 import { CampoSelect } from "../../componentes/CampoSelect";
-
-export const CLAVE_PRODUCTOS = ["admin", "productos"] as const;
+import { CLAVE_PRODUCTOS, useProductos } from "./useProductos";
 
 type Formulario = {
   id: number | null;
@@ -35,10 +34,7 @@ export function Productos() {
 
   const categorias = useCategorias();
 
-  const productos = useQuery({
-    queryKey: CLAVE_PRODUCTOS,
-    queryFn: async () => (await api.get<Producto[]>("/productos")).data,
-  });
+  const productos = useProductos();
 
   const refrescar = () =>
     queryClient.invalidateQueries({ queryKey: CLAVE_PRODUCTOS });

@@ -73,6 +73,12 @@
     overflow-wrap: anywhere;
 }
 
+/* Tabular: los precios de un mismo producto quedan alineados aunque tengan distinta cantidad de cifras. */
+.precio {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
 .etiqueta {
     padding: 4px 10px;
     border: 1px solid var(--color-borde);

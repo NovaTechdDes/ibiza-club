@@ -3,7 +3,7 @@ import { Boton } from "../../componentes/Boton";
 import { CampoTexto } from "../../componentes/CampoTexto";
 
 import estilos from "./Catalogo.module.css";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mensajeDeError, useApiAdmin } from "../api";
 import { useSesionAdmin } from "../sesion";
 import {
@@ -11,8 +11,7 @@ import {
   type EnvaseInput,
   EnvaseInputSchema,
 } from "@ibiza/shared";
-
-export const CLAVE_ENVASES = ["admin", "envases"] as const;
+import { CLAVE_ENVASES, useEnvases } from "./useEnvases";
 
 type Formulario = { id: number | null; nombre: string; orden: string };
 const VACIO: Formulario = { id: null, nombre: "", orden: "" };
@@ -26,10 +25,7 @@ export function Envases() {
   const [form, setForm] = useState<Formulario>(VACIO);
   const [error, setError] = useState<string | null>(null);
 
-  const envases = useQuery({
-    queryKey: CLAVE_ENVASES,
-    queryFn: async () => (await api.get<Envase[]>("/envases")).data,
-  });
+  const envases = useEnvases();
 
   const refrescar = () =>
     queryClient.invalidateQueries({ queryKey: CLAVE_ENVASES });

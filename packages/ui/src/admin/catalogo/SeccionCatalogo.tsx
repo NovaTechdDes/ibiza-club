@@ -4,6 +4,7 @@ import { Categorias } from "./Categorias";
 import { Envases } from "./Envases";
 import estilos from "./Catalogo.module.css";
 import { Productos } from "./Productos";
+import { Precios } from "./Precios";
 
 type Pestana = "categorias" | "envases" | "productos" | "precios";
 
@@ -24,7 +25,7 @@ const PESTANAS: readonly DatosPestana[] = [
   },
   { id: "envases", titulo: "Envases", paso: "F17b", componente: Envases },
   { id: "productos", titulo: "Productos", paso: "F17c", componente: Productos },
-  { id: "precios", titulo: "Precios", paso: "F17d" },
+  { id: "precios", titulo: "Precios", paso: "F17d", componente: Precios },
 ];
 
 export function SeccionCatalogo() {
