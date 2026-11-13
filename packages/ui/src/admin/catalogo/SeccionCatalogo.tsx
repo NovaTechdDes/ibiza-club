@@ -1,12 +1,22 @@
-import { useState } from "react";
+import { type ComponentType, useState } from "react";
 import { Boton } from "../../componentes/Boton";
 import { Categorias } from "./Categorias";
+import { Envases } from "./Envases";
 import estilos from "./Catalogo.module.css";
+
 type Pestana = "categorias" | "envases" | "productos" | "precios";
 
-const PESTANAS: readonly { id: Pestana; titulo: string; paso: string }[] = [
-  { id: "categorias", titulo: "Categorías", paso: "F17a" },
-  { id: "envases", titulo: "Envases", paso: "F17b" },
+type DatosPestana = {
+  id: Pestana;
+  titulo: string;
+  paso: string;
+  // Sin componente se muestra "se arma en el paso…". Para sumar una pestaña, completar este campo.
+  componente?: ComponentType;
+};
+
+const PESTANAS: readonly DatosPestana[] = [
+  { id: "categorias", titulo: "Categorías", paso: "F17a", componente: Categorias },
+  { id: "envases", titulo: "Envases", paso: "F17b", componente: Envases },
   { id: "productos", titulo: "Productos", paso: "F17c" },
   { id: "precios", titulo: "Precios", paso: "F17d" },
 ];
@@ -14,6 +24,7 @@ const PESTANAS: readonly { id: Pestana; titulo: string; paso: string }[] = [
 export function SeccionCatalogo() {
   const [pestana, setPestana] = useState<Pestana>("categorias");
   const actual = PESTANAS.find((elem) => elem.id === pestana);
+  const Contenido = actual?.componente;
   return (
     <div className={estilos.pantalla}>
       <div className={estilos.pestanas}>
@@ -28,8 +39,8 @@ export function SeccionCatalogo() {
           </Boton>
         ))}
       </div>
-      {pestana === "categorias" ? (
-        <Categorias />
+      {Contenido ? (
+        <Contenido />
       ) : (
         <p className={estilos.ayuda}>Se arma en el paso {actual?.paso}.</p>
       )}
