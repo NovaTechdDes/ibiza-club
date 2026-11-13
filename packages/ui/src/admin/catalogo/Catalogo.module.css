@@ -85,3 +85,15 @@
     display: flex;
     gap: 8px;
 }
+
+
+.grupo{
+    display: grid;
+    gap: 8px;
+}
+
+.tituloGrupo{
+    margin: 0;
+    color: var(--color-texto-suave);
+    font-size: 15px;
+}

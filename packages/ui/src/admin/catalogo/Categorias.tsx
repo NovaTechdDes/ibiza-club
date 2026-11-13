@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mensajeDeError, useApiAdmin } from "../api";
 import { useSesionAdmin } from "../sesion";
 import { type FormEvent, useState } from "react";
@@ -11,8 +11,7 @@ import { Boton } from "../../componentes/Boton";
 import { CampoTexto } from "../../componentes/CampoTexto";
 
 import estilos from "./Catalogo.module.css";
-
-export const CLAVE_CATEGORIAS = ["admin", "categorias"] as const;
+import { CLAVE_CATEGORIAS, useCategorias } from "./useCategorias";
 
 type Formulario = { id: number | null; nombre: string; orden: string };
 const VACIO: Formulario = { id: null, nombre: "", orden: "" };
@@ -26,10 +25,7 @@ export function Categorias() {
   const [form, setForm] = useState<Formulario>(VACIO);
   const [error, setError] = useState<string | null>(null);
 
-  const categorias = useQuery({
-    queryKey: CLAVE_CATEGORIAS,
-    queryFn: async () => (await api.get<Categoria[]>("/categorias")).data,
-  });
+  const categorias = useCategorias();
 
   const refrescar = () =>
     queryClient.invalidateQueries({ queryKey: CLAVE_CATEGORIAS });

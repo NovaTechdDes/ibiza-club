@@ -3,6 +3,7 @@ import { Boton } from "../../componentes/Boton";
 import { Categorias } from "./Categorias";
 import { Envases } from "./Envases";
 import estilos from "./Catalogo.module.css";
+import { Productos } from "./Productos";
 
 type Pestana = "categorias" | "envases" | "productos" | "precios";
 
@@ -15,9 +16,14 @@ type DatosPestana = {
 };
 
 const PESTANAS: readonly DatosPestana[] = [
-  { id: "categorias", titulo: "Categorías", paso: "F17a", componente: Categorias },
+  {
+    id: "categorias",
+    titulo: "Categorías",
+    paso: "F17a",
+    componente: Categorias,
+  },
   { id: "envases", titulo: "Envases", paso: "F17b", componente: Envases },
-  { id: "productos", titulo: "Productos", paso: "F17c" },
+  { id: "productos", titulo: "Productos", paso: "F17c", componente: Productos },
   { id: "precios", titulo: "Precios", paso: "F17d" },
 ];
 
