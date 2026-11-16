@@ -42,8 +42,9 @@
   --color-estado: var(--color-exito);
 }
 
+/* Pendientes: ámbar de aviso, no el violeta de la marca (que no dice "atención") */
 .acento {
-  --color-estado: var(--color-acento);
+  --color-estado: var(--color-aviso);
 }
 
 .peligro {

@@ -1,4 +1,4 @@
-import { Boton, Tarjeta } from "@ibiza/ui";
+import { Boton, BotonTema, Tarjeta } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
 import { MEDIOS_PAGO, type Rol } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
@@ -17,6 +17,7 @@ import { PedirPin } from "../componentes/PedirPin";
 import { PantallaImpresora } from "./PantallaImpresora";
 import { PantallaRetiro } from "./PantallaRetiro";
 import { IndicadorSync } from "../componentes/IndicadorSync";
+import { NOMBRE_MEDIO } from "../lib/ticket";
 import { registrarAuditoria } from "../db/auditoria";
 import { PantallaCambioCajero } from "./PantallaCambioCajero";
 import { PantallaAnulacion } from "./PantallaAnulacion";
@@ -93,34 +94,42 @@ export function PantallaVenta({ vinculacion }: Props) {
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
-        {cobrar.data && <span>Ultima Venta: #{cobrar.data}</span>}
-        <Boton
-          variante="secundario"
-          disabled={carrito.cantidad > 0}
-          onClick={() => setVista("pin")}
-        >
-          Impresora
-        </Boton>
-        {/* Con productos en el carrito no se sale de la venta: se perdería la compra en curso */}
-        <Boton
-          variante="secundario"
-          disabled={carrito.cantidad > 0}
-          onClick={() => setVista("retiro")}
-        >
-          Retiro
-        </Boton>
-        <Boton
-          variante="secundario"
-          disabled={carrito.cantidad > 0}
-          onClick={() => setVista("anulacion")}
-        >
-          Anulacion
-        </Boton>
-        <span>{vinculacion.cajaNombre}</span>
+        <div className={estilos.identidad}>
+          <span className={estilos.caja}>{vinculacion.cajaNombre}</span>
+          <span className={estilos.cajero}>{usuario?.nombre}</span>
+        </div>
         <IndicadorSync />
+        {cobrar.data && (
+          <span className={estilos.ultima}>Última venta: #{cobrar.data}</span>
+        )}
+
+        {/* Con productos en el carrito no se sale de la venta: se perdería la compra en curso */}
+        <div className={estilos.acciones}>
+          <Boton
+            variante="secundario"
+            disabled={carrito.cantidad > 0}
+            onClick={() => setVista("pin")}
+          >
+            Impresora
+          </Boton>
+          <Boton
+            variante="secundario"
+            disabled={carrito.cantidad > 0}
+            onClick={() => setVista("retiro")}
+          >
+            Retiro
+          </Boton>
+          <Boton
+            variante="secundario"
+            disabled={carrito.cantidad > 0}
+            onClick={() => setVista("anulacion")}
+          >
+            Anulación
+          </Boton>
+        </div>
 
         <div className={estilos.sesion}>
-          <span>{usuario?.nombre}</span>
+          <BotonTema />
           <Boton
             variante="secundario"
             disabled={carrito.cantidad > 0}
@@ -161,13 +170,18 @@ export function PantallaVenta({ vinculacion }: Props) {
             </div>
           </>
         ) : (
-          <p>Todavía no hay productos. Esperá la sincronización.</p>
+          <p className={estilos.vacio}>
+            Todavía no hay productos. Esperá la sincronización.
+          </p>
         )}
       </Tarjeta>
 
       <Tarjeta className={estilos.carrito}>
         <div className={estilos.carritoEncabezado}>
-          <strong>Carrito: {carrito.cantidad}</strong>
+          <span className={estilos.carritoTitulo}>
+            Carrito
+            <span className={estilos.contador}>{carrito.cantidad}</span>
+          </span>
           <Boton
             variante="secundario"
             disabled={carrito.cantidad === 0 || cobrar.isPending}
@@ -178,6 +192,9 @@ export function PantallaVenta({ vinculacion }: Props) {
         </div>
 
         <div className={estilos.items}>
+          {carrito.cantidad === 0 && (
+            <p className={estilos.carritoVacio}>Tocá un producto para agregarlo.</p>
+          )}
           {carrito.lineas.map((linea) => (
             <LineaCarrito
               linea={linea}
@@ -198,7 +215,7 @@ export function PantallaVenta({ vinculacion }: Props) {
             </div>
           )}
           <div className={estilos.total}>
-            <span>TOTAL</span>
+            <span className={estilos.totalEtiqueta}>Total</span>
             <span>$ {carrito.total.toLocaleString("es-AR")}</span>
           </div>
         </div>
@@ -210,7 +227,7 @@ export function PantallaVenta({ vinculacion }: Props) {
               key={elem}
               onClick={() => cobrar.mutate(elem)}
             >
-              {elem}
+              {NOMBRE_MEDIO[elem]}
             </Boton>
           ))}
         </div>

@@ -6,11 +6,17 @@
     font: inherit;
     font-weight: 700;
     cursor: pointer;
+    transition: transform 80ms ease, background-color 120ms ease;
 }
 
 .primario {
     background: var(--color-acento);
     color: var(--color-sobre-acento);
+    box-shadow: var(--sombra-acento);
+}
+
+.primario:active {
+    background: var(--color-acento-fuerte);
 }
 
 .secundario {
@@ -23,12 +29,23 @@
     color: var(--color-sobre-acento);
 }
 
-
 .boton:active {
     transform: scale(0.97);
+}
+
+.boton:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
 }
 
 .boton:disabled{
     opacity: 0.4;
     cursor: not-allowed;
+    box-shadow: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .boton {
+        transition: none;
+    }
 }

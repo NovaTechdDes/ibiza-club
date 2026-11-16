@@ -3,6 +3,8 @@ export * from "./componentes/Tarjeta";
 export * from "./componentes/CampoTexto"
 export * from "./componentes/TecladoNumerico"
 export * from "./componentes/CampoSelect"
+export * from "./componentes/BotonTema";
+export * from "./tema";
 
 
 export * from "./admin/Administracion";

@@ -44,6 +44,6 @@
 .fila { display: flex; justify-content: space-between; font-size: 1.2rem; }
 .destacada { font-weight: 700; font-size: 1.4rem; }
 .diferencia { text-align: center; font-size: 2rem; font-weight: 800; }
-.exacto { color: #4ade80; }
-.falta { color: #f87171; }
-.sobra { color: #facc15; }
+.exacto { color: var(--color-exito); }
+.falta { color: var(--color-peligro); }
+.sobra { color: var(--color-aviso); }

@@ -21,9 +21,10 @@
 
 .input:focus{
     outline: 2px solid var(--color-acento);
+    border-color: var(--color-acento);
 }
 
+/* El color-scheme lo pone el tema (tema.css): la lista desplegable sigue al claro u oscuro */
 .select {
-    color-scheme: dark;
     cursor: pointer;
 }

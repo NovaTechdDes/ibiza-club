@@ -1,7 +1,7 @@
 .pantalla {
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 380px;
+  grid-template-columns: 1fr 400px;
   grid-template-rows: auto minmax(0, 1fr);
   gap: var(--espacio);
   padding: var(--espacio);
@@ -10,16 +10,75 @@
 .encabezado {
   grid-column: 1 / -1;
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
   align-items: center;
+  gap: 12px;
+  padding: 10px 12px 10px var(--espacio);
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  box-shadow: var(--sombra);
+}
+
+/* Más angostos que un Boton normal: tienen que entrar todos en una fila */
+.encabezado button {
+  padding-inline: 16px;
+}
+
+.identidad {
+  display: grid;
+  line-height: 1.2;
+  margin-right: 4px;
+}
+
+.caja {
+  font-family: var(--fuente-titulo);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-acento);
+}
+
+.cajero,
+.ultima {
+  color: var(--color-texto-suave);
+  font-size: 0.9rem;
+}
+
+.acciones {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.sesion {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-left: 12px;
+  border-left: 1px solid var(--color-borde);
 }
 
 .productos {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 12px;
   overflow: hidden;
+}
+
+.grilla{
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  align-content: start;
+}
+
+.vacio {
+  margin: auto;
+  color: var(--color-texto-suave);
 }
 
 .carrito {
@@ -35,32 +94,35 @@
   align-items: center;
 }
 
+.carritoTitulo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--fuente-titulo);
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.contador {
+  min-width: 32px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: var(--color-acento-suave);
+  color: var(--color-acento);
+  font-size: 1rem;
+  text-align: center;
+}
+
 .items {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
 }
 
-.pagos {
-  display: grid;
-  gap: 12px;
-}
-
-
-.sesion {
-  display: flex;
-  align-items: center;
-  gap: var(--espacio);
-}
-
-.grilla{
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  display: grid;
-  gap: 8px;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  align-content: start;
+.carritoVacio {
+  margin: var(--espacio) 0;
+  color: var(--color-texto-suave);
+  text-align: center;
 }
 
 .resumen {
@@ -74,13 +136,33 @@
   display: flex;
   justify-content: space-between;
   color: var(--color-exito);
+  font-weight: 600;
 }
 
 .total {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-acento);
+  font-family: var(--fuente-titulo);
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.totalEtiqueta {
+  font-size: 1.1rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: var(--color-texto-suave);
+}
+
+.pagos {
+  display: grid;
+  gap: 10px;
+}
+
+/* Los botones que cierran la venta: los más grandes de la pantalla */
+.pagos button {
+  min-height: 72px;
+  font-size: 1.3rem;
 }

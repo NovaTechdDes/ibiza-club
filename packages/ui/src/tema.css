@@ -7,26 +7,75 @@ html, body, #root{
     margin: 0;
 }
 
+/*
+ * Tema claro: es el principal. El oscuro se activa con data-tema="oscuro" en <html>
+ * (lo maneja useTema, en tema.ts). Los componentes solo usan estas variables:
+ * para cambiar un color se toca acá y en ningún otro lado.
+ */
 :root {
-    --color-fondo: #17132b;
-    --color-superficie: #241e3f;
-    --color-superficie-alta: #332b57;
-    --color-borde: #4a4175;
-    --color-texto: #f6f1ff;
-    --color-texto-suave: #b9b0d6;
-    --color-acento: #ffb000;
-    --color-sobre-acento: #17132b;
-    --color-exito: #3ddc97;
-    --color-peligro: #ff5c6c;
+    color-scheme: light;
 
+    --color-fondo: #f3f0fa;
+    --color-superficie: #ffffff;
+    --color-superficie-alta: #ebe6f7;
+    --color-borde: #d9d1ee;
+    --color-texto: #1c1433;
+    --color-texto-suave: #655c85;
+
+    --color-acento: #6d28d9;
+    --color-acento-fuerte: #5b1fc0;
+    --color-acento-suave: #ede5ff;
+    --color-sobre-acento: #ffffff;
+
+    --color-exito: #0b7a53;
+    --color-peligro: #d02645;
+    --color-aviso: #a35400;
+
+    /* Tarjetas de producto: violeta profundo en los dos temas, para que se despeguen del fondo */
+    --color-producto: #2b1766;
+    --color-producto-borde: #2b1766;
+    --color-producto-boton: #44298f;
+    --color-producto-texto: #ffffff;
+    --color-producto-precio: #ffc857;
+
+    --sombra: 0 1px 2px rgba(43, 23, 102, 0.06), 0 6px 20px rgba(43, 23, 102, 0.07);
+    --sombra-acento: 0 4px 14px rgba(109, 40, 217, 0.28);
 
     --tactil-min: 64px;
-    --radio: 12px;
+    --radio: 14px;
     --espacio: 16px;
 
-    --fuente: "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    --fuente: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    --fuente-titulo: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+}
 
-    
+:root[data-tema="oscuro"] {
+    color-scheme: dark;
+
+    --color-fondo: #120e22;
+    --color-superficie: #1c1635;
+    --color-superficie-alta: #2b2251;
+    --color-borde: #3d3370;
+    --color-texto: #f4f0ff;
+    --color-texto-suave: #aca2cf;
+
+    --color-acento: #a98bff;
+    --color-acento-fuerte: #bfa8ff;
+    --color-acento-suave: #2f2463;
+    --color-sobre-acento: #160f2e;
+
+    --color-exito: #3ddc97;
+    --color-peligro: #ff6b7d;
+    --color-aviso: #ffb84d;
+
+    --color-producto: #3a2292;
+    --color-producto-borde: #5b40d1;
+    --color-producto-boton: #5035b3;
+    --color-producto-texto: #ffffff;
+    --color-producto-precio: #ffc857;
+
+    --sombra: none;
+    --sombra-acento: none;
 }
 
 body {
@@ -37,4 +86,9 @@ body {
     user-select: none;
     touch-action: manipulation;
     font-variant-numeric: tabular-nums;
+}
+
+h1, h2, h3 {
+    font-family: var(--fuente-titulo);
+    letter-spacing: -0.01em;
 }

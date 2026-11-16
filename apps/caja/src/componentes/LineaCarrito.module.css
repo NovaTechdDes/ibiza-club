@@ -2,15 +2,20 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 8px 0;
-    gap: 8px;
+    padding: 12px 0;
+    gap: 12px;
     border-bottom: 1px solid var(--color-borde);
 }
 
 .info{
     display: flex;
     flex-direction: column;
+    gap: 2px;
     min-width: 0;
+}
+
+.subtotal {
+    color: var(--color-texto-suave);
 }
 
 .controles{
@@ -20,12 +25,21 @@
     flex-shrink: 0;
 }
 
-.boton {
+.cantidad {
+    min-width: 28px;
+    text-align: center;
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.controles .boton {
     width: 48px;
     padding: 0;
     min-height: 48px;
+    font-size: 1.5rem;
 }
 
 .promo{
-    color: var(--color-exito)
+    color: var(--color-exito);
+    font-weight: 600;
 }

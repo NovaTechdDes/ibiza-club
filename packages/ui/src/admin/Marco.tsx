@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Boton } from "../componentes/Boton";
+import { BotonTema } from "../componentes/BotonTema";
 import { useApiAdmin } from "./api";
 import estilos from "./Marco.module.css";
 import { NOMBRE_ROL, seccionesDe, type IdSeccion } from "./secciones";
@@ -64,6 +65,7 @@ export function Marco({ usuario, enLinea, onVolver }: Props) {
                         <strong>{usuario.nombre}</strong>
                         <span>{NOMBRE_ROL[usuario.rol]}</span>
                     </div>
+                    <BotonTema conTexto />
                     {onVolver ? (
                         <Boton variante="secundario" onClick={onVolver}>
                             Volver a la venta

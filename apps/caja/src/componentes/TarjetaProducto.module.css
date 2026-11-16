@@ -1,8 +1,27 @@
+/*
+ * La tarjeta redefine las variables del tema solo para lo que tiene adentro:
+ * así Tarjeta y Boton (que leen esas variables) quedan en violeta profundo
+ * sin tocar sus estilos, y el contraste contra el fondo claro es fuerte.
+ */
 .tarjeta {
+    --color-superficie: var(--color-producto);
+    --color-superficie-alta: var(--color-producto-boton);
+    --color-borde: var(--color-producto-borde);
+    --color-texto: var(--color-producto-texto);
+
     display: flex;
     gap: var(--espacio);
     justify-content: space-between;
     flex-direction: column;
+    min-height: 150px;
+    color: var(--color-texto);
+}
+
+.nombre {
+    font-family: var(--fuente-titulo);
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .variantes {
@@ -14,13 +33,15 @@
 .variante {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 2px;
     flex: 1;
     padding: 12px 8px;
+    font-weight: 600;
 }
 
 .precio {
-    font-size: 1.25rem;
-    color: var(--color-acento)
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: var(--color-producto-precio);
 }
-
- .nombre { font-size: 1.25rem; }

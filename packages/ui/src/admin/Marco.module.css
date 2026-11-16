@@ -63,8 +63,7 @@
 
 .itemActivo,
 .itemActivo:hover {
-    background: var(--color-superficie-alta);
-    border-color: var(--color-acento);
+    background: var(--color-acento-suave);
     color: var(--color-acento);
 }
 

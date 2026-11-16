@@ -14,7 +14,9 @@ export const LineaCarrito = ({ linea, onCambiar }: Props) => {
         <strong>
           {linea.nombre} ({linea.envaseNombre})
         </strong>
-        <span>$ {linea.subTotal.toLocaleString("es-AR")}</span>
+        <span className={estilos.subtotal}>
+          $ {linea.subTotal.toLocaleString("es-AR")}
+        </span>
         {linea.descuento > 0 && (
           <span className={estilos.promo}>
             {linea.promocionNombre}: -${" "}
@@ -24,11 +26,21 @@ export const LineaCarrito = ({ linea, onCambiar }: Props) => {
       </div>
 
       <div className={estilos.controles}>
-        <Boton className={estilos.boton} onClick={() => onCambiar(-1)}>
-          -
+        <Boton
+          variante="secundario"
+          className={estilos.boton}
+          aria-label="Quitar uno"
+          onClick={() => onCambiar(-1)}
+        >
+          −
         </Boton>
-        <span>{linea.cantidad}</span>
-        <Boton className={estilos.boton} onClick={() => onCambiar(1)}>
+        <span className={estilos.cantidad}>{linea.cantidad}</span>
+        <Boton
+          variante="secundario"
+          className={estilos.boton}
+          aria-label="Agregar uno"
+          onClick={() => onCambiar(1)}
+        >
           +
         </Boton>
       </div>
