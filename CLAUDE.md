@@ -210,8 +210,8 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
   - Para sumar una pantalla (F17 a F20): escribir el componente y ponerlo en `componente` de su entrada en `secciones.ts`. Las pantallas piden la API con `useApiAdmin()` y muestran errores con `mensajeDeError()`.
   - Sesión en `sessionStorage` (aguanta un F5, muere al cerrar). Un 401 con sesión abierta la cierra sola. El aviso de sin internet sale de pegarle a `/health` cada 15 s, no de `navigator.onLine`.
   - Vista previa en desarrollo: `pnpm --filter @ibiza/caja dev` y abrir `http://localhost:1420/#admin` en el navegador (está en `apps/caja/src/main.tsx`; se reemplaza en F22).
-- [ ] **F17** — Pantallas de catálogo: categorías, productos, envases, variantes y precios.
-- [ ] **F18** — Pantalla de promociones.
+- [x] **F17** — Pantallas de catálogo: categorías, productos, envases, variantes y precios.
+- [x] **F18** — Pantalla de promociones.
 - [ ] **F19** — Pantallas de reportes: ventas por caja, medio de pago y promo, arqueos y estado de sincronización.
 - [ ] **F20** — Pantallas de usuarios y cajas, incluido generar y revocar el token de cada caja.
 - [ ] **F21** — Imágenes de productos (incluye backend): subida a Blob Storage, carga desde administración y caché local en las cajas para vender sin internet.

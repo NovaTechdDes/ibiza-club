@@ -2,6 +2,7 @@ import type { Rol } from "@ibiza/shared";
 import type { ComponentType } from "react";
 import { SeccionCatalogo } from "./catalogo/SeccionCatalogo";
 import { Promociones } from "./promociones/Promociones";
+import { Reportes } from "./reportes/Reportes"
 
 export type IdSeccion = "catalogo" | "promociones" | "reportes" | "usuarios" | "cajas";
 
@@ -19,7 +20,7 @@ export type Seccion = {
 export const SECCIONES: readonly Seccion[] = [
     { id: "catalogo", titulo: "Catálogo y precios", roles: ["ADMIN", "ENCARGADO"], paso: "F17", componente: SeccionCatalogo },
     { id: "promociones", titulo: "Promociones", roles: ["ADMIN", "ENCARGADO"], paso: "F18", componente: Promociones },
-    { id: "reportes", titulo: "Reportes", roles: ["ADMIN"], paso: "F19" },
+    { id: "reportes", titulo: "Reportes", roles: ["ADMIN"], paso: "F19", componente: Reportes },
     { id: "usuarios", titulo: "Usuarios", roles: ["ADMIN"], paso: "F20" },
     { id: "cajas", titulo: "Cajas", roles: ["ADMIN"], paso: "F20" },
 ];
