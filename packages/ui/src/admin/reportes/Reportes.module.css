@@ -89,3 +89,13 @@
 .tabla .texto {
     text-align: left;
 }
+
+.faltante{
+    color: var(--color-peligro);
+    font-weight: 600;
+}
+
+.sobrante{
+    color: var(--color-exito);
+    font-weight: 600;
+}

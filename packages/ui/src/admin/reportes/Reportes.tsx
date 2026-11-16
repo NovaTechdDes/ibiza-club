@@ -10,6 +10,7 @@ import estilos from "./Reportes.module.css";
 import { VentasPorCaja } from "./VentasPorCaja";
 import { VentasPorMedio } from "./VentasPorMedio";
 import { VentasPorPromo } from "./VentasPorPromo";
+import { Arqueos } from "./Arqueos";
 
 type Pestana = "medio-pago" | "caja" | "promo" | "arqueo" | "sincronizacion";
 
@@ -47,6 +48,7 @@ const PESTANAS: readonly DatosPestana[] = [
     titulo: "Arqueos",
     paso: "F19d",
     usaRango: true,
+    componente: Arqueos,
   },
   {
     id: "sincronizacion",
