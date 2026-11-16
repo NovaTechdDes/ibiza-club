@@ -27,3 +27,60 @@
     align-items: end;
     gap: 8px;
 }
+
+/* En pantallas angostas la tabla se desplaza sola sin romper el resto de la página */
+.desplazable {
+    overflow-x: auto;
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    font-variant-numeric: tabular-nums;
+}
+
+.tabla th,
+.tabla td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--color-borde);
+    text-align: right;
+    white-space: nowrap;
+}
+
+/* La primera columna es texto (medio, caja); el resto son números */
+.tabla th:first-child,
+.tabla td:first-child {
+    text-align: left;
+}
+
+.tabla th {
+    color: var(--color-texto-suave);
+    font-weight: 500;
+}
+
+.tabla tfoot td {
+    font-weight: 700;
+    border-bottom: none;
+}
+
+/* Mientras llegan los datos del rango nuevo se siguen viendo los anteriores, atenuados */
+.actualizando {
+    opacity: 0.5;
+}
+
+/* Separa las tablas y la línea de anuladas dentro de un reporte */
+.reporte {
+    display: grid;
+    gap: var(--espacio);
+}
+
+.subtitulo {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+}
+
+/* Cajas activas que no vendieron en el rango: se ven, pero no llaman la atención */
+.tabla tr.sinVentas td {
+    color: var(--color-texto-suave);
+}

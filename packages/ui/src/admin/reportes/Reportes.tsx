@@ -7,6 +7,8 @@ import { type ComponentType, useState } from "react";
 import { Boton } from "../../componentes/Boton";
 import { CampoTexto } from "../../componentes/CampoTexto";
 import estilos from "./Reportes.module.css";
+import { VentasPorCaja } from "./VentasPorCaja";
+import { VentasPorMedio } from "./VentasPorMedio";
 
 type Pestana = "medio-pago" | "caja" | "promo" | "arqueo" | "sincronizacion";
 
@@ -23,12 +25,14 @@ const PESTANAS: readonly DatosPestana[] = [
     titulo: "Medios de pago",
     paso: "F19b",
     usaRango: true,
+    componente: VentasPorMedio,
   },
   {
     id: "caja",
     titulo: "Cajas",
     paso: "F19b",
     usaRango: true,
+    componente: VentasPorCaja,
   },
   {
     id: "promo",

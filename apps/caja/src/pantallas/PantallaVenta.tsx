@@ -1,6 +1,6 @@
 import { Boton, BotonTema, Tarjeta } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
-import { MEDIOS_PAGO, type Rol } from "@ibiza/shared";
+import { MEDIOS_PAGO, NOMBRE_MEDIO, type Rol } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 
 import estilos from "./PantallaVenta.module.css";
@@ -17,7 +17,6 @@ import { PedirPin } from "../componentes/PedirPin";
 import { PantallaImpresora } from "./PantallaImpresora";
 import { PantallaRetiro } from "./PantallaRetiro";
 import { IndicadorSync } from "../componentes/IndicadorSync";
-import { NOMBRE_MEDIO } from "../lib/ticket";
 import { registrarAuditoria } from "../db/auditoria";
 import { PantallaCambioCajero } from "./PantallaCambioCajero";
 import { PantallaAnulacion } from "./PantallaAnulacion";
@@ -42,7 +41,7 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   const [categoriaId, setCategoriaId] = useState<number | null>(null);
   const [vista, setVista] = useState<
-    "venta" | "pin" | "impresora" | "retiro" |"cambio" | 'anulacion' | 'cierre'
+    "venta" | "pin" | "impresora" | "retiro" | "cambio" | "anulacion" | "cierre"
   >("venta");
 
   const { data: categorias } = useCategoriaVenta();
@@ -63,21 +62,23 @@ export function PantallaVenta({ vinculacion }: Props) {
         roles={ROLES_CONFIGURAN}
         onCancelar={() => setVista("venta")}
         onCorrecto={(encargado) => {
-          registrarAuditoria({accion: "CONFIG_IMPRESORA", usuarioId: encargado.id})
-          .catch(console.error);
-          setVista("impresora")
+          registrarAuditoria({
+            accion: "CONFIG_IMPRESORA",
+            usuarioId: encargado.id,
+          }).catch(console.error);
+          setVista("impresora");
         }}
       />
     );
   }
 
-  if(vista === "anulacion"){
-    return <PantallaAnulacion onVolver={() => setVista("venta")} />
+  if (vista === "anulacion") {
+    return <PantallaAnulacion onVolver={() => setVista("venta")} />;
   }
 
-  if(vista === "cambio"){
-    return <PantallaCambioCajero onVolver={() => setVista("venta")}/>
-  };
+  if (vista === "cambio") {
+    return <PantallaCambioCajero onVolver={() => setVista("venta")} />;
+  }
 
   if (vista === "impresora") {
     return <PantallaImpresora onVolver={() => setVista("venta")} />;
@@ -87,8 +88,8 @@ export function PantallaVenta({ vinculacion }: Props) {
     return <PantallaRetiro onVolver={() => setVista("venta")} />;
   }
 
-  if(vista === 'cierre'){
-    return <PantallaCierre onVolver={() => setVista("venta")} />
+  if (vista === "cierre") {
+    return <PantallaCierre onVolver={() => setVista("venta")} />;
   }
 
   return (
@@ -193,7 +194,9 @@ export function PantallaVenta({ vinculacion }: Props) {
 
         <div className={estilos.items}>
           {carrito.cantidad === 0 && (
-            <p className={estilos.carritoVacio}>Tocá un producto para agregarlo.</p>
+            <p className={estilos.carritoVacio}>
+              Tocá un producto para agregarlo.
+            </p>
           )}
           {carrito.lineas.map((linea) => (
             <LineaCarrito
