@@ -13,11 +13,13 @@ const seleccion = {
     version: true
 } as const;
 
-export const listarCajas = () => {
-    return prisma.caja.findMany({
-        select: seleccion,
+export const listarCajas = async() => {
+    const cajas = await prisma.caja.findMany({
+        select: {...seleccion, tokenHash: true},
         orderBy: { nombre: 'asc'}
-    })
+    });
+
+    return cajas.map(({ tokenHash, ...caja}) => ({ ...caja, vinculada: tokenHash !== null}))
 };
 
 export const obtenerCaja = async(id: number) => {

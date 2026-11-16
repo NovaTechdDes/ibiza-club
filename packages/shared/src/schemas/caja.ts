@@ -20,4 +20,8 @@ export const CajaUpdateSchema = z.object({
     nombre: CajaInputSchema.shape.nombre.optional(),
     barra: CajaInputSchema.shape.barra
 });
+
+
 export type CajaUpdate = z.infer<typeof CajaUpdateSchema>;
+export const CajaListadoSchema = CajaSchema.extend({vinculada: z.boolean()})
+export type CajaListado = z.infer<typeof CajaListadoSchema>
