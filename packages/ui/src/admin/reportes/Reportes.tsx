@@ -9,6 +9,7 @@ import { CampoTexto } from "../../componentes/CampoTexto";
 import estilos from "./Reportes.module.css";
 import { VentasPorCaja } from "./VentasPorCaja";
 import { VentasPorMedio } from "./VentasPorMedio";
+import { VentasPorPromo } from "./VentasPorPromo";
 
 type Pestana = "medio-pago" | "caja" | "promo" | "arqueo" | "sincronizacion";
 
@@ -39,6 +40,7 @@ const PESTANAS: readonly DatosPestana[] = [
     titulo: "Promos",
     paso: "F19c",
     usaRango: true,
+    componente: VentasPorPromo,
   },
   {
     id: "arqueo",

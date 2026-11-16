@@ -84,3 +84,8 @@
 .tabla tr.sinVentas td {
     color: var(--color-texto-suave);
 }
+
+
+.tabla .texto {
+    text-align: left;
+}
