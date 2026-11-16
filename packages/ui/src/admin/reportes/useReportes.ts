@@ -16,3 +16,13 @@ export function useReporte<T>(ruta: RutaReporte, rango: RangoReporte){
         staleTime: 60_000
     });
 }
+
+export function useEstadoSync<T>(){
+    const { api } = useApiAdmin();
+
+    return useQuery({
+        queryKey: [...CLAVE_REPORTES, '/sync'],
+        queryFn: async () => (await api.get<T>("/reportes/sync")).data,
+        refetchInterval: 30_000
+    })
+}

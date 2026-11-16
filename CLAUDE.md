@@ -212,7 +212,8 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
   - Vista previa en desarrollo: `pnpm --filter @ibiza/caja dev` y abrir `http://localhost:1420/#admin` en el navegador (está en `apps/caja/src/main.tsx`; se reemplaza en F22).
 - [x] **F17** — Pantallas de catálogo: categorías, productos, envases, variantes y precios.
 - [x] **F18** — Pantalla de promociones.
-- [ ] **F19** — Pantallas de reportes: ventas por caja, medio de pago y promo, arqueos y estado de sincronización.
+- [x] **F19** — Pantallas de reportes: ventas por caja, medio de pago y promo, arqueos y estado de sincronización.
+  - Todo en `packages/ui/src/admin/reportes/`: una pestaña por reporte en `Reportes.tsx`. Las que llevan rango usan `useReporte(ruta, rango)`; Sincronización no lleva rango y usa `useEstadoSync()`, que se refresca cada 30 s.
 - [ ] **F20** — Pantallas de usuarios y cajas, incluido generar y revocar el token de cada caja.
 - [ ] **F21** — Imágenes de productos (incluye backend): subida a Blob Storage, carga desde administración y caché local en las cajas para vender sin internet.
 - [ ] **F22** — Integrar la administración al escritorio: acceso desde el menú lateral, login propio, cerrar sesión al volver a la venta y comprobar que un cambio llega a las cajas.

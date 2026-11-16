@@ -11,6 +11,7 @@ import { VentasPorCaja } from "./VentasPorCaja";
 import { VentasPorMedio } from "./VentasPorMedio";
 import { VentasPorPromo } from "./VentasPorPromo";
 import { Arqueos } from "./Arqueos";
+import { Sincronizacion } from "./Sincronizacion";
 
 type Pestana = "medio-pago" | "caja" | "promo" | "arqueo" | "sincronizacion";
 
@@ -55,6 +56,7 @@ const PESTANAS: readonly DatosPestana[] = [
     titulo: "Sincronización",
     paso: "F19e",
     usaRango: false,
+    componente: Sincronizacion,
   },
 ];
 

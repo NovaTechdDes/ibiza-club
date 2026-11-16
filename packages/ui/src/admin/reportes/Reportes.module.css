@@ -99,3 +99,23 @@
     color: var(--color-exito);
     font-weight: 600;
 }
+
+.conectada{
+    color: var(--color-exito);
+    font-weight: 600;
+}
+
+.sinContacto{
+    color: var(--color-peligro);
+    font-weight: 600;
+}
+
+.nunca{
+    color: var(--color-texto-suave);
+    font-weight: 600;
+}
+
+.atrasada{
+    color: var(--color-aviso);
+    font-weight: 600;
+}
