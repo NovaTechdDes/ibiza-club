@@ -8,14 +8,21 @@ import { useSesionAdmin } from "../sesion";
 import { NOMBRE_ROL } from "../secciones";
 import { Boton } from "../../componentes/Boton";
 import estilos from "../catalogo/Catalogo.module.css";
+import { CambiarPin } from "./CambiarPin";
+import { AccesoPanel } from "./AccesoPanel";
 
 export const Usuarios = () => {
   const [editando, setEditando] = useState<UsuarioListado | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [gestion, setGestion] = useState<{
+    usuario: UsuarioListado;
+    que: "pin" | "acceso";
+  } | null>(null);
+
   const { api } = useApiAdmin();
   const queryClient = useQueryClient();
   const usuarios = useUsuarios();
   const yo = useSesionAdmin((s) => s.usuario);
-  const [error, setError] = useState<string | null>(null);
 
   const cambiarEstado = useMutation({
     mutationFn: async (usuario: UsuarioListado) =>
@@ -39,6 +46,22 @@ export const Usuarios = () => {
         onListo={() => setEditando(null)}
       />
 
+      {gestion?.que === "pin" && (
+        <CambiarPin
+          key={gestion.usuario.id}
+          usuario={gestion.usuario}
+          onListo={() => setGestion(null)}
+        />
+      )}
+
+      {gestion?.que === "acceso" && (
+        <AccesoPanel
+          onListo={() => setGestion(null)}
+          key={gestion.usuario.id}
+          usuario={gestion.usuario}
+        />
+      )}
+
       {error && (
         <p className={estilos.error} role="alert">
           {error}
@@ -48,7 +71,10 @@ export const Usuarios = () => {
       {usuarios.isPending && <p className={estilos.ayuda}>Cargando…</p>}
       {usuarios.isError && (
         <p className={estilos.error}>
-          {mensajeDeError(usuarios.error, "No se pudieron cargar los usuarios.")}
+          {mensajeDeError(
+            usuarios.error,
+            "No se pudieron cargar los usuarios.",
+          )}
         </p>
       )}
       {usuarios.data?.length === 0 && (
@@ -70,7 +96,9 @@ export const Usuarios = () => {
                   {usuario.nombre}
                   {soyYo && " (vos)"}
                 </strong>
-                <span className={estilos.etiqueta}>{NOMBRE_ROL[usuario.rol]}</span>
+                <span className={estilos.etiqueta}>
+                  {NOMBRE_ROL[usuario.rol]}
+                </span>
                 {usuario.accesoPanel && (
                   <span className={estilos.ayuda}>
                     Panel: {usuario.accesoPanel.email}
@@ -81,13 +109,41 @@ export const Usuarios = () => {
                 )}
 
                 <div className={estilos.acciones}>
-                  <Boton variante="secundario" onClick={() => setEditando(usuario)}>
+                  <Boton
+                    variante="secundario"
+                    onClick={() => {
+                      setEditando(usuario);
+                      setGestion(null);
+                    }}
+                  >
                     Editar
                   </Boton>
                   <Boton
+                    variante="secundario"
+                    onClick={() => {
+                      setGestion({ usuario, que: "pin" });
+                      setEditando(null);
+                    }}
+                  >
+                    Cambiar PIN
+                  </Boton>
+                  {usuario.rol !== "CAJERO" && (
+                    <Boton
+                      variante="secundario"
+                      onClick={() => {
+                        setGestion({ usuario, que: "acceso" });
+                        setEditando(null);
+                      }}
+                    >
+                      Acceso al panel
+                    </Boton>
+                  )}
+                  <Boton
                     variante={usuario.activo ? "peligro" : "secundario"}
                     disabled={soyYo || cambiarEstado.isPending}
-                    title={soyYo ? "No podés darte de baja a vos mismo" : undefined}
+                    title={
+                      soyYo ? "No podés darte de baja a vos mismo" : undefined
+                    }
                     onClick={() => cambiarEstado.mutate(usuario)}
                   >
                     {usuario.activo ? "Dar de baja" : "Reactivar"}
