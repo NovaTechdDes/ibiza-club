@@ -5,11 +5,19 @@ import { CampoTexto } from "../../componentes/CampoTexto";
 import estilos from "../catalogo/Catalogo.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mensajeDeError, useApiAdmin } from "../api";
-import { type Caja, type CajaInput, CajaInputSchema } from "@ibiza/shared";
+import {
+  type Caja,
+  type CajaInput,
+  CajaInputSchema,
+  type CajaListado,
+} from "@ibiza/shared";
 import { CLAVE_CAJAS, useCajas } from "./useCajas";
+import { TokenNuevo } from "./TokenNuevo";
 
 type Formulario = { id: number | null; barra: string; nombre: string };
 const VACIO: Formulario = { id: null, barra: "", nombre: "" };
+
+type Accion = "generar" | "revocar";
 
 export function Cajas() {
   const { api } = useApiAdmin();
@@ -17,6 +25,14 @@ export function Cajas() {
 
   const [form, setForm] = useState<Formulario>(VACIO);
   const [error, setError] = useState<string | null>(null);
+  const [tokenNuevo, setTokenNuevo] = useState<{
+    nombreCaja: string;
+    token: string;
+  } | null>(null);
+  const [confirmado, setConfirmado] = useState<{
+    cajaId: number;
+    accion: Accion;
+  } | null>(null);
 
   const cajas = useCajas();
 
@@ -60,6 +76,52 @@ export function Cajas() {
     onError: (e) =>
       setError(mensajeDeError(e, "No se pudo cambiar el estado.")),
   });
+
+  const generarToken = useMutation({
+    mutationFn: async (caja: CajaListado) =>
+      (
+        await api.post<{ cajaId: number; token: string }>(
+          `/cajas/${caja.id}/token`,
+        )
+      ).data,
+    onMutate: () => setError(null),
+    onSuccess: (respuesta, caja) => {
+      setTokenNuevo({ nombreCaja: caja.nombre, token: respuesta.token });
+      setConfirmado(null);
+      return refrescar();
+    },
+    onError: (e) => setError(mensajeDeError(e, "No se pudo generar el token")),
+  });
+
+  const revocarToken = useMutation({
+    mutationFn: async (id: number) =>
+      (await api.delete(`/cajas/${id}/token`)).data,
+    onMutate: () => setError(null),
+    onSuccess: () => {
+      setConfirmado(null);
+      return refrescar();
+    },
+    onError: (e) => setError(mensajeDeError(e, "no se pudo eliminar el token")),
+  });
+
+  function pedir(caja: CajaListado, accion: Accion) {
+    const necesitaConfirmar = accion === "revocar" || caja.vinculada;
+    const yaConfirmado =
+      confirmado?.cajaId === caja.id && confirmado.accion === accion;
+
+    if (necesitaConfirmar && !yaConfirmado) {
+      setConfirmado({ cajaId: caja.id, accion });
+      return;
+    }
+    if (accion === "generar") generarToken.mutate(caja);
+    else revocarToken.mutate(caja.id);
+  }
+
+  const esperando = (caja: CajaListado, accion: Accion) =>
+    confirmado?.cajaId === caja.id && confirmado.accion === accion;
+
+  // Evita que un doble toque en "¿Seguro?" genere dos tokens: el del cartel no sería el guardado.
+  const tokenOcupado = generarToken.isPending || revocarToken.isPending;
 
   function enviar(evento: FormEvent) {
     evento.preventDefault();
@@ -109,6 +171,14 @@ export function Cajas() {
         </p>
       )}
 
+      {tokenNuevo && (
+        <TokenNuevo
+          nombreCaja={tokenNuevo.nombreCaja}
+          token={tokenNuevo.token}
+          onCerrar={() => setTokenNuevo(null)}
+        />
+      )}
+
       {cajas.isPending && <p className={estilos.ayuda}>Cargando…</p>}
       {cajas.isError && (
         <p className={estilos.error}>
@@ -141,6 +211,39 @@ export function Cajas() {
                 <Boton variante="secundario" onClick={() => editar(caja)}>
                   Editar
                 </Boton>
+
+                {caja.activo && (
+                  <Boton
+                    variante="secundario"
+                    disabled={tokenOcupado}
+                    onClick={() => pedir(caja, "generar")}
+                  >
+                    {esperando(caja, "generar")
+                      ? "¿Seguro?"
+                      : caja.vinculada
+                        ? "Nuevo Token"
+                        : "Generar Token"}
+                  </Boton>
+                )}
+
+                {caja.vinculada && caja.activo && (
+                  <Boton
+                    variante="peligro"
+                    disabled={tokenOcupado}
+                    onClick={() => pedir(caja, "revocar")}
+                  >
+                    {esperando(caja, "revocar") ? "¿Seguro?" : "Desvincular"}
+                  </Boton>
+                )}
+
+                {confirmado?.cajaId === caja.id && (
+                  <Boton
+                    variante="secundario"
+                    onClick={() => setConfirmado(null)}
+                  >
+                    Cancelar
+                  </Boton>
+                )}
                 <Boton
                   variante={caja.activo ? "peligro" : "secundario"}
                   disabled={cambiarEstado.isPending}

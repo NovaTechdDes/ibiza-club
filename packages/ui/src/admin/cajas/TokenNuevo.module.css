@@ -1,0 +1,33 @@
+.cartel {
+    display: grid;
+    gap: 12px;
+    padding: var(--espacio);
+    background: var(--color-superficie-alta);
+    border: 2px solid var(--color-acento);
+    border-radius: var(--radio);
+}
+
+.aviso {
+    margin: 0;
+    color: var(--color-aviso);
+}
+
+.dato {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+}
+
+.etiqueta {
+    min-width: 110px;
+    color: var(--color-texto-suave);
+}
+
+/* El token es largo y sin espacios: sin esto rompe el ancho de la pantalla. */
+.valor {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    user-select: all;
+} 
