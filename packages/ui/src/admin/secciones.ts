@@ -4,6 +4,7 @@ import { SeccionCatalogo } from "./catalogo/SeccionCatalogo";
 import { Promociones } from "./promociones/Promociones";
 import { Reportes } from "./reportes/Reportes"
 import { Cajas } from "./cajas/Cajas";
+import { Usuarios } from "./usuarios/Usuarios";
 
 export type IdSeccion = "catalogo" | "promociones" | "reportes" | "usuarios" | "cajas";
 
@@ -22,7 +23,7 @@ export const SECCIONES: readonly Seccion[] = [
     { id: "catalogo", titulo: "Catálogo y precios", roles: ["ADMIN", "ENCARGADO"], paso: "F17", componente: SeccionCatalogo },
     { id: "promociones", titulo: "Promociones", roles: ["ADMIN", "ENCARGADO"], paso: "F18", componente: Promociones },
     { id: "reportes", titulo: "Reportes", roles: ["ADMIN"], paso: "F19", componente: Reportes },
-    { id: "usuarios", titulo: "Usuarios", roles: ["ADMIN"], paso: "F20" },
+    { id: "usuarios", titulo: "Usuarios", roles: ["ADMIN"], paso: "F20", componente: Usuarios },
     { id: "cajas", titulo: "Cajas", roles: ["ADMIN"], paso: "F20", componente: Cajas },
 ];
 

@@ -2,6 +2,7 @@ import z from "zod";
 import { LARGO_NOMBRE, LARGO_PIN } from "../constantes.js";
 import { ROLES } from "../roles.js";
 
+
 export const UsuarioInputSchema = z.object({
     nombre: z.string().trim().min(1).max(LARGO_NOMBRE),
     rol: z.enum(ROLES),
@@ -28,7 +29,13 @@ export const UsuarioPinSchema = z.object({
     pin: UsuarioInputSchema.shape.pin
 });
 
+
+export const UsuarioListadoSchema = UsuarioSchema.omit({pinHash: true}).extend({
+    accesoPanel: z.object({email: z.string()}).nullable()
+})
+
 export type UsuarioInput = z.infer<typeof UsuarioInputSchema>;
 export type UsuarioUpdate = z.infer<typeof UsuarioUpdateSchema>;
 export type UsuarioPin = z.infer<typeof UsuarioPinSchema>;
 export type Usuario = z.infer<typeof UsuarioSchema>
+export type UsuarioListado = z.infer<typeof UsuarioListadoSchema>
