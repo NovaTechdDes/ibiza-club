@@ -1,1 +1,0 @@
-export const CLAVE_CAJAS = ["admin", "cajas"] as const

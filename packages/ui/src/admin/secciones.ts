@@ -3,6 +3,7 @@ import type { ComponentType } from "react";
 import { SeccionCatalogo } from "./catalogo/SeccionCatalogo";
 import { Promociones } from "./promociones/Promociones";
 import { Reportes } from "./reportes/Reportes"
+import { Cajas } from "./cajas/Cajas";
 
 export type IdSeccion = "catalogo" | "promociones" | "reportes" | "usuarios" | "cajas";
 
@@ -22,7 +23,7 @@ export const SECCIONES: readonly Seccion[] = [
     { id: "promociones", titulo: "Promociones", roles: ["ADMIN", "ENCARGADO"], paso: "F18", componente: Promociones },
     { id: "reportes", titulo: "Reportes", roles: ["ADMIN"], paso: "F19", componente: Reportes },
     { id: "usuarios", titulo: "Usuarios", roles: ["ADMIN"], paso: "F20" },
-    { id: "cajas", titulo: "Cajas", roles: ["ADMIN"], paso: "F20" },
+    { id: "cajas", titulo: "Cajas", roles: ["ADMIN"], paso: "F20", componente: Cajas },
 ];
 
 export const seccionesDe = (rol: Rol) => SECCIONES.filter((seccion) => seccion.roles.includes(rol));
