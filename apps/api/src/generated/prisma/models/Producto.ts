@@ -45,6 +45,7 @@ export type ProductoMinAggregateOutputType = {
   categoriaId: number | null
   nombre: string | null
   orden: number | null
+  imagenUrl: string | null
   activo: boolean | null
   version: number | null
   creadaEn: Date | null
@@ -56,6 +57,7 @@ export type ProductoMaxAggregateOutputType = {
   categoriaId: number | null
   nombre: string | null
   orden: number | null
+  imagenUrl: string | null
   activo: boolean | null
   version: number | null
   creadaEn: Date | null
@@ -67,6 +69,7 @@ export type ProductoCountAggregateOutputType = {
   categoriaId: number
   nombre: number
   orden: number
+  imagenUrl: number
   activo: number
   version: number
   creadaEn: number
@@ -94,6 +97,7 @@ export type ProductoMinAggregateInputType = {
   categoriaId?: true
   nombre?: true
   orden?: true
+  imagenUrl?: true
   activo?: true
   version?: true
   creadaEn?: true
@@ -105,6 +109,7 @@ export type ProductoMaxAggregateInputType = {
   categoriaId?: true
   nombre?: true
   orden?: true
+  imagenUrl?: true
   activo?: true
   version?: true
   creadaEn?: true
@@ -116,6 +121,7 @@ export type ProductoCountAggregateInputType = {
   categoriaId?: true
   nombre?: true
   orden?: true
+  imagenUrl?: true
   activo?: true
   version?: true
   creadaEn?: true
@@ -214,6 +220,7 @@ export type ProductoGroupByOutputType = {
   categoriaId: number
   nombre: string
   orden: number
+  imagenUrl: string | null
   activo: boolean
   version: number
   creadaEn: Date
@@ -248,6 +255,7 @@ export type ProductoWhereInput = {
   categoriaId?: Prisma.IntFilter<"Producto"> | number
   nombre?: Prisma.StringFilter<"Producto"> | string
   orden?: Prisma.IntFilter<"Producto"> | number
+  imagenUrl?: Prisma.StringNullableFilter<"Producto"> | string | null
   activo?: Prisma.BoolFilter<"Producto"> | boolean
   version?: Prisma.IntFilter<"Producto"> | number
   creadaEn?: Prisma.DateTimeFilter<"Producto"> | Date | string
@@ -262,6 +270,7 @@ export type ProductoOrderByWithRelationInput = {
   categoriaId?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  imagenUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   activo?: Prisma.SortOrder
   version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
@@ -280,6 +289,7 @@ export type ProductoWhereUniqueInput = Prisma.AtLeast<{
   categoriaId?: Prisma.IntFilter<"Producto"> | number
   nombre?: Prisma.StringFilter<"Producto"> | string
   orden?: Prisma.IntFilter<"Producto"> | number
+  imagenUrl?: Prisma.StringNullableFilter<"Producto"> | string | null
   activo?: Prisma.BoolFilter<"Producto"> | boolean
   version?: Prisma.IntFilter<"Producto"> | number
   creadaEn?: Prisma.DateTimeFilter<"Producto"> | Date | string
@@ -294,6 +304,7 @@ export type ProductoOrderByWithAggregationInput = {
   categoriaId?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  imagenUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   activo?: Prisma.SortOrder
   version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
@@ -313,6 +324,7 @@ export type ProductoScalarWhereWithAggregatesInput = {
   categoriaId?: Prisma.IntWithAggregatesFilter<"Producto"> | number
   nombre?: Prisma.StringWithAggregatesFilter<"Producto"> | string
   orden?: Prisma.IntWithAggregatesFilter<"Producto"> | number
+  imagenUrl?: Prisma.StringNullableWithAggregatesFilter<"Producto"> | string | null
   activo?: Prisma.BoolWithAggregatesFilter<"Producto"> | boolean
   version?: Prisma.IntWithAggregatesFilter<"Producto"> | number
   creadaEn?: Prisma.DateTimeWithAggregatesFilter<"Producto"> | Date | string
@@ -322,6 +334,7 @@ export type ProductoScalarWhereWithAggregatesInput = {
 export type ProductoCreateInput = {
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -336,6 +349,7 @@ export type ProductoUncheckedCreateInput = {
   categoriaId: number
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -347,6 +361,7 @@ export type ProductoUncheckedCreateInput = {
 export type ProductoUpdateInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -361,6 +376,7 @@ export type ProductoUncheckedUpdateInput = {
   categoriaId?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -373,6 +389,7 @@ export type ProductoCreateManyInput = {
   categoriaId: number
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -382,6 +399,7 @@ export type ProductoCreateManyInput = {
 export type ProductoUpdateManyMutationInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -393,6 +411,7 @@ export type ProductoUncheckedUpdateManyInput = {
   categoriaId?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -419,6 +438,7 @@ export type ProductoCountOrderByAggregateInput = {
   categoriaId?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  imagenUrl?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
@@ -437,6 +457,7 @@ export type ProductoMaxOrderByAggregateInput = {
   categoriaId?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  imagenUrl?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
@@ -448,6 +469,7 @@ export type ProductoMinOrderByAggregateInput = {
   categoriaId?: Prisma.SortOrder
   nombre?: Prisma.SortOrder
   orden?: Prisma.SortOrder
+  imagenUrl?: Prisma.SortOrder
   activo?: Prisma.SortOrder
   version?: Prisma.SortOrder
   creadaEn?: Prisma.SortOrder
@@ -546,6 +568,7 @@ export type ProductoUpdateOneWithoutPromocionAlcancesNestedInput = {
 export type ProductoCreateWithoutCategoriaInput = {
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -558,6 +581,7 @@ export type ProductoUncheckedCreateWithoutCategoriaInput = {
   id?: number
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -599,6 +623,7 @@ export type ProductoScalarWhereInput = {
   categoriaId?: Prisma.IntFilter<"Producto"> | number
   nombre?: Prisma.StringFilter<"Producto"> | string
   orden?: Prisma.IntFilter<"Producto"> | number
+  imagenUrl?: Prisma.StringNullableFilter<"Producto"> | string | null
   activo?: Prisma.BoolFilter<"Producto"> | boolean
   version?: Prisma.IntFilter<"Producto"> | number
   creadaEn?: Prisma.DateTimeFilter<"Producto"> | Date | string
@@ -608,6 +633,7 @@ export type ProductoScalarWhereInput = {
 export type ProductoCreateWithoutVariantesInput = {
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -621,6 +647,7 @@ export type ProductoUncheckedCreateWithoutVariantesInput = {
   categoriaId: number
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -647,6 +674,7 @@ export type ProductoUpdateToOneWithWhereWithoutVariantesInput = {
 export type ProductoUpdateWithoutVariantesInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -660,6 +688,7 @@ export type ProductoUncheckedUpdateWithoutVariantesInput = {
   categoriaId?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -670,6 +699,7 @@ export type ProductoUncheckedUpdateWithoutVariantesInput = {
 export type ProductoCreateWithoutPromocionAlcancesInput = {
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -683,6 +713,7 @@ export type ProductoUncheckedCreateWithoutPromocionAlcancesInput = {
   categoriaId: number
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -709,6 +740,7 @@ export type ProductoUpdateToOneWithWhereWithoutPromocionAlcancesInput = {
 export type ProductoUpdateWithoutPromocionAlcancesInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -722,6 +754,7 @@ export type ProductoUncheckedUpdateWithoutPromocionAlcancesInput = {
   categoriaId?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -732,6 +765,7 @@ export type ProductoUncheckedUpdateWithoutPromocionAlcancesInput = {
 export type ProductoCreateManyCategoriaInput = {
   nombre: string
   orden?: number
+  imagenUrl?: string | null
   activo?: boolean
   version: number
   creadaEn?: Date | string
@@ -741,6 +775,7 @@ export type ProductoCreateManyCategoriaInput = {
 export type ProductoUpdateWithoutCategoriaInput = {
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -753,6 +788,7 @@ export type ProductoUncheckedUpdateWithoutCategoriaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -765,6 +801,7 @@ export type ProductoUncheckedUpdateManyWithoutCategoriaInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   nombre?: Prisma.StringFieldUpdateOperationsInput | string
   orden?: Prisma.IntFieldUpdateOperationsInput | number
+  imagenUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   activo?: Prisma.BoolFieldUpdateOperationsInput | boolean
   version?: Prisma.IntFieldUpdateOperationsInput | number
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -816,6 +853,7 @@ export type ProductoSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   categoriaId?: boolean
   nombre?: boolean
   orden?: boolean
+  imagenUrl?: boolean
   activo?: boolean
   version?: boolean
   creadaEn?: boolean
@@ -833,13 +871,14 @@ export type ProductoSelectScalar = {
   categoriaId?: boolean
   nombre?: boolean
   orden?: boolean
+  imagenUrl?: boolean
   activo?: boolean
   version?: boolean
   creadaEn?: boolean
   actualizadoEn?: boolean
 }
 
-export type ProductoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoriaId" | "nombre" | "orden" | "activo" | "version" | "creadaEn" | "actualizadoEn", ExtArgs["result"]["producto"]>
+export type ProductoOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "categoriaId" | "nombre" | "orden" | "imagenUrl" | "activo" | "version" | "creadaEn" | "actualizadoEn", ExtArgs["result"]["producto"]>
 export type ProductoInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   categoria?: boolean | Prisma.CategoriaDefaultArgs<ExtArgs>
   variantes?: boolean | Prisma.Producto$variantesArgs<ExtArgs>
@@ -859,6 +898,7 @@ export type $ProductoPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     categoriaId: number
     nombre: string
     orden: number
+    imagenUrl: string | null
     activo: boolean
     version: number
     creadaEn: Date
@@ -1239,6 +1279,7 @@ export interface ProductoFieldRefs {
   readonly categoriaId: Prisma.FieldRef<"Producto", 'Int'>
   readonly nombre: Prisma.FieldRef<"Producto", 'String'>
   readonly orden: Prisma.FieldRef<"Producto", 'Int'>
+  readonly imagenUrl: Prisma.FieldRef<"Producto", 'String'>
   readonly activo: Prisma.FieldRef<"Producto", 'Boolean'>
   readonly version: Prisma.FieldRef<"Producto", 'Int'>
   readonly creadaEn: Prisma.FieldRef<"Producto", 'DateTime'>

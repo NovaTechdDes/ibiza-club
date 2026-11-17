@@ -10,7 +10,8 @@ export const ProductoInputSchema = z.object({
 export const ProductoSchema = ProductoInputSchema.extend({
     id: z.number().int().positive(),
     activo: z.boolean(),
-    version: z.number().int().min(0)
+    version: z.number().int().min(0),
+    imagenUrl: z.url().nullable()
 });
 
 export type ProductoInput = z.infer<typeof ProductoInputSchema>

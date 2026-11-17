@@ -25,7 +25,7 @@ export const obtenerCambios = async (cajaId: number, desde: number) => {
         }}),
         prisma.producto.findMany({
             where,
-            select: {id: true, categoriaId: true, nombre: true, orden: true, activo: true, version: true}
+            select: {id: true, categoriaId: true, imagenUrl: true, nombre: true, orden: true, activo: true, version: true}
         }),
         prisma.variante.findMany({
             where,

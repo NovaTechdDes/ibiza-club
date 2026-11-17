@@ -90,6 +90,7 @@ model Producto {
   categoriaId   Int
   nombre        String   @db.NVarChar(100)
   orden         Int      @default(0)
+  imagenUrl     String?  @db.NVarChar(500)
   activo        Boolean  @default(true)
   version       Int
   creadaEn      DateTime @default(now())

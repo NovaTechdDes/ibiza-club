@@ -1930,6 +1930,7 @@ export const ProductoScalarFieldEnum = {
   categoriaId: 'categoriaId',
   nombre: 'nombre',
   orden: 'orden',
+  imagenUrl: 'imagenUrl',
   activo: 'activo',
   version: 'version',
   creadaEn: 'creadaEn',

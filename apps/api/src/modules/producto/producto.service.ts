@@ -10,6 +10,7 @@ const seleccion = {
     activo: true,
     version: true,
     categoriaId: true,
+    imagenUrl: true,
     categoria: { select: { id: true, nombre: true } }
 }
 
