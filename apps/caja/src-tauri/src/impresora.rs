@@ -2,11 +2,11 @@ use std::io::Write;
 use std::net::{SocketAddr, TcpStream};
 use std::time::Duration;
 
+use crate::cierre::{Cierre, armar_cierre};
 use crate::escpos::{
     AVANZAR_Y_CORTAR, CENTRADO, INICIAR, IZQUIERDA, TABLA_CP850, TEXTO_GRANDE, TEXTO_NORMAL,
     a_cp850,
 };
-use crate::cierre::{Cierre, armar_cierre};
 use crate::retiro::{Retiro, armar_retiro};
 use crate::ticket::{Ticket, armar_ticket};
 

@@ -41,7 +41,8 @@ fn texto_diferencia(diferencia: i64) -> String {
 pub fn armar_cierre(cierre: &Cierre, ancho: usize) -> Vec<u8> {
     let mut datos = Vec::new();
     let separador = format!("{}\n", "-".repeat(ancho));
-    let fila = |etiqueta: &str, monto: i64| a_cp850(&a_los_costados(etiqueta, &plata(monto), ancho));
+    let fila =
+        |etiqueta: &str, monto: i64| a_cp850(&a_los_costados(etiqueta, &plata(monto), ancho));
 
     datos.extend_from_slice(INICIAR);
     datos.extend_from_slice(TABLA_CP850);
@@ -73,7 +74,10 @@ pub fn armar_cierre(cierre: &Cierre, ancho: usize) -> Vec<u8> {
     // La diferencia es lo que se controla: alta y en negrita
     datos.extend_from_slice(CENTRADO);
     datos.extend_from_slice(TEXTO_ALTO);
-    datos.extend(a_cp850(&format!("{}\n", texto_diferencia(cierre.diferencia))));
+    datos.extend(a_cp850(&format!(
+        "{}\n",
+        texto_diferencia(cierre.diferencia)
+    )));
     datos.extend_from_slice(TEXTO_NORMAL);
     datos.extend_from_slice(NEGRITA_NO);
 

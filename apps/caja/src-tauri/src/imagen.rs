@@ -77,7 +77,10 @@ pub async fn cachear_imagenes(app: AppHandle, urls: Vec<String>) -> Result<u32, 
     }
 
     // Lo que ya no usa ningún producto se borra (también los .parcial de un corte)
-    for entrada in fs::read_dir(&carpeta).map_err(|error| error.to_string())?.flatten() {
+    for entrada in fs::read_dir(&carpeta)
+        .map_err(|error| error.to_string())?
+        .flatten()
+    {
         let nombre = entrada.file_name().to_string_lossy().into_owned();
         if !vigentes.contains(&nombre) {
             let _ = fs::remove_file(entrada.path());

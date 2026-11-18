@@ -1,7 +1,7 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
   "productName": "Ibiza Caja",
-  "version": "0.1.0",
+  "version": "../package.json",
   "identifier": "com.novatech.ibizacaja",
   "build": {
     "beforeDevCommand": "pnpm dev",
@@ -21,13 +21,16 @@
       "csp": null,
       "assetProtocol": {
         "enable": true,
-        "scope":  ["$APPDATA/imagenes/*"]
+        "scope": [
+          "$APPDATA/imagenes/*"
+        ]
       }
     }
   },
   "bundle": {
     "active": true,
-    "targets": "all",
+    "targets": ["nsis"],
+    "createUpdaterArtifacts": true,
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -35,5 +38,11 @@
       "icons/icon.icns",
       "icons/icon.ico"
     ]
+  },
+  "plugins": {
+    "updater": {
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDUyQkI3OEJGMjhBNjM3QUUKUldTdU42WW92M2k3VXFyRlRMZFo0dy9QbVBMSVY1dStUSUZRSkZ3TTkwc01LZlJoUDlLK3kzNE4K",
+      "windows": { "installMode": "passive"}
+    }
   }
 }

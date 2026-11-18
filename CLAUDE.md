@@ -222,11 +222,18 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F22** — Integrar la administración al escritorio: acceso desde el menú lateral, login propio, cerrar sesión al volver a la venta y comprobar que un cambio llega a las cajas.
   - Sub-pasos: **F22a** botón "Administración" en el encabezado de la venta (no hay menú lateral), vista `"admin"` dentro de `PantallaVenta` para que la sincronización siga corriendo; al volver se borran las queries `["admin"]` y se fuerza la bajada (hecho) · **F22b** prueba de punta a punta.
 - [x] **F23** — Crear `apps/panel` (React + Vite, sin Tauri ni SQLite) con las pantallas de `packages/ui`.
-- [ ] **F24** — Publicar el panel en Azure con GitHub Actions y poner su URL real en `CORS_ORIGENES`.
+- [x] **F24** — Publicar el panel en Azure con GitHub Actions y poner su URL real en `CORS_ORIGENES`.
+  - Azure **Static Web Apps** plan Free (`ibiza-panel`, grupo `NOVATECH-BR`, región eastus2), no App Service: el panel son archivos estáticos y así no ocupa `novatech-plan-br`. Se descartó Vercel porque su plan gratis no admite uso comercial. URL: `https://white-smoke-01682b30f.8.azurestaticapps.net`.
+  - Workflow `.github/workflows/deploy-panel.yml`: compila `shared` y el panel (con `tsc`) y sube `apps/panel/dist` con `Azure/static-web-apps-deploy` (`skip_app_build`, secreto `AZURE_SWA_TOKEN`). Al final comprueba que el sitio responda con la cabecera CSP.
+  - `VITE_API_URL` de producción va en `apps/panel/.env.production` (se graba en el JS al compilar; no es secreto). `apps/panel/public/staticwebapp.config.json` tiene el fallback a `index.html` y las cabeceras (CSP con la API y `*.blob.core.windows.net`). En `public/` nunca va configuración: se publica tal cual.
+  - Dominio personalizado: pendiente de comprar. Va como subdominio (ej. `panel.<dominio>`) con un CNAME a la URL de arriba; Azure emite el certificado. Al agregarlo, sumarlo a `CORS_ORIGENES` y a `PANEL_URL` del workflow.
 
 ### Bloque C: instalación y actualizaciones
 
 - [ ] **F25** — Actualización automática con `tauri-plugin-updater` y GitHub Releases: firma, workflow por tag y modal que nunca interrumpe una venta.
+  - Decidido (18/11/2026): los releases van en el **repo principal, privado**. Para no meter un token de GitHub dentro de la app, la caja no le pide la actualización a GitHub sino a **nuestra API** (con su token de dispositivo). La API lee el release con un token de GitHub de solo lectura que vive en el App Service y hace de intermediaria en la descarga.
+  - Decidido (18/11/2026): **se actualiza solo con la caja cerrada**. Se descarga en segundo plano; durante la noche solo hay un aviso chico en el encabezado. Sin apertura abierta, el modal es obligatorio: instala y reinicia. Si no hay internet o falla la descarga, no bloquea.
+  - Sub-pasos: **F25a** claves de firma, plugin y build firmado local · **F25b** workflow por tag que publica el release · **F25c** backend, endpoint de actualizaciones y descarga · **F25d** modal y aviso en la caja · **F25e** prueba de punta a punta (instalar una versión y que se actualice sola).
 - [ ] **F26** — Instalador y puesta a punto en el equipo real: pantalla completa, inicio automático, SmartScreen y prueba de una noche completa sin internet.
 
 ### Observación: qué hace falta para instalar en producción (anotado el 11/11/2026)
@@ -315,6 +322,7 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 - **Primer admin**: resuelto (12/11/2026). Se creó con `apps/api/src/scripts/crear-admin.ts`, corrido desde la consola SSH del App Service (`node dist/scripts/crear-admin.js` con `ADMIN_NOMBRE`, `ADMIN_PIN`, `ADMIN_EMAIL` y `ADMIN_PASSWORD`). El script se niega si ya hay un admin con acceso al panel. El seed sigue sin correrse en producción.
 - **Azure SQL**: hoy usa la oferta gratis; al agotarse el límite, la base se pausa hasta el mes siguiente. Pasarla a paga antes de operar.
 - **App Service**: confirmar que `novatech-plan-br` alcance (lo comparte con otras apps) y tenga Always On.
-- **`CORS_ORIGENES`**: poner la URL real del panel cuando exista; hoy tiene la de la propia API.
+- **`CORS_ORIGENES`**: resuelto (18/11/2026). Tiene la URL del panel, `http://tauri.localhost` y la de la propia API (esta última sobra pero no molesta). El CORS de plataforma del App Service queda vacío para que decida Express.
+- **Recuperar la contraseña del panel**: `apps/api/src/scripts/resetear-password.ts`, por SSH en el App Service (`cd /home/site/wwwroot`, `read -s ADMIN_PASSWORD && export ADMIN_PASSWORD`, `ADMIN_EMAIL=... node dist/scripts/resetear-password.js`). Pisa la contraseña de un `AccesoPanel` existente y deja `RESET_PASSWORD` en la auditoría. En desarrollo: `pnpm --filter @ibiza/api admin:password`.
 - **Application Insights**: previsto en el stack, todavía sin activar.
 - **Clave de la letra de la semana**: en producción vive en la variable `CLAVE_LETRA` del App Service (cargada el 12/11/2026, distinta de la de desarrollo). Si se cambia, cambian las letras de los tickets.
