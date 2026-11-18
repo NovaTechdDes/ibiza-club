@@ -221,7 +221,7 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
   - Decidido (18/11/2026): contenedor con lectura pública (las fotos de bebidas no son sensibles y así la caja las descarga sin token). Un nombre de blob nuevo en cada subida, para que el cambio de URL invalide las cachés. Solo el Admin sube o quita imágenes.
 - [x] **F22** — Integrar la administración al escritorio: acceso desde el menú lateral, login propio, cerrar sesión al volver a la venta y comprobar que un cambio llega a las cajas.
   - Sub-pasos: **F22a** botón "Administración" en el encabezado de la venta (no hay menú lateral), vista `"admin"` dentro de `PantallaVenta` para que la sincronización siga corriendo; al volver se borran las queries `["admin"]` y se fuerza la bajada (hecho) · **F22b** prueba de punta a punta.
-- [ ] **F23** — Crear `apps/panel` (React + Vite, sin Tauri ni SQLite) con las pantallas de `packages/ui`.
+- [x] **F23** — Crear `apps/panel` (React + Vite, sin Tauri ni SQLite) con las pantallas de `packages/ui`.
 - [ ] **F24** — Publicar el panel en Azure con GitHub Actions y poner su URL real en `CORS_ORIGENES`.
 
 ### Bloque C: instalación y actualizaciones
