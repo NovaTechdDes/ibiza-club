@@ -1,0 +1,53 @@
+name: Deploy Panel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "apps/panel/**"
+      - "packages/ui/**"
+      - "packages/shared/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/deploy-panel.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    concurrency: deploy-panel
+    env:
+      PANEL_URL: https://white-smoke-01682b30f.8.azurestaticapps.net
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Compilar shared
+        run: pnpm --filter @ibiza/shared build
+
+      - name: Compilar panel
+        run: pnpm --filter @ibiza/panel build
+
+      - name: Publicar en Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_SWA_TOKEN }}
+          action: upload
+          app_location: apps/panel/dist
+          skip_app_build: true
+          skip_api_build: true
+
+      - name: Comprobar que el panel responda con sus cabeceras
+        run: |
+          curl --fail --silent --show-error --retry 5 --retry-delay 10 --retry-all-errors "$PANEL_URL" -o /dev/null
+          curl --silent --head "$PANEL_URL" | grep -i "content-security-policy"

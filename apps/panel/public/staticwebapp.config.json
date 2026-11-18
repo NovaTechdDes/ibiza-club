@@ -1,0 +1,11 @@
+{
+    "navigationFallback": {
+        "rewrite": "/index.html",
+        "exclude": ["/assets/*"]
+    },
+    "globalHeaders": {
+        "Content-Security-Policy":  "default-src 'self'; connect-src 'self' https://ibiza-api-nova-e9bwhdevbfbkg9ag.brazilsouth-01.azurewebsites.net; img-src 'self' data: https://*.blob.core.windows.net; style-src 'self'; script-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'",
+        "X-Content-Type-Options": "nosniff",
+        "Referrer-Policy": "strict-origin-when-cross-origin"
+    }
+}
