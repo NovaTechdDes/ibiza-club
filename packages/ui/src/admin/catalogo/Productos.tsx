@@ -14,6 +14,7 @@ import estilos from "./Catalogo.module.css";
 import { useCategorias } from "./useCategorias";
 import { CampoSelect } from "../../componentes/CampoSelect";
 import { CLAVE_PRODUCTOS, useProductos } from "./useProductos";
+import { ImagenProducto } from "./ImagenProducto";
 
 type Formulario = {
   id: number | null;
@@ -202,6 +203,11 @@ export function Productos() {
                 className={`${estilos.fila} ${producto.activo ? "" : estilos.inactiva}`}
               >
                 <span className={estilos.orden}>{producto.orden}</span>
+                <ImagenProducto
+                  producto={producto}
+                  puedeEditar={esAdmin && producto.activo}
+                  onError={setError}
+                />
                 <strong className={estilos.nombre}>{producto.nombre}</strong>
                 {!producto.activo && (
                   <span className={estilos.etiqueta}>Dado de baja</span>

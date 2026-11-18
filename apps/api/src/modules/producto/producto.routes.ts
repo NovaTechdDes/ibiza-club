@@ -3,16 +3,15 @@ import { z } from "zod";
 import { actualizarProducto, cambiarEstadoProducto, cambiarImagenProducto, crearProducto, listarProductos, obtenerProducto, quitarImagenProducto } from "./producto.service.js";
 import { validar } from "../../middleware/validar.js";
 import { IdParamSchema } from "../comun/id-param.js";
-import { ProductoInputSchema, ProductoUpdateSchema } from "@ibiza/shared";
+import { ProductoInputSchema, ProductoUpdateSchema, TAMANIO_MAXIMO_IMAGEN, TIPOS_IMAGEN } from "@ibiza/shared";
 import { adminOEncargado, soloAdmin } from "../../middleware/autenticar.js";
-import { TAMANIO_MAXIMO_IMAGEN } from "../../storage/imagenes.js";
 import { AppError } from "../../errors/app-error.js";
 
 const ListarQuerySchema = z.object({
     categoriaId: z.coerce.number().int().positive().optional()
 });
 
-const leerImagen = express.raw({ type: ["image/jpeg", "image/png", "image/webp"], limit: TAMANIO_MAXIMO_IMAGEN})
+const leerImagen = express.raw({ type: TIPOS_IMAGEN, limit: TAMANIO_MAXIMO_IMAGEN})
 
 export const productoRouter: Router = Router();
 

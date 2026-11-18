@@ -6,8 +6,6 @@ import { randomUUID } from "node:crypto";
 
 const contenedor = BlobServiceClient.fromConnectionString(env.AZURE_STORAGE_CONNECTION_STRING).getContainerClient(env.AZURE_STORAGE_CONTENEDOR)
 
-export const TAMANIO_MAXIMO_IMAGEN = 2 * 1024 * 1024;
-
 const detectarFormato = (datos: Buffer) => {
     if(datos[0] === 0xff && datos[1] === 0xd8 && datos[2] === 0xff){
         return { tipo: "image/jpeg", extension: "jpg"}

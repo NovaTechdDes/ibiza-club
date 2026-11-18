@@ -1,0 +1,23 @@
+.contenedor {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.miniatura {
+    height: 56px;
+    width: 56px;
+    object-fit: cover;
+    border-radius: var(--radio);
+    border: 1px solid var(--color-borde);
+
+}
+
+
+.vacia {
+    display: grid;
+    place-items: center;
+    background-color: var(--color-superficie-alta);
+    font-size: 12px;
+     color: var(--color-texto-suave)
+}

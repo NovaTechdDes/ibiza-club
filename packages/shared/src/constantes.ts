@@ -8,3 +8,5 @@ export const ZONA_HORARIA_MIN = -180;
 export const HORA_CORTE_JORNADA = 10;
 export const LETRAS_TICKET = "ABCDEFGHJKLMNPRSTUVWXYZ";
 export const MAX_DIAS_REPORTE = 93; // ~3 meses por consulta
+export const TAMANIO_MAXIMO_IMAGEN = 2 * 1024 * 1024;
+export const TIPOS_IMAGEN = ["image/jpeg", "image/png", "image/webp"];
