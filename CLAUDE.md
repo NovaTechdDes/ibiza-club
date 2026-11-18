@@ -209,7 +209,7 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
   - Todo vive en `packages/ui/src/admin/`. Las apps montan `<Administracion apiUrl onVolver? />` dentro de su `QueryClientProvider`.
   - Para sumar una pantalla (F17 a F20): escribir el componente y ponerlo en `componente` de su entrada en `secciones.ts`. Las pantallas piden la API con `useApiAdmin()` y muestran errores con `mensajeDeError()`.
   - Sesión en `sessionStorage` (aguanta un F5, muere al cerrar). Un 401 con sesión abierta la cierra sola. El aviso de sin internet sale de pegarle a `/health` cada 15 s, no de `navigator.onLine`.
-  - Vista previa en desarrollo: `pnpm --filter @ibiza/caja dev` y abrir `http://localhost:1420/#admin` en el navegador (está en `apps/caja/src/main.tsx`; se reemplaza en F22).
+  - En desarrollo se prueba con `pnpm --filter @ibiza/caja tauri dev`, desde el botón "Administración" de la pantalla de venta (F22). La vista previa con `#admin` en el navegador ya no existe.
 - [x] **F17** — Pantallas de catálogo: categorías, productos, envases, variantes y precios.
 - [x] **F18** — Pantalla de promociones.
 - [x] **F19** — Pantallas de reportes: ventas por caja, medio de pago y promo, arqueos y estado de sincronización.
@@ -219,7 +219,8 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
   - Sub-pasos: **F21a** campo `imagenUrl` en `Producto` (hecho) · **F21b** Blob Storage y endpoints `PUT`/`DELETE /productos/:id/imagen` (hecho) · **F21c** subir y quitar la imagen desde la pantalla de productos (hecho) · **F21d** caché local en la caja y mostrarla en la venta (hecho).
   - Caché (F21d): después de cada bajada, el comando Rust `cachear_imagenes` (`src-tauri/src/imagen.rs`, con `reqwest` + `native-tls`) baja a `$APPDATA/imagenes/` las que faltan y borra las que ya no usa ningún producto. El nombre del archivo es el del blob. La venta las muestra con el protocolo `asset` (`convertFileSrc`, scope solo esa carpeta) desde `src/lib/imagenes.ts`. La migración 4 agrega `Producto.imagenUrl` y vuelve `versionCatalogo` a 0.
   - Decidido (18/11/2026): contenedor con lectura pública (las fotos de bebidas no son sensibles y así la caja las descarga sin token). Un nombre de blob nuevo en cada subida, para que el cambio de URL invalide las cachés. Solo el Admin sube o quita imágenes.
-- [ ] **F22** — Integrar la administración al escritorio: acceso desde el menú lateral, login propio, cerrar sesión al volver a la venta y comprobar que un cambio llega a las cajas.
+- [x] **F22** — Integrar la administración al escritorio: acceso desde el menú lateral, login propio, cerrar sesión al volver a la venta y comprobar que un cambio llega a las cajas.
+  - Sub-pasos: **F22a** botón "Administración" en el encabezado de la venta (no hay menú lateral), vista `"admin"` dentro de `PantallaVenta` para que la sincronización siga corriendo; al volver se borran las queries `["admin"]` y se fuerza la bajada (hecho) · **F22b** prueba de punta a punta.
 - [ ] **F23** — Crear `apps/panel` (React + Vite, sin Tauri ni SQLite) con las pantallas de `packages/ui`.
 - [ ] **F24** — Publicar el panel en Azure con GitHub Actions y poner su URL real en `CORS_ORIGENES`.
 

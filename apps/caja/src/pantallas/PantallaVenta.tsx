@@ -1,4 +1,4 @@
-import { Boton, BotonTema, Tarjeta } from "@ibiza/ui";
+import { Administracion, Boton, BotonTema, Tarjeta } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
 import { MEDIOS_PAGO, NOMBRE_MEDIO, type Rol } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
@@ -21,6 +21,8 @@ import { registrarAuditoria } from "../db/auditoria";
 import { PantallaCambioCajero } from "./PantallaCambioCajero";
 import { PantallaAnulacion } from "./PantallaAnulacion";
 import { PantallaCierre } from "./PantallaCierre";
+import { useQueryClient } from "@tanstack/react-query";
+import { CLAVE_BAJADA } from "../hooks/useBajada";
 
 // Cambiar la impresora en plena noche puede dejar la caja sin tickets
 const ROLES_CONFIGURAN: Rol[] = ["ENCARGADO", "ADMIN"];
@@ -31,6 +33,7 @@ interface Props {
 
 export function PantallaVenta({ vinculacion }: Props) {
   const usuario = useSesion((estado) => estado.usuario);
+  const queryClient = useQueryClient();
 
   const carrito = useCarritoCalculado();
   const vaciar = useCarrito((estado) => estado.vaciar);
@@ -41,7 +44,14 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   const [categoriaId, setCategoriaId] = useState<number | null>(null);
   const [vista, setVista] = useState<
-    "venta" | "pin" | "impresora" | "retiro" | "cambio" | "anulacion" | "cierre"
+    | "venta"
+    | "pin"
+    | "impresora"
+    | "retiro"
+    | "cambio"
+    | "anulacion"
+    | "cierre"
+    | "admin"
   >("venta");
 
   const { data: categorias } = useCategoriaVenta();
@@ -51,6 +61,12 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   async function pedirVaciar() {
     if (await confirmar("¿Vaciar el carrito?", "Vaciar")) vaciar();
+  }
+
+  function volverDeAdmin() {
+    queryClient.removeQueries({ queryKey: ["admin"] });
+    queryClient.invalidateQueries({ queryKey: CLAVE_BAJADA });
+    setVista("venta");
   }
 
   // Estos returns van después de todos los hooks: React exige que se llamen
@@ -92,6 +108,12 @@ export function PantallaVenta({ vinculacion }: Props) {
     return <PantallaCierre onVolver={() => setVista("venta")} />;
   }
 
+  if (vista === "admin") {
+    return (
+      <Administracion apiUrl={vinculacion.apiUrl} onVolver={volverDeAdmin} />
+    );
+  }
+
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
@@ -106,6 +128,13 @@ export function PantallaVenta({ vinculacion }: Props) {
 
         {/* Con productos en el carrito no se sale de la venta: se perdería la compra en curso */}
         <div className={estilos.acciones}>
+          <Boton
+            variante="secundario"
+            disabled={carrito.cantidad > 0}
+            onClick={() => setVista("admin")}
+          >
+            Administracion
+          </Boton>
           <Boton
             variante="secundario"
             disabled={carrito.cantidad > 0}
