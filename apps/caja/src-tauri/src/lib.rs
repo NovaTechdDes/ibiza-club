@@ -2,6 +2,7 @@ use tauri_plugin_sql::{Migration, MigrationKind};
 
 mod cierre;
 mod escpos;
+mod imagen;
 mod impresora;
 mod pin;
 mod retiro;
@@ -38,6 +39,12 @@ pub fn run() {
             sql: include_str!("../migrations/003_operaciones.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 4,
+            description: "imagenes",
+            sql: include_str!("../migrations/004_imagenes.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
     tauri::Builder::default()
         .plugin(tauri_plugin_opener::init())
@@ -54,6 +61,7 @@ pub fn run() {
             impresora::imprimir_ticket,
             impresora::imprimir_retiro,
             impresora::imprimir_cierre,
+            imagen::cachear_imagenes,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

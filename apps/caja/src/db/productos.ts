@@ -1,3 +1,4 @@
+import { srcImagenLocal } from "../lib/imagenes";
 import { obtenerDb } from "./conexion";
 
 export type VarianteVenta = {
@@ -12,6 +13,7 @@ export type ProductoVenta = {
     categoriaId: number;
     nombre: string;
     variantes: VarianteVenta[]
+    imagen: string | null
 };
 
 export type CategoriaVenta = {
@@ -27,6 +29,7 @@ type Fila = {
     productoNombre: string;
     varianteId: number;
     envaseId: number;
+    imagenUrl: string | null;
     envaseNombre: string;
     precio:number;
 };
@@ -35,7 +38,7 @@ export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
     const db = await obtenerDb();
     const filas = await db.select<Fila[]>(
         `SELECT c.id AS categoriaId, c.nombre AS categoriaNombre,
-                p.id AS productoId, p.nombre AS productoNombre,
+                p.id AS productoId, p.nombre AS productoNombre, p.imagenUrl,
                 v.id AS varianteId, v.precio,
                 e.id AS envaseId, e.nombre AS envaseNombre
          FROM Variante v
@@ -63,7 +66,8 @@ export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
                 id: fila.productoId,
                 categoriaId: fila.categoriaId,
                 nombre: fila.productoNombre,
-                variantes: []
+                variantes: [],
+                imagen: await srcImagenLocal(fila.imagenUrl)
             };
             productos.set(producto.id, producto);
             categoria.productos.push(producto);
@@ -79,4 +83,13 @@ export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
     return [...categorias.values()]
 
 
+};
+
+export const leerUrlsImagenes = async(): Promise<string[]> => {
+    const db = await obtenerDb();
+    const filas = await db.select<{imagenUrl: string}[]>(
+        `SELECT DISTINCT imagenUrl from Producto where activo = 1 AND imagenUrl IS NOT NULL`
+    )
+
+    return filas.map((f) => f.imagenUrl);
 }
