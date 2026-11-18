@@ -2,6 +2,9 @@ import { ProductoInput, ProductoUpdate } from "@ibiza/shared";
 import { prisma } from "../../db/prisma.js"
 import { AppError } from "../../errors/app-error.js";
 import { escribirCatalogo } from "../comun/escritura-catalogo.js";
+import { borrarImagen, subirImagenProducto } from "../../storage/imagenes.js";
+import { logger } from "../../config/logger.js";
+
 
 const seleccion = {
     id: true,
@@ -95,3 +98,44 @@ export const cambiarEstadoProducto = async (usuarioId: number, id: number, activ
         tx.producto.update({ where: {id}, data: {activo, version}, select: seleccion })
     )
 };
+
+
+const borrarSinFallar = async (url: string) => {
+    try {
+        await borrarImagen(url);
+    } catch (err) {
+        logger.warn({err, url}, "No se pudo borrar la imagen del Blob Storage")
+    }
+}
+
+export const cambiarImagenProducto = async(usuarioId:number, id: number, datos: Buffer) => {
+    const {imagenUrl: vieja} = await obtenerProducto(id);
+    const nueva = await subirImagenProducto(id, datos);
+
+    const producto = await escribirCatalogo(usuarioId, "PRODUCTO_IMAGEN", { productoId: id, imagenUrl: nueva}, (tx, version) =>
+        tx.producto.update({where: {id}, data: {imagenUrl: nueva, version}, select: seleccion})
+    )
+    .catch(async (error) => {
+        await borrarSinFallar(nueva);
+        throw error;
+    });
+
+    if (vieja) await borrarSinFallar(vieja);
+
+    return producto;
+}
+
+export const quitarImagenProducto = async(usuarioId: number, id: number) => {
+    const producto = await obtenerProducto(id);
+
+    if (!producto.imagenUrl) return producto;
+    const vieja = producto.imagenUrl;
+
+    const actualizado = await escribirCatalogo(usuarioId, "PRODUCTO_IMAGEN_QUITAR", {productoId: id, imagenAnterior: vieja}, (tx, version) => 
+        tx.producto.update({where: {id}, data: {imagenUrl: null, version}, select: seleccion})    
+    );
+
+    await borrarSinFallar(vieja);
+
+    return actualizado
+}

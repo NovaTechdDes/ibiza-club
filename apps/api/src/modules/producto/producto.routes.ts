@@ -1,14 +1,18 @@
-import { Router } from "express";
+import express, { Router } from "express";
 import { z } from "zod";
-import { actualizarProducto, cambiarEstadoProducto, crearProducto, listarProductos, obtenerProducto } from "./producto.service.js";
+import { actualizarProducto, cambiarEstadoProducto, cambiarImagenProducto, crearProducto, listarProductos, obtenerProducto, quitarImagenProducto } from "./producto.service.js";
 import { validar } from "../../middleware/validar.js";
 import { IdParamSchema } from "../comun/id-param.js";
 import { ProductoInputSchema, ProductoUpdateSchema } from "@ibiza/shared";
 import { adminOEncargado, soloAdmin } from "../../middleware/autenticar.js";
+import { TAMANIO_MAXIMO_IMAGEN } from "../../storage/imagenes.js";
+import { AppError } from "../../errors/app-error.js";
 
 const ListarQuerySchema = z.object({
     categoriaId: z.coerce.number().int().positive().optional()
 });
+
+const leerImagen = express.raw({ type: ["image/jpeg", "image/png", "image/webp"], limit: TAMANIO_MAXIMO_IMAGEN})
 
 export const productoRouter: Router = Router();
 
@@ -32,6 +36,21 @@ productoRouter.patch('/:id', soloAdmin, validar({params: IdParamSchema, body: Pr
 productoRouter.post('/:id/baja', soloAdmin, validar({params: IdParamSchema}), async(req, res) => {
     res.json(await cambiarEstadoProducto(req.usuarioId!, Number(req.params.id), false))
 });
+
 productoRouter.post('/:id/alta', soloAdmin, validar({params: IdParamSchema}), async(req, res) => {
     res.json(await cambiarEstadoProducto(req.usuarioId!, Number(req.params.id), true))
+});
+
+
+productoRouter.put('/:id/imagen', soloAdmin, validar({params: IdParamSchema}), leerImagen, async(req, res) => {
+    if(!Buffer.isBuffer(req.body) || req.body.length === 0){
+        throw new AppError(400, "VALIDACION", "Manda la imagen en el cuerpo de Content-Type image/jpeg, image/png o image/webp")
+    }
+    res.json(await cambiarImagenProducto(req.usuarioId!, Number(req.params.id), req.body));
+});
+
+
+
+productoRouter.delete('/:id/imagen', soloAdmin, validar({params: IdParamSchema}), async(req, res) => {
+    res.json(await quitarImagenProducto(req.usuarioId!, Number(req.params.id)))
 });

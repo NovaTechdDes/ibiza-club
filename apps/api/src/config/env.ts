@@ -13,7 +13,9 @@ const envSchema = z.object({
     CORS_ORIGENES: z.string().transform((val) => val.split(',').map((origen) => origen.trim())).pipe(z.array(z.url()).min(1)),
     LOG_LEVEL: z.enum(["fatal", "error", "warn", "info", "debug", "trace", "silent"]).default("info"),
     CLAVE_LETRA: z.string().min(32),
-    JORNADA_ACTIVA: z.stringbool().default(true)
+    JORNADA_ACTIVA: z.stringbool().default(true),
+    AZURE_STORAGE_CONNECTION_STRING: z.string().min(3),
+    AZURE_STORAGE_CONTENEDOR: z.string().min(3)
 });
 
 export const env = envSchema.parse(process.env);

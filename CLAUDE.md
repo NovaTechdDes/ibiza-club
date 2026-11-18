@@ -214,8 +214,10 @@ Para retomar: "seguimos con el paso F3". Cada paso que toca backend lo dice en e
 - [x] **F18** — Pantalla de promociones.
 - [x] **F19** — Pantallas de reportes: ventas por caja, medio de pago y promo, arqueos y estado de sincronización.
   - Todo en `packages/ui/src/admin/reportes/`: una pestaña por reporte en `Reportes.tsx`. Las que llevan rango usan `useReporte(ruta, rango)`; Sincronización no lleva rango y usa `useEstadoSync()`, que se refresca cada 30 s.
-- [ ] **F20** — Pantallas de usuarios y cajas, incluido generar y revocar el token de cada caja.
+- [x] **F20** — Pantallas de usuarios y cajas, incluido generar y revocar el token de cada caja.
 - [ ] **F21** — Imágenes de productos (incluye backend): subida a Blob Storage, carga desde administración y caché local en las cajas para vender sin internet.
+  - Sub-pasos: **F21a** campo `imagenUrl` en `Producto` (hecho) · **F21b** Blob Storage y endpoints `PUT`/`DELETE /productos/:id/imagen` · **F21c** subir y quitar la imagen desde la pantalla de productos · **F21d** caché local en la caja y mostrarla en la venta.
+  - Decidido (18/11/2026): contenedor con lectura pública (las fotos de bebidas no son sensibles y así la caja las descarga sin token). Un nombre de blob nuevo en cada subida, para que el cambio de URL invalide las cachés. Solo el Admin sube o quita imágenes.
 - [ ] **F22** — Integrar la administración al escritorio: acceso desde el menú lateral, login propio, cerrar sesión al volver a la venta y comprobar que un cambio llega a las cajas.
 - [ ] **F23** — Crear `apps/panel` (React + Vite, sin Tauri ni SQLite) con las pantallas de `packages/ui`.
 - [ ] **F24** — Publicar el panel en Azure con GitHub Actions y poner su URL real en `CORS_ORIGENES`.

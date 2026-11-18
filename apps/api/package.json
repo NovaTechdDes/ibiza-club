@@ -14,6 +14,7 @@
     "admin:crear": "tsx --env-file-if-exists=.env src/scripts/crear-admin.ts"
   },
   "dependencies": {
+    "@azure/storage-blob": "^12.34.0",
     "@ibiza/shared": "workspace:*",
     "@prisma/adapter-mssql": "^7.10.1",
     "@prisma/client": "^7.10.1",
