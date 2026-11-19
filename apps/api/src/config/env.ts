@@ -15,7 +15,9 @@ const envSchema = z.object({
     CLAVE_LETRA: z.string().min(32),
     JORNADA_ACTIVA: z.stringbool().default(true),
     AZURE_STORAGE_CONNECTION_STRING: z.string().min(3),
-    AZURE_STORAGE_CONTENEDOR: z.string().min(3)
+    AZURE_STORAGE_CONTENEDOR: z.string().min(3),
+    GITHUB_TOKEN: z.string().min(1),
+    GITHUB_REPO: z.string().regex(/^[\w.-]+\/[\w.-]+$/).default("NovaTechdDes/ibiza-club")
 });
 
 export const env = envSchema.parse(process.env);
