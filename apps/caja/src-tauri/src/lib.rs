@@ -1,5 +1,6 @@
 use tauri_plugin_sql::{Migration, MigrationKind};
 
+mod actualizacion;
 mod cierre;
 mod escpos;
 mod imagen;
@@ -48,6 +49,7 @@ pub fn run() {
     ];
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
+        .manage(actualizacion::Pendiente::default())
         .plugin(tauri_plugin_opener::init())
         .plugin(
             tauri_plugin_sql::Builder::new()
@@ -63,6 +65,8 @@ pub fn run() {
             impresora::imprimir_retiro,
             impresora::imprimir_cierre,
             imagen::cachear_imagenes,
+            actualizacion::buscar_actualizacion,
+            actualizacion::instalar_actualizacion,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

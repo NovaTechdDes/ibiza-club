@@ -2,6 +2,7 @@ import { Administracion, Boton, BotonTema, Tarjeta } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
 import { MEDIOS_PAGO, NOMBRE_MEDIO, type Rol } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
+import { AvisoActualizacion } from "../componentes/AvisoActualizacion";
 
 import estilos from "./PantallaVenta.module.css";
 import { type Vinculacion } from "../db/ajustes";
@@ -122,6 +123,7 @@ export function PantallaVenta({ vinculacion }: Props) {
           <span className={estilos.cajero}>{usuario?.nombre}</span>
         </div>
         <IndicadorSync />
+        <AvisoActualizacion />
         {cobrar.data && (
           <span className={estilos.ultima}>Última venta: #{cobrar.data}</span>
         )}
