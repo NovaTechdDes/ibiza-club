@@ -1,4 +1,4 @@
-import { aplicarAumento } from "@ibiza/shared";
+import { aplicarAumento, type Seccion } from "@ibiza/shared";
 import { srcImagenLocal } from "../lib/imagenes";
 import { leerAumento } from "./ajustes";
 import { obtenerDb } from "./conexion";
@@ -22,6 +22,7 @@ export type CategoriaVenta = {
     id: number;
     nombre: string;
     productos: ProductoVenta[]
+    seccion: Seccion;
 };
 
 type Fila = {
@@ -34,13 +35,14 @@ type Fila = {
     imagenUrl: string | null;
     envaseNombre: string;
     precio:number;
+    categoriaSeccion: Seccion;
 };
 
 export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
     const db = await obtenerDb();
     const [filas, aumento] = await Promise.all([
        db.select<Fila[]>(
-        `SELECT c.id AS categoriaId, c.nombre AS categoriaNombre,
+        `SELECT c.id AS categoriaId, c.nombre AS categoriaNombre, c.seccion AS categoriaSeccion,
                 p.id AS productoId, p.nombre AS productoNombre, p.imagenUrl,
                 v.id AS varianteId, v.precio,
                 e.id AS envaseId, e.nombre AS envaseNombre
@@ -55,15 +57,13 @@ export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
         leerAumento()
     ]);
 
-    
-
     const categorias = new Map<number, CategoriaVenta>();
     const productos = new Map<number, ProductoVenta>();
 
     for(const fila of filas){
         let categoria = categorias.get(fila.categoriaId);
         if(!categoria){
-            categoria = {id: fila.categoriaId, nombre: fila.categoriaNombre, productos: []};
+            categoria = {id: fila.categoriaId, nombre: fila.categoriaNombre, seccion: fila.categoriaSeccion, productos: []};
             categorias.set(categoria.id, categoria)
         }
 

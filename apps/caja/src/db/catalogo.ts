@@ -4,8 +4,8 @@ import { obtenerDb, Sentencia, transaccion } from "./conexion";
 
 const TABLAS: Record<keyof Cambios, { tabla: string, columnas: string[]}> = {
     envases: { tabla: 'Envase', columnas: ['id', 'nombre', 'orden', 'activo']},
-    categorias: {tabla: "Categoria", columnas: ["id", "nombre", "orden", "activo"]},
-     productos: { tabla: "Producto", columnas: ["id", "categoriaId", "imagenUrl", "nombre", "orden", "activo"] },
+    categorias: {tabla: "Categoria", columnas: ["id", "nombre", "orden", "seccion", "activo"]},
+    productos: { tabla: "Producto", columnas: ["id", "categoriaId", "imagenUrl", "nombre", "orden", "activo"] },
     variantes: { tabla: "Variante", columnas: ["id", "productoId", "envaseId", "precio", "activo"] },
     promociones: {
         tabla: "Promocion",

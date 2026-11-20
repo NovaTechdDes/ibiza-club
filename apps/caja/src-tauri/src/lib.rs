@@ -46,6 +46,12 @@ pub fn run() {
             sql: include_str!("../migrations/004_imagenes.sql"),
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 5,
+            description: "seccion",
+            sql: include_str!("../migrations/005_seccion.sql"),
+            kind: MigrationKind::Up,
+        },
     ];
     tauri::Builder::default()
         .plugin(tauri_plugin_updater::Builder::new().build())
