@@ -1,4 +1,15 @@
-import { Administracion, Boton, BotonTema, Tarjeta } from "@ibiza/ui";
+import {
+  Administracion,
+  Boton,
+  BotonTema,
+  IconoAdministracion,
+  IconoAnulacion,
+  IconoCambiarUsuario,
+  IconoCandado,
+  IconoImpresora,
+  IconoRetiro,
+  Tarjeta,
+} from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
 import { MEDIOS_PAGO, NOMBRE_MEDIO } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
@@ -141,30 +152,38 @@ export function PantallaVenta({ vinculacion }: Props) {
         <div className={estilos.acciones}>
           <Boton
             variante="secundario"
+            className={estilos.accion}
             disabled={carrito.cantidad > 0}
             onClick={() => setVista("admin")}
           >
-            Administracion
+            <IconoAdministracion />
+            Administración
           </Boton>
           <Boton
             variante="secundario"
+            className={estilos.accion}
             disabled={carrito.cantidad > 0}
             onClick={pedirImpresora}
           >
+            <IconoImpresora />
             Impresora
           </Boton>
           <Boton
             variante="secundario"
+            className={estilos.accion}
             disabled={carrito.cantidad > 0}
             onClick={() => setVista("retiro")}
           >
+            <IconoRetiro />
             Retiro
           </Boton>
           <Boton
             variante="secundario"
+            className={estilos.accion}
             disabled={carrito.cantidad > 0}
             onClick={() => setVista("anulacion")}
           >
+            <IconoAnulacion />
             Anulación
           </Boton>
         </div>
@@ -173,17 +192,21 @@ export function PantallaVenta({ vinculacion }: Props) {
           <BotonTema />
           <Boton
             variante="secundario"
+            className={estilos.accion}
             disabled={carrito.cantidad > 0}
             onClick={() => setVista("cambio")}
           >
+            <IconoCambiarUsuario />
             Cambiar cajero
           </Boton>
           {/* Lejos de Retiro/Anulación y en rojo: cerrar la caja no tiene vuelta atrás */}
           <Boton
             variante="peligro"
+            className={`${estilos.accion} ${estilos.accionPeligro}`}
             disabled={carrito.cantidad > 0}
             onClick={() => setVista("cierre")}
           >
+            <IconoCandado />
             Cerrar caja
           </Boton>
         </div>

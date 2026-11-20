@@ -257,7 +257,9 @@ Para cuando F25 y lo demás funcione; hoy no es prioridad. Para retomar: "seguim
 
 - [ ] **M1** — Menú separado de comida y bebida, pero con un mismo carrito.
 - [ ] **M2** — Aumento de precio por caja: cada caja tiene un porcentaje propio. El precio del producto es el mismo para todas las PCs (cuando se actualiza, se actualiza para todas); el porcentaje se suma solo en el carrito.
-- [ ] **M3** — Mejorar el diseño.
+- [ ] **M3** — Mejorar el diseño: moderno, elegante, fuentes más chicas y tarjetas de producto nuevas.
+  - Decidido (20/11/2026): paleta **grafito + violeta** (neutros fríos; el violeta `#7c3aed` solo en lo activo: categoría elegida, cobrar, foco) y tipografía **Inter**, empaquetada con `@fontsource-variable/inter` (nada de Google Fonts: la caja vende sin internet). Texto base de 15 px y botones de 52 px como mínimo.
+  - Sub-pasos: **M3a** tokens en `tema.css` (paleta, fuente, escala de tamaños, radios, sombras) · **M3b** componentes base de `packages/ui` e íconos SVG · **M3c** tarjeta de producto y grilla · **M3d** encabezado, carrito y botones de pago · **M3e** pantallas secundarias (PIN, apertura, retiro, cambio de cajero, anulación, cierre, impresora, vincular, actualización) centradas y con la escala nueva · **M3f** administración y alertas de SweetAlert.
 - [x] **M4** — Si el encargado ya abrió la caja, que no vuelva a pedir otro código (hecho, 20/11/2026).
   - Se amplió a las cinco acciones que pedían PIN de encargado: apertura, retiro, anulación, cierre y configurar la impresora. Si quien está en la caja es Encargado o Admin, no se pide PIN (ya lo puso al entrar): solo una confirmación con el monto o el ticket (`confirmar` de `lib/alertas.ts`). El cierre ya tenía "¿Contaste $X?" y no suma otra; la impresora abre directo. Un Cajero sigue pidiendo el PIN de un encargado. La operación queda registrada con el mismo usuario como cajero y como autorizante.
   - La decisión vive en `apps/caja/src/lib/autorizacion.ts`: `ROLES_AUTORIZAN` (única copia de `["ENCARGADO", "ADMIN"]`) y `puedeAutorizar(usuario, roles?)`, un *type guard* (`usuario is Usuario`).

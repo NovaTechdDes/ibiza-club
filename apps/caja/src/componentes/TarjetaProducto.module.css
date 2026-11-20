@@ -1,14 +1,4 @@
-/*
- * La tarjeta redefine las variables del tema solo para lo que tiene adentro:
- * así Tarjeta y Boton (que leen esas variables) quedan en violeta profundo
- * sin tocar sus estilos, y el contraste contra el fondo claro es fuerte.
- */
 .tarjeta {
-    --color-superficie: var(--color-producto);
-    --color-superficie-alta: var(--color-producto-boton);
-    --color-borde: var(--color-producto-borde);
-    --color-texto: var(--color-producto-texto);
-
     display: flex;
     gap: var(--espacio);
     justify-content: space-between;
@@ -40,10 +30,20 @@
     font-weight: 600;
 }
 
+/* nowrap: con el botón angosto, el "$" se iba a otra línea */
 .precio {
-    font-size: 1.3rem;
+    font-size: var(--texto-lg);
     font-weight: 800;
-    color: var(--color-producto-precio);
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--color-acento);
+}
+
+/* En em: sigue el tamaño del precio si después se cambia */
+.moneda {
+    font-size: 0.7em;
+    font-weight: 700;
+    margin-right: 2px;
 }
 
 

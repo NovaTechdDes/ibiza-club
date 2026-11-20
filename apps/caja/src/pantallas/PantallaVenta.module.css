@@ -20,9 +20,54 @@
   box-shadow: var(--sombra);
 }
 
-/* Más angostos que un Boton normal: tienen que entrar todos en una fila */
-.encabezado button {
-  padding-inline: 16px;
+/*
+ * Acciones del encabezado: ícono + texto, fondo de superficie con borde fino.
+ * Más angostas que un Boton normal: tienen que entrar todas en una fila.
+ */
+.encabezado .accion {
+  padding-inline: 14px;
+  background: var(--color-superficie);
+  border: 1px solid var(--color-borde);
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform 80ms ease, background-color var(--transicion),
+    border-color var(--transicion);
+}
+
+/* El ícono en el tono suave; el texto, en el normal */
+.encabezado .accion svg {
+  flex-shrink: 0;
+  color: var(--color-texto-suave);
+  transition: color var(--transicion);
+}
+
+.encabezado .accion:hover:not(:disabled) {
+  background: var(--color-superficie-hover);
+  border-color: var(--color-borde-fuerte);
+}
+
+.encabezado .accion:hover:not(:disabled) svg {
+  color: var(--color-acento);
+}
+
+/* Cerrar caja: rojo, pero suave. Se llena de rojo solo al pasar o tocar */
+.encabezado .accionPeligro {
+  background: color-mix(in srgb, var(--color-peligro) 10%, transparent);
+  border-color: color-mix(in srgb, var(--color-peligro) 35%, transparent);
+  color: var(--color-peligro);
+}
+
+.encabezado .accionPeligro svg,
+.encabezado .accionPeligro:hover:not(:disabled) svg {
+  color: currentColor;
+}
+
+.encabezado .accionPeligro:hover:not(:disabled),
+.encabezado .accionPeligro:active:not(:disabled) {
+  background: var(--color-peligro);
+  border-color: var(--color-peligro);
+  color: var(--color-sobre-acento);
 }
 
 .identidad {

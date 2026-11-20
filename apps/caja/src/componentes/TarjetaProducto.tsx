@@ -37,7 +37,8 @@ export function TarjetaProducto({ producto, onElegir }: Props) {
           >
             <span>{variante.envaseNombre}</span>
             <span className={estilos.precio}>
-              $ {variante.precio.toLocaleString("es-AR")}
+              <span className={estilos.moneda}>$</span>
+              {variante.precio.toLocaleString("es-AR")}
             </span>
           </Boton>
         ))}

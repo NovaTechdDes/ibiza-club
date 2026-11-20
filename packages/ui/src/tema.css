@@ -1,8 +1,15 @@
+/* Inter empaquetada: viaja dentro del build, funciona sin internet.
+   El @import tiene que ser la primera regla del archivo. */
+@import "@fontsource-variable/inter";
+
 * {
     box-sizing: border-box;
+    /* Barras de scroll finas y del color del borde: menos ruido visual */
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-borde) transparent;
 }
 
-html, body, #root{
+html, body, #root {
     height: 100%;
     margin: 0;
 }
@@ -11,70 +18,93 @@ html, body, #root{
  * Tema claro: es el principal. El oscuro se activa con data-tema="oscuro" en <html>
  * (lo maneja useTema, en tema.ts). Los componentes solo usan estas variables:
  * para cambiar un color se toca acá y en ningún otro lado.
+ *
+ * Paleta grafito + violeta: todo neutro, y el violeta solo en lo que está
+ * activo o es la acción principal (categoría elegida, cobrar, foco).
  */
 :root {
     color-scheme: light;
 
-    --color-fondo: #f3f0fa;
+    /* Neutros */
+    --color-fondo: #f6f6f8;
     --color-superficie: #ffffff;
-    --color-superficie-alta: #ebe6f7;
-    --color-borde: #d9d1ee;
-    --color-texto: #1c1433;
-    --color-texto-suave: #655c85;
+    --color-superficie-alta: #f0f0f3;
+    --color-superficie-hover: #e8e8ed;
+    --color-borde: #e4e4e9;
+    --color-borde-fuerte: #d4d4db;
+    --color-texto: #18181b;
+    --color-texto-suave: #6b6b76;
 
-    --color-acento: #6d28d9;
-    --color-acento-fuerte: #5b1fc0;
-    --color-acento-suave: #ede5ff;
+    /* Acento */
+    --color-acento: #7c3aed;
+    --color-acento-fuerte: #6d28d9;
+    --color-acento-suave: #f3effe;
     --color-sobre-acento: #ffffff;
 
-    --color-exito: #0b7a53;
-    --color-peligro: #d02645;
-    --color-aviso: #a35400;
+    /* Estados */
+    --color-exito: #15803d;
+    --color-peligro: #dc2626;
+    --color-aviso: #b45309;
 
-    /* Tarjetas de producto: violeta profundo en los dos temas, para que se despeguen del fondo */
-    --color-producto: #2b1766;
-    --color-producto-borde: #2b1766;
-    --color-producto-boton: #44298f;
-    --color-producto-texto: #ffffff;
-    --color-producto-precio: #ffc857;
+    /* Sombras: casi invisibles, solo para separar planos */
+    --sombra: 0 1px 2px rgba(16, 16, 24, 0.04), 0 1px 3px rgba(16, 16, 24, 0.06);
+    --sombra-alta: 0 4px 6px rgba(16, 16, 24, 0.04), 0 12px 32px rgba(16, 16, 24, 0.08);
+    --sombra-acento: 0 1px 2px rgba(124, 58, 237, 0.25), 0 4px 12px rgba(124, 58, 237, 0.18);
 
-    --sombra: 0 1px 2px rgba(43, 23, 102, 0.06), 0 6px 20px rgba(43, 23, 102, 0.07);
-    --sombra-acento: 0 4px 14px rgba(109, 40, 217, 0.28);
+    /* Tipografía: escala fija. Los componentes eligen un escalón, no inventan tamaños */
+    --fuente: "Inter Variable", "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif;
+    --fuente-titulo: var(--fuente);
 
-    --tactil-min: 64px;
-    --radio: 14px;
+    --texto-xs: 12px;
+    --texto-sm: 13px;
+    --texto-base: 15px;
+    --texto-md: 17px;
+    --texto-lg: 20px;
+    --texto-xl: 26px;
+    --texto-2xl: 34px;
+
+    /* Táctil: 52px sigue siendo cómodo con apuro (el mínimo recomendado es 44) */
+    --tactil-min: 52px;
+    --tactil-chico: 44px;
+
+    /* Formas y espacios */
+    --radio-chico: 8px;
+    --radio: 10px;
+    --radio-grande: 14px;
+    --radio-pildora: 999px;
+
+    --espacio-chico: 8px;
     --espacio: 16px;
+    --espacio-grande: 24px;
 
-    --fuente: "Segoe UI Variable Text", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
-    --fuente-titulo: "Segoe UI Variable Display", "Segoe UI Variable", "Segoe UI", system-ui, sans-serif;
+    --transicion: 150ms ease;
 }
 
 :root[data-tema="oscuro"] {
     color-scheme: dark;
 
-    --color-fondo: #120e22;
-    --color-superficie: #1c1635;
-    --color-superficie-alta: #2b2251;
-    --color-borde: #3d3370;
-    --color-texto: #f4f0ff;
-    --color-texto-suave: #aca2cf;
+    --color-fondo: #0c0c0f;
+    --color-superficie: #17171c;
+    --color-superficie-alta: #222229;
+    --color-superficie-hover: #2c2c35;
+    --color-borde: #2a2a32;
+    --color-borde-fuerte: #3a3a45;
+    --color-texto: #f4f4f5;
+    --color-texto-suave: #a1a1aa;
 
-    --color-acento: #a98bff;
-    --color-acento-fuerte: #bfa8ff;
-    --color-acento-suave: #2f2463;
-    --color-sobre-acento: #160f2e;
+    /* En oscuro el violeta se aclara y el texto encima pasa a oscuro: así se mantiene el contraste */
+    --color-acento: #a78bfa;
+    --color-acento-fuerte: #c4b5fd;
+    --color-acento-suave: #241d3d;
+    --color-sobre-acento: #14101f;
 
-    --color-exito: #3ddc97;
-    --color-peligro: #ff6b7d;
-    --color-aviso: #ffb84d;
+    --color-exito: #4ade80;
+    --color-peligro: #f87171;
+    --color-aviso: #fbbf24;
 
-    --color-producto: #3a2292;
-    --color-producto-borde: #5b40d1;
-    --color-producto-boton: #5035b3;
-    --color-producto-texto: #ffffff;
-    --color-producto-precio: #ffc857;
-
+    /* En oscuro las sombras no se ven: separan los bordes */
     --sombra: none;
+    --sombra-alta: none;
     --sombra-acento: none;
 }
 
@@ -82,7 +112,9 @@ body {
     background: var(--color-fondo);
     color: var(--color-texto);
     font-family: var(--fuente);
-    font-size: 18px;
+    font-size: var(--texto-base);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
     user-select: none;
     touch-action: manipulation;
     font-variant-numeric: tabular-nums;
@@ -90,5 +122,14 @@ body {
 
 h1, h2, h3 {
     font-family: var(--fuente-titulo);
-    letter-spacing: -0.01em;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.2;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        transition-duration: 0ms !important;
+        animation-duration: 0ms !important;
+    }
 }
