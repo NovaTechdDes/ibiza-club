@@ -258,7 +258,10 @@ Para cuando F25 y lo demás funcione; hoy no es prioridad. Para retomar: "seguim
 - [ ] **M1** — Menú separado de comida y bebida, pero con un mismo carrito.
 - [ ] **M2** — Aumento de precio por caja: cada caja tiene un porcentaje propio. El precio del producto es el mismo para todas las PCs (cuando se actualiza, se actualiza para todas); el porcentaje se suma solo en el carrito.
 - [ ] **M3** — Mejorar el diseño.
-- [ ] **M4** — Si el encargado ya abrió la caja, que no vuelva a pedir otro código.
+- [x] **M4** — Si el encargado ya abrió la caja, que no vuelva a pedir otro código (hecho, 20/11/2026).
+  - Se amplió a las cinco acciones que pedían PIN de encargado: apertura, retiro, anulación, cierre y configurar la impresora. Si quien está en la caja es Encargado o Admin, no se pide PIN (ya lo puso al entrar): solo una confirmación con el monto o el ticket (`confirmar` de `lib/alertas.ts`). El cierre ya tenía "¿Contaste $X?" y no suma otra; la impresora abre directo. Un Cajero sigue pidiendo el PIN de un encargado. La operación queda registrada con el mismo usuario como cajero y como autorizante.
+  - La decisión vive en `apps/caja/src/lib/autorizacion.ts`: `ROLES_AUTORIZAN` (única copia de `["ENCARGADO", "ADMIN"]`) y `puedeAutorizar(usuario, roles?)`, un *type guard* (`usuario is Usuario`).
+  - Riesgo aceptado: si el encargado deja la caja sin tocar "Salir", cualquiera puede retirar con una confirmación (queda auditado a su nombre). Avisarle al cliente.
 
 ### Observación: qué hace falta para instalar en producción (anotado el 11/11/2026)
 

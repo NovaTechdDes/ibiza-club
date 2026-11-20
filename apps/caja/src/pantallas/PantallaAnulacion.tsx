@@ -1,4 +1,4 @@
-import { horaLocal, type Rol } from "@ibiza/shared";
+import { horaLocal } from "@ibiza/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
@@ -10,8 +10,9 @@ import { avisarOperacionNueva } from "../hooks/useSubida";
 import { PedirPin } from "../componentes/PedirPin";
 
 import estilos from "./PantallaAnulacion.module.css";
+import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
+import { confirmar } from "../lib/alertas";
 
-const ROLES_ANULAN: Rol[] = ["ENCARGADO", "ADMIN"];
 const NUMERO_MAXIMO = 99_999;
 const MOTIVOS_ANULACION = [
   "Error del cajero",
@@ -40,8 +41,10 @@ export const PantallaAnulacion = ({ onVolver }: Props) => {
     mutationFn: async () => {
       if (!apertura) throw new Error("No hay caja abierta");
       const venta = await buscarVentaParaAnular(apertura.id, numero);
-      if (!venta) throw new Error(`No existe el ticket #${numero} en esta caja`);
-      if (venta.anulada) throw new Error(`El ticket #${numero} ya está anulado`);
+      if (!venta)
+        throw new Error(`No existe el ticket #${numero} en esta caja`);
+      if (venta.anulada)
+        throw new Error(`El ticket #${numero} ya está anulado`);
       return venta;
     },
   });
@@ -86,11 +89,26 @@ export const PantallaAnulacion = ({ onVolver }: Props) => {
     setNumero(0);
   }
 
+  async function pedirAutorizacion() {
+    if (!venta) return;
+    if (!puedeAutorizar(usuario)) {
+      setPidiendoPin(true);
+      return;
+    }
+    if (
+      await confirmar(
+        `¿Anular el ticket #${venta.numero} de $ ${venta.total.toLocaleString("es-AR")}?`,
+        "Sí, anular",
+      )
+    )
+      anular.mutate(usuario);
+  }
+
   if (pidiendoPin) {
     return (
       <PedirPin
         titulo="¿Quién autoriza la anulación?"
-        roles={ROLES_ANULAN}
+        roles={ROLES_AUTORIZAN}
         onCancelar={() => setPidiendoPin(false)}
         onCorrecto={(encargado) => {
           setPidiendoPin(false);
@@ -108,7 +126,8 @@ export const PantallaAnulacion = ({ onVolver }: Props) => {
           <h1 className={estilos.titulo}>Anular venta</h1>
           <p className={estilos.monto}># {numero}</p>
           <p className={estilos.error}>
-            {buscar.isError && mensaje(buscar.error, "No se pudo buscar el ticket")}
+            {buscar.isError &&
+              mensaje(buscar.error, "No se pudo buscar el ticket")}
           </p>
           <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
           <div className={estilos.acciones}>
@@ -166,7 +185,8 @@ export const PantallaAnulacion = ({ onVolver }: Props) => {
         </div>
 
         <p className={estilos.error}>
-          {anular.isError && mensaje(anular.error, "No se pudo anular la venta")}
+          {anular.isError &&
+            mensaje(anular.error, "No se pudo anular la venta")}
         </p>
 
         <div className={estilos.acciones}>
@@ -180,7 +200,7 @@ export const PantallaAnulacion = ({ onVolver }: Props) => {
           <Boton
             variante="primario"
             disabled={!motivo || anular.isPending}
-            onClick={() => setPidiendoPin(true)}
+            onClick={pedirAutorizacion}
           >
             {anular.isPending ? "Anulando" : "Anular"}
           </Boton>

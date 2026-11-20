@@ -1,4 +1,3 @@
-import type { Rol } from "@ibiza/shared";
 import type { Usuario } from "../db/usuario";
 
 import { leerConfigCaja } from "../db/ajustes";
@@ -13,8 +12,9 @@ import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
 import estilos from "./PantallaApertura.module.css";
 import { PedirPin } from "../componentes/PedirPin";
 import { avisarOperacionNueva } from "../hooks/useSubida";
+import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
+import { confirmar } from "../lib/alertas";
 
-const ROLES_AUTORIZAN: Rol[] = ["ENCARGADO", "ADMIN"];
 const FONDO_MAXIMO = 99_999_999;
 
 // La config se lee aca y no con usequery: la clave no tiene que quedar en el cache
@@ -61,6 +61,18 @@ export function PantallaApertura({ cajero }: { cajero: Usuario }) {
     setFondo((actual) => Math.floor(actual / 10));
   }
 
+  async function pedirAutorizacion() {
+    if (!puedeAutorizar(cajero)) {
+      setPidiendoPin(true);
+      return;
+    }
+    const pregunta =
+      fondo === 0
+        ? "¿Abrir la caja sin fondo de cambio?"
+        : `¿Abrir la caja con $ ${fondo.toLocaleString("es-AR")} de fondo?`;
+    if (await confirmar(pregunta, "Sí, abrir")) abrir.mutate(cajero);
+  }
+
   if (pidiendoPin) {
     return (
       <PedirPin
@@ -99,10 +111,7 @@ export function PantallaApertura({ cajero }: { cajero: Usuario }) {
           >
             Salir
           </Boton>
-          <Boton
-            disabled={abrir.isPending}
-            onClick={() => setPidiendoPin(true)}
-          >
+          <Boton disabled={abrir.isPending} onClick={pedirAutorizacion}>
             {abrir.isPending ? "Abriendo..." : "Abrir Caja"}
           </Boton>
         </div>

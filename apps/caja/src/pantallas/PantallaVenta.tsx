@@ -1,6 +1,6 @@
 import { Administracion, Boton, BotonTema, Tarjeta } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
-import { MEDIOS_PAGO, NOMBRE_MEDIO, type Rol } from "@ibiza/shared";
+import { MEDIOS_PAGO, NOMBRE_MEDIO } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 import { AvisoActualizacion } from "../componentes/AvisoActualizacion";
 
@@ -24,9 +24,8 @@ import { PantallaAnulacion } from "./PantallaAnulacion";
 import { PantallaCierre } from "./PantallaCierre";
 import { useQueryClient } from "@tanstack/react-query";
 import { CLAVE_BAJADA } from "../hooks/useBajada";
-
-// Cambiar la impresora en plena noche puede dejar la caja sin tickets
-const ROLES_CONFIGURAN: Rol[] = ["ENCARGADO", "ADMIN"];
+import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
+import type { Usuario } from "../db/usuario";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -70,21 +69,31 @@ export function PantallaVenta({ vinculacion }: Props) {
     setVista("venta");
   }
 
+  function abrirImpresora(quien: Usuario) {
+    registrarAuditoria({
+      accion: "CONFIG_IMPRESORA",
+      usuarioId: quien.id,
+    }).catch(console.error);
+    setVista("impresora");
+  }
+
+  function pedirImpresora() {
+    if (puedeAutorizar(usuario)) {
+      abrirImpresora(usuario);
+    } else {
+      setVista("pin");
+    }
+  }
+
   // Estos returns van después de todos los hooks: React exige que se llamen
   // siempre los mismos y en el mismo orden en cada render
   if (vista === "pin") {
     return (
       <PedirPin
         titulo="¿Quién configura la impresora?"
-        roles={ROLES_CONFIGURAN}
+        roles={ROLES_AUTORIZAN}
         onCancelar={() => setVista("venta")}
-        onCorrecto={(encargado) => {
-          registrarAuditoria({
-            accion: "CONFIG_IMPRESORA",
-            usuarioId: encargado.id,
-          }).catch(console.error);
-          setVista("impresora");
-        }}
+        onCorrecto={abrirImpresora}
       />
     );
   }
@@ -140,7 +149,7 @@ export function PantallaVenta({ vinculacion }: Props) {
           <Boton
             variante="secundario"
             disabled={carrito.cantidad > 0}
-            onClick={() => setVista("pin")}
+            onClick={pedirImpresora}
           >
             Impresora
           </Boton>

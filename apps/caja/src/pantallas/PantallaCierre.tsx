@@ -10,15 +10,15 @@ import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
 import estilos from "./PantallaCierre.module.css";
 import { PedirPin } from "../componentes/PedirPin";
 import type { Usuario } from "../db/usuario";
-import { fechaDeApertura, horaLocal, type Rol } from "@ibiza/shared";
+import { fechaDeApertura, horaLocal } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 import { useVinculacion } from "../hooks/useVinculacion";
 import { useImpresora } from "../hooks/useImpresora";
 import { imprimirCierre, imprimirConReintento } from "../lib/impresora";
 import { fechaTicket } from "../lib/ticket";
+import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
 
 const MONTO_MAXIMO = 99_999_999;
-const ROLES_AUTORIZAN: Rol[] = ["ENCARGADO", "ADMIN"];
 
 interface Props {
   onVolver: () => void;
@@ -83,8 +83,10 @@ export const PantallaCierre = ({ onVolver, pendiente = false }: Props) => {
         `¿Contaste $ ${contado.toLocaleString("es-AR")}?`,
         "Sí, cerrar",
       )
-    )
-      setPidiendoPin(true);
+    ) {
+      if (puedeAutorizar(usuario)) cerrar.mutate(usuario);
+      else setPidiendoPin(true);
+    }
   }
 
   function teclear(digito: string) {

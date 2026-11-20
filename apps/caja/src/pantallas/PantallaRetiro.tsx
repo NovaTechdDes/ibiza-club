@@ -9,7 +9,7 @@ import { avisarOperacionNueva } from "../hooks/useSubida";
 import estilos from "./PantallaRetiro.module.css";
 import type { Usuario } from "../db/usuario";
 import { PedirPin } from "../componentes/PedirPin";
-import { fechaOperativa, horaLocal, type Rol } from "@ibiza/shared";
+import { fechaOperativa, horaLocal } from "@ibiza/shared";
 import {
   imprimirConReintento,
   imprimirRetiro,
@@ -18,12 +18,13 @@ import {
 import { useVinculacion } from "../hooks/useVinculacion";
 import { useImpresora } from "../hooks/useImpresora";
 import { fechaTicket } from "../lib/ticket";
+import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
+import { confirmar } from "../lib/alertas";
 
 interface Props {
   onVolver: () => void;
 }
 
-const ROLES_AUTORIZAN: Rol[] = ["ENCARGADO", "ADMIN"];
 const MONTO_MAXIMO = 99_999_999;
 const MOTIVOS_RETIRO = [
   "Exceso de efectivo",
@@ -99,6 +100,20 @@ export const PantallaRetiro = ({ onVolver }: Props) => {
     setMonto((actual) => Math.floor(actual / 10));
   }
 
+  async function pedirAutorizacion() {
+    if (!puedeAutorizar(usuario)) {
+      setPidiendoPin(true);
+      return;
+    }
+    if (
+      await confirmar(
+        `¿Retirar $ ${monto.toLocaleString("es-AR")}?`,
+        "Sí, retirar",
+      )
+    )
+      retirar.mutate(usuario);
+  }
+
   if (pidiendoPin) {
     return (
       <PedirPin
@@ -151,7 +166,7 @@ export const PantallaRetiro = ({ onVolver }: Props) => {
           <Boton
             variante="primario"
             disabled={monto === 0 || !motivo || retirar.isPending}
-            onClick={() => setPidiendoPin(true)}
+            onClick={pedirAutorizacion}
           >
             {retirar.isPending ? "Retirando" : "Retirar"}
           </Boton>
