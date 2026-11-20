@@ -83,3 +83,12 @@ export const guardarVinculacion = (vinculacion: Vinculacion) =>
     transaccion(
         Object.entries(vinculacion).map(([clave, valor]) => sentenciaAjuste(clave, valor))
 );
+
+
+export const leerAumento = async(): Promise<number> => {
+    const db = await obtenerDb();
+    const filas = await db.select<{ valor: string}[]>(
+        `SELECT valor FROM Ajustes WHERE clave = 'aumentoPorcentaje'`
+    );
+    return Number(filas[0]?.valor ?? 0);
+}

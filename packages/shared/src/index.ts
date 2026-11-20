@@ -21,7 +21,8 @@ export * from './schemas/reporte.js';
 
 
 export * from './logica/jornada.js';
+export * from './logica/aumento.js';
 export * from './logica/letra.js';
 export * from './logica/promos/descuento.js';
-export * from './logica/promos/vigencia.js'
-export * from './logica/promos/aplicar.js'
+export * from './logica/promos/vigencia.js';
+export * from './logica/promos/aplicar.js';

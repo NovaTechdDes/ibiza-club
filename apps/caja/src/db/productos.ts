@@ -1,4 +1,6 @@
+import { aplicarAumento } from "@ibiza/shared";
 import { srcImagenLocal } from "../lib/imagenes";
+import { leerAumento } from "./ajustes";
 import { obtenerDb } from "./conexion";
 
 export type VarianteVenta = {
@@ -36,7 +38,8 @@ type Fila = {
 
 export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
     const db = await obtenerDb();
-    const filas = await db.select<Fila[]>(
+    const [filas, aumento] = await Promise.all([
+       db.select<Fila[]>(
         `SELECT c.id AS categoriaId, c.nombre AS categoriaNombre,
                 p.id AS productoId, p.nombre AS productoNombre, p.imagenUrl,
                 v.id AS varianteId, v.precio,
@@ -47,8 +50,12 @@ export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
          JOIN Envase e ON e.id = v.envaseId AND e.activo = 1
          WHERE v.activo = 1
          ORDER BY c.orden, c.id, p.orden, p.id, e.orden, e.id
-        `
-    );
+        ` 
+    ),
+        leerAumento()
+    ]);
+
+    
 
     const categorias = new Map<number, CategoriaVenta>();
     const productos = new Map<number, ProductoVenta>();
@@ -77,7 +84,7 @@ export const leerCategoriasVenta = async (): Promise<CategoriaVenta[]> => {
             id: fila.varianteId,
             envaseId: fila.envaseId,
             envaseNombre: fila.envaseNombre,
-            precio: fila.precio
+            precio: aplicarAumento(fila.precio, aumento)
         });
     }
     return [...categorias.values()]

@@ -43,6 +43,7 @@ export const aplicarCambios = ({version, caja, cambios, config}: RespuestaBajada
 
     sentencias.push(sentenciaAjuste("versionCatalogo", String(version)))
     sentencias.push(sentenciaAjuste("cajaNombre", caja.nombre));
+    sentencias.push(sentenciaAjuste("aumentoPorcentaje", String(caja.aumentoPorcentaje)));
     sentencias.push(sentenciaAjuste('jornadaActiva', String(config.jornadaActiva)))
     sentencias.push(sentenciaAjuste('claveLetra', config.claveLetra))
 
