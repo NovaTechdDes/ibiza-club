@@ -6,12 +6,17 @@ import {
   IconoAnulacion,
   IconoCambiarUsuario,
   IconoCandado,
+  IconoCarrito,
+  IconoEfectivo,
   IconoImpresora,
+  IconoPapelera,
   IconoRetiro,
+  IconoTarjeta,
+  IconoTransferencia,
   Tarjeta,
 } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
-import { MEDIOS_PAGO, NOMBRE_MEDIO } from "@ibiza/shared";
+import { MEDIOS_PAGO, NOMBRE_MEDIO, type MedioPago } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 import { AvisoActualizacion } from "../componentes/AvisoActualizacion";
 
@@ -41,6 +46,13 @@ import type { Usuario } from "../db/usuario";
 interface Props {
   vinculacion: Vinculacion;
 }
+
+// Record: si se agrega un medio de pago en shared, TS obliga a darle un ícono
+const ICONO_MEDIO: Record<MedioPago, typeof IconoEfectivo> = {
+  EFECTIVO: IconoEfectivo,
+  TRANSFERENCIA: IconoTransferencia,
+  TARJETA: IconoTarjeta,
+};
 
 export function PantallaVenta({ vinculacion }: Props) {
   const usuario = useSesion((estado) => estado.usuario);
@@ -246,20 +258,24 @@ export function PantallaVenta({ vinculacion }: Props) {
             Carrito
             <span className={estilos.contador}>{carrito.cantidad}</span>
           </span>
-          <Boton
-            variante="secundario"
+          {/* Arriba y discreto, lejos de los botones de pago (además pide confirmación) */}
+          <button
+            type="button"
+            className={estilos.vaciar}
             disabled={carrito.cantidad === 0 || cobrar.isPending}
             onClick={pedirVaciar}
           >
+            <IconoPapelera tamaño={16} />
             Vaciar
-          </Boton>
+          </button>
         </div>
 
         <div className={estilos.items}>
           {carrito.cantidad === 0 && (
-            <p className={estilos.carritoVacio}>
-              Tocá un producto para agregarlo.
-            </p>
+            <div className={estilos.carritoVacio}>
+              <IconoCarrito tamaño={36} strokeWidth={1.5} />
+              <p>Tocá un producto para agregarlo.</p>
+            </div>
           )}
           {carrito.lineas.map((linea) => (
             <LineaCarrito
@@ -275,27 +291,41 @@ export function PantallaVenta({ vinculacion }: Props) {
 
         <div className={estilos.resumen}>
           {carrito.descuento > 0 && (
-            <div className={estilos.descuento}>
-              <span>Descuento</span>
-              <span>-$ {carrito.descuento.toLocaleString("es-AR")}</span>
-            </div>
+            <>
+              <div className={estilos.renglon}>
+                <span>Subtotal</span>
+                <span>$ {carrito.subTotal.toLocaleString("es-AR")}</span>
+              </div>
+              <div className={`${estilos.renglon} ${estilos.descuento}`}>
+                <span>Descuento</span>
+                <span>-$ {carrito.descuento.toLocaleString("es-AR")}</span>
+              </div>
+            </>
           )}
           <div className={estilos.total}>
             <span className={estilos.totalEtiqueta}>Total</span>
-            <span>$ {carrito.total.toLocaleString("es-AR")}</span>
+            <span>
+              <span className={estilos.moneda}>$</span>
+              {carrito.total.toLocaleString("es-AR")}
+            </span>
           </div>
         </div>
 
         <div className={estilos.pagos}>
-          {MEDIOS_PAGO.map((elem) => (
-            <Boton
-              disabled={cobrar.isPending || carrito.cantidad === 0}
-              key={elem}
-              onClick={() => cobrar.mutate(elem)}
-            >
-              {NOMBRE_MEDIO[elem]}
-            </Boton>
-          ))}
+          {MEDIOS_PAGO.map((medio) => {
+            const Icono = ICONO_MEDIO[medio];
+            return (
+              <Boton
+                key={medio}
+                className={estilos.pago}
+                disabled={cobrar.isPending || carrito.cantidad === 0}
+                onClick={() => cobrar.mutate(medio)}
+              >
+                <Icono tamaño={22} />
+                {NOMBRE_MEDIO[medio]}
+              </Boton>
+            );
+          })}
         </div>
       </Tarjeta>
     </div>

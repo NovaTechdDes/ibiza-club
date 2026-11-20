@@ -57,6 +57,9 @@ export function IconoRetiro(props: IconoProps) {
     );
 }
 
+// Mismo dibujo (un billete): retirar efectivo y cobrar en efectivo
+export const IconoEfectivo = IconoRetiro;
+
 export function IconoAnulacion(props: IconoProps) {
     return (
         <Icono {...props}>
@@ -72,6 +75,60 @@ export function IconoCambiarUsuario(props: IconoProps) {
             <circle cx="9" cy="8" r="4" />
             <path d="M2 21a7 7 0 0 1 11.5-5.4" />
             <path d="m16 13 3-3 3 3M19 10v11" />
+        </Icono>
+    );
+}
+
+export function IconoTransferencia(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M3 8h15M14 4l4 4-4 4" />
+            <path d="M21 16H6M10 12l-4 4 4 4" />
+        </Icono>
+    );
+}
+
+export function IconoTarjeta(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <rect x="2" y="5" width="20" height="14" rx="2" />
+            <path d="M2 10h20M6 15h4" />
+        </Icono>
+    );
+}
+
+export function IconoPapelera(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2" />
+            <path d="M5 6l1 14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-14" />
+            <path d="M10 11v6M14 11v6" />
+        </Icono>
+    );
+}
+
+export function IconoCarrito(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <circle cx="9" cy="20" r="1.5" />
+            <circle cx="18" cy="20" r="1.5" />
+            <path d="M2 3h3l2.7 12.4a2 2 0 0 0 2 1.6h8.6a2 2 0 0 0 2-1.6L22 7H6" />
+        </Icono>
+    );
+}
+
+export function IconoMas(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M12 5v14M5 12h14" />
+        </Icono>
+    );
+}
+
+export function IconoMenos(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M5 12h14" />
         </Icono>
     );
 }
