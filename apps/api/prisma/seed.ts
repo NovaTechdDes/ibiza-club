@@ -2,7 +2,7 @@
 // Es IDEMPOTENTE: se puede correr varias veces sin duplicar filas.
 // Uso: pnpm --filter @ibiza/api db:seed
 
-import { Rol, PromocionInputSchema } from "@ibiza/shared";
+import { Rol, PromocionInputSchema, type Seccion } from "@ibiza/shared";
 import { prisma } from "../src/db/prisma.js";
 import {hashearSecreto} from "../src/utils/secreto.js"
 
@@ -69,15 +69,20 @@ const ACCESOS: { nombre: string; email: string; password: string }[] = [
 
 const ENVASES = [
     {nombre: "Vaso", orden: 1},
-    { nombre: "Tanque", orden: 2}
+    { nombre: "Tanque", orden: 2},
+    // La comida no tiene envase: se vende por unidad (M1)
+    { nombre: "Unidad", orden: 3}
 ];
 
-const CATEGORIAS = [
-    { nombre: "Tragos", orden: 1},
-    { nombre: "Cervezas", orden: 2},
-    { nombre: "Sin alcohol", orden: 3},
-    { nombre: "Shots", orden: 4},
-    { nombre: "Botellas", orden: 5}
+// seccion decide en qué pestaña de la venta aparece (M1)
+const CATEGORIAS: { nombre: string; orden: number; seccion: Seccion }[] = [
+    { nombre: "Tragos", orden: 1, seccion: "BEBIDA"},
+    { nombre: "Cervezas", orden: 2, seccion: "BEBIDA"},
+    { nombre: "Sin alcohol", orden: 3, seccion: "BEBIDA"},
+    { nombre: "Shots", orden: 4, seccion: "BEBIDA"},
+    { nombre: "Botellas", orden: 5, seccion: "BEBIDA"},
+    { nombre: "Comidas", orden: 1, seccion: "COMIDA"},
+    { nombre: "Snacks", orden: 2, seccion: "COMIDA"}
 ]
 
 const PRODUCTOS: { categoria: string; nombre: string; orden: number; precios: Record<string, number>}[] = [
@@ -110,6 +115,21 @@ const PRODUCTOS: { categoria: string; nombre: string; orden: number; precios: Re
     { categoria: "Botellas", nombre: 'Botella vodka', orden: 1,
         precios: {
             Vaso: 60000
+        }
+    },
+    { categoria: "Comidas", nombre: "Hamburguesa", orden: 1,
+        precios: {
+            Unidad: 9000
+        }
+    },
+    { categoria: "Comidas", nombre: "Pancho", orden: 2,
+        precios: {
+            Unidad: 5000
+        }
+    },
+    { categoria: "Snacks", nombre: "Papas fritas", orden: 1,
+        precios: {
+            Unidad: 4500
         }
     }
 

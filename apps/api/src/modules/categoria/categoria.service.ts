@@ -7,6 +7,7 @@ const seleccion = {
     id: true,
     nombre: true,
     orden: true,
+    seccion: true,
     activo: true,
     version: true
 }

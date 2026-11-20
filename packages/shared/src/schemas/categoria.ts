@@ -1,16 +1,17 @@
 import {z} from "zod";
 import { LARGO_NOMBRE } from "../constantes.js";
+import { SECCIONES } from "../seccion.js";
 
 export const CategoriaInputSchema = z.object({
     nombre: z.string().trim().min(1).max(LARGO_NOMBRE),
-    orden: z.number().int().min(0).default(0)
+    orden: z.number().int().min(0).default(0),
+    seccion: z.enum(SECCIONES).default('BEBIDA')
 });
-
 
 export const CategoriaSchema = CategoriaInputSchema.extend({
     id: z.number().int().positive(),
     activo: z.boolean(),
-    version: z.number().int().min(0)
+    version: z.number().int().min(0),
 });
 
 // Agregar
@@ -20,7 +21,8 @@ export type Categoria = z.infer<typeof CategoriaSchema>
 // Editar
 export const CategoriaUpdateSchema = z.object({
     nombre: CategoriaInputSchema.shape.nombre.optional(),
-    orden: z.number().int().min(0).optional()
+    orden: z.number().int().min(0).optional(),
+    seccion: z.enum(SECCIONES).optional()
 });
 export type CategoriaUpdate = z.infer<typeof CategoriaUpdateSchema>;
 

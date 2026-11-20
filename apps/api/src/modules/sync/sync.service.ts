@@ -21,7 +21,7 @@ export const obtenerCambios = async (cajaId: number, desde: number) => {
         prisma.caja.findUniqueOrThrow({ where: {id: cajaId}, select: { id: true, nombre: true, barra: true, aumentoPorcentaje: true}}),
         prisma.envase.findMany({ where, select: {id: true, nombre: true, orden: true, activo: true, version: true}}),
         prisma.categoria.findMany({ where, select: {
-            id: true, nombre: true, orden: true, activo: true, version: true
+            id: true, nombre: true, orden: true, seccion: true, activo: true, version: true
         }}),
         prisma.producto.findMany({
             where,

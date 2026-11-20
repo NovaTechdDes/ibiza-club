@@ -1917,6 +1917,7 @@ export const CategoriaScalarFieldEnum = {
   id: 'id',
   nombre: 'nombre',
   orden: 'orden',
+  seccion: 'seccion',
   activo: 'activo',
   version: 'version',
   creadaEn: 'creadaEn',

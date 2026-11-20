@@ -76,6 +76,7 @@ model Categoria {
   id                Int                @id @default(autoincrement())
   nombre            String             @unique @db.NVarChar(100)
   orden             Int                @default(0)
+  seccion           String             @default("BEBIDA") @db.NVarChar(10)
   activo            Boolean            @default(true)
   version           Int
   creadaEn          DateTime           @default(now())
