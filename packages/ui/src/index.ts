@@ -5,6 +5,9 @@ export * from "./componentes/TecladoNumerico"
 export * from "./componentes/CampoSelect"
 export * from "./componentes/BotonTema";
 export * from "./componentes/Iconos";
+export * from "./componentes/Pestanas";
+
+
 export * from "./tema";
 
 

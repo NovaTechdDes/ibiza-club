@@ -13,10 +13,18 @@ import {
   IconoRetiro,
   IconoTarjeta,
   IconoTransferencia,
+  Pestanas,
   Tarjeta,
 } from "@ibiza/ui";
 import { useCarrito } from "../stores/carrito";
-import { MEDIOS_PAGO, NOMBRE_MEDIO, type MedioPago } from "@ibiza/shared";
+import {
+  MEDIOS_PAGO,
+  NOMBRE_MEDIO,
+  NOMBRE_SECCION,
+  type Seccion,
+  SECCIONES,
+  type MedioPago,
+} from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
 import { AvisoActualizacion } from "../componentes/AvisoActualizacion";
 
@@ -69,6 +77,8 @@ export function PantallaVenta({ vinculacion }: Props) {
   const cobrar = useCobrar();
 
   const [categoriaId, setCategoriaId] = useState<number | null>(null);
+  const [seccionElegida, setSeccionElegida] = useState<Seccion>("BEBIDA");
+
   const [vista, setVista] = useState<
     | "venta"
     | "pin"
@@ -82,8 +92,19 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   const { data: categorias } = useCategoriaVenta();
 
+  const secciones = SECCIONES.filter((s) =>
+    categorias?.some((c) => c.seccion === s),
+  );
+
+  const seccion = secciones.includes(seccionElegida)
+    ? seccionElegida
+    : secciones[0];
+
+  const categoriasSeccion = categorias?.filter((c) => c.seccion === seccion);
+
   const categoriaActual =
-    categorias?.find((c) => c.id === categoriaId) ?? categorias?.[0];
+    categoriasSeccion?.find((c) => c.id === categoriaId) ??
+    categoriasSeccion?.[0];
 
   async function pedirVaciar() {
     if (await confirmar("¿Vaciar el carrito?", "Vaciar", { peligro: true }))
@@ -239,10 +260,21 @@ export function PantallaVenta({ vinculacion }: Props) {
       </header>
 
       <Tarjeta className={estilos.productos}>
-        {categorias && categoriaActual ? (
+        {categoriasSeccion && categoriaActual ? (
           <>
+            {secciones.length > 1 && (
+              <Pestanas
+                pestanas={secciones.map((s) => ({
+                  id: s,
+                  titulo: NOMBRE_SECCION[s],
+                }))}
+                elegida={seccion}
+                onElegir={setSeccionElegida}
+              />
+            )}
+
             <BarraCategorias
-              categorias={categorias}
+              categorias={categoriasSeccion}
               seleccionadaId={categoriaActual.id}
               onElegir={setCategoriaId}
             />

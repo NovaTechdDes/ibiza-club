@@ -1,4 +1,4 @@
-import { Pestanas } from "../Pestanas";
+import { Pestanas } from "../../componentes/Pestanas";
 import {
   fechaOperativa,
   type RangoReporte,
@@ -102,11 +102,7 @@ export function Reportes() {
 
   return (
     <div className={estilos.pantalla}>
-      <Pestanas
-        pestanas={PESTANAS}
-        elegida={pestana}
-        onElegir={setPestana}
-      />
+      <Pestanas pestanas={PESTANAS} elegida={pestana} onElegir={setPestana} />
       {actual?.usaRango && (
         <div className={estilos.rango}>
           <CampoTexto

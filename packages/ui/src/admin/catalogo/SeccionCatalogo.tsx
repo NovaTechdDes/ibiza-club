@@ -1,4 +1,4 @@
-import { Pestanas } from "../Pestanas";
+import { Pestanas } from "../../componentes/Pestanas";
 import { type ComponentType, useState } from "react";
 import { Categorias } from "./Categorias";
 import { Envases } from "./Envases";
@@ -34,11 +34,7 @@ export function SeccionCatalogo() {
   const Contenido = actual?.componente;
   return (
     <div className={estilos.pantalla}>
-      <Pestanas
-        pestanas={PESTANAS}
-        elegida={pestana}
-        onElegir={setPestana}
-      />
+      <Pestanas pestanas={PESTANAS} elegida={pestana} onElegir={setPestana} />
       {Contenido ? (
         <Contenido />
       ) : (

@@ -6,6 +6,8 @@ import {
   type Producto,
   type ProductoInput,
   ProductoInputSchema,
+  NOMBRE_SECCION,
+  SECCIONES,
 } from "@ibiza/shared";
 import { Boton } from "../../componentes/Boton";
 import { CampoTexto } from "../../componentes/CampoTexto";
@@ -97,10 +99,16 @@ export function Productos() {
 
   const editando = form.id !== null;
 
-  const opcionesCategoria =
-    categorias?.data
-      ?.filter((elem) => elem.activo)
-      .map((elem) => ({ valor: String(elem.id), texto: elem.nombre })) ?? [];
+  // Agrupadas por sección (Bebidas, después Comidas). sort es estable: dentro de cada
+  // sección se mantiene el orden de las categorías que trae la API.
+  const opcionesCategoria = (categorias.data ?? [])
+    .filter((elem) => elem.activo)
+    .sort((a, b) => SECCIONES.indexOf(a.seccion) - SECCIONES.indexOf(b.seccion))
+    .map((elem) => ({
+      valor: String(elem.id),
+      texto: elem.nombre,
+      grupo: NOMBRE_SECCION[elem.seccion],
+    }));
 
   // Un grupo por categoría, en el orden que ya trae la API. Se saltean las que no tienen productos.
   // Se calcula acá y no adentro del JSX para que el .map del render quede simple.

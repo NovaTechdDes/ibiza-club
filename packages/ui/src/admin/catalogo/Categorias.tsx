@@ -6,15 +6,33 @@ import {
   type Categoria,
   type CategoriaInput,
   CategoriaInputSchema,
+  NOMBRE_SECCION,
+  SECCIONES,
 } from "@ibiza/shared";
 import { Boton } from "../../componentes/Boton";
 import { CampoTexto } from "../../componentes/CampoTexto";
+import { CampoSelect } from "../../componentes/CampoSelect";
 
 import estilos from "./Catalogo.module.css";
 import { CLAVE_CATEGORIAS, useCategorias } from "./useCategorias";
 
-type Formulario = { id: number | null; nombre: string; orden: string };
-const VACIO: Formulario = { id: null, nombre: "", orden: "" };
+type Formulario = {
+  id: number | null;
+  nombre: string;
+  orden: string;
+  seccion: string;
+};
+const VACIO: Formulario = {
+  id: null,
+  nombre: "",
+  orden: "",
+  seccion: "BEBIDA",
+};
+
+const OPCIONES_SECCION = SECCIONES.map((s) => ({
+  valor: s,
+  texto: NOMBRE_SECCION[s],
+}));
 
 export function Categorias() {
   const { api } = useApiAdmin();
@@ -33,6 +51,7 @@ export function Categorias() {
   const datos = CategoriaInputSchema.safeParse({
     nombre: form.nombre,
     orden: form.orden.trim() === "" ? undefined : Number(form.orden),
+    seccion: form.seccion,
   });
 
   const guardar = useMutation({
@@ -80,6 +99,7 @@ export function Categorias() {
       id: categoria.id,
       nombre: categoria.nombre,
       orden: String(categoria.orden),
+      seccion: categoria.seccion,
     });
   }
 
@@ -93,6 +113,12 @@ export function Categorias() {
             value={form.nombre}
             onChange={(e) => setForm({ ...form, nombre: e.target.value })}
             className={estilos.campoLargo}
+          />
+          <CampoSelect
+            opciones={OPCIONES_SECCION}
+            etiqueta="Sección"
+            value={form.seccion}
+            onChange={(e) => setForm({ ...form, seccion: e.target.value })}
           />
           <CampoTexto
             etiqueta="Orden"
@@ -151,6 +177,9 @@ export function Categorias() {
             >
               <span className={estilos.orden}>{categoria.orden}</span>
               <strong className={estilos.nombre}>{categoria.nombre}</strong>
+              <span className={estilos.etiqueta}>
+                {NOMBRE_SECCION[categoria.seccion]}
+              </span>
               {!categoria.activo && (
                 <span className={estilos.etiqueta}>Dada de baja</span>
               )}
