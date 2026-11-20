@@ -6,6 +6,7 @@ import estilos from "../catalogo/Catalogo.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { mensajeDeError, useApiAdmin } from "../api";
 import {
+  AUMENTO_MAXIMO,
   type Caja,
   type CajaInput,
   CajaInputSchema,
@@ -14,8 +15,13 @@ import {
 import { CLAVE_CAJAS, useCajas } from "./useCajas";
 import { TokenNuevo } from "./TokenNuevo";
 
-type Formulario = { id: number | null; barra: string; nombre: string };
-const VACIO: Formulario = { id: null, barra: "", nombre: "" };
+type Formulario = {
+  id: number | null;
+  barra: string;
+  nombre: string;
+  aumento: string;
+};
+const VACIO: Formulario = { id: null, barra: "", nombre: "", aumento: "0" };
 
 type Accion = "generar" | "revocar";
 
@@ -43,6 +49,7 @@ export function Cajas() {
     // Vacío = sin barra. En la edición, null es lo que le quita la ubicación a la caja.
     barra: form.barra.trim() === "" ? null : form.barra,
     nombre: form.nombre.trim() === "" ? undefined : form.nombre,
+    aumentoPorcentaje: form.aumento.trim() === "" ? 0 : Number(form.aumento),
   });
 
   const guardar = useMutation({
@@ -135,6 +142,7 @@ export function Cajas() {
       id: caja.id,
       barra: caja.barra ?? "",
       nombre: caja.nombre,
+      aumento: String(caja.aumentoPorcentaje),
     });
   }
 
@@ -154,6 +162,16 @@ export function Cajas() {
           value={form.barra}
           onChange={(e) => setForm({ ...form, barra: e.target.value })}
           className={estilos.campoLargo}
+        />
+        <CampoTexto
+          etiqueta="Aumento %"
+          type="number"
+          min={0}
+          max={AUMENTO_MAXIMO}
+          inputMode="numeric"
+          value={form.aumento}
+          onChange={(e) => setForm({ ...form, aumento: e.target.value })}
+          className={estilos.campoCorto}
         />
         <Boton type="submit" disabled={!datos.success || guardar.isPending}>
           {guardar.isPending ? "Guardando…" : editando ? "Guardar" : "Agregar"}
@@ -205,6 +223,11 @@ export function Cajas() {
               </span>
               {!caja.activo && (
                 <span className={estilos.etiqueta}>Dada de baja</span>
+              )}
+              {caja.aumentoPorcentaje > 0 && (
+                <span className={estilos.etiqueta}>
+                  +{caja.aumentoPorcentaje} %
+                </span>
               )}
 
               <div className={estilos.acciones}>
