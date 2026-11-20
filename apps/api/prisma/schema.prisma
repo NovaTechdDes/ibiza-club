@@ -13,14 +13,15 @@ model VersionConfig {
 }
 
 model Caja {
-  id            Int      @id @default(autoincrement())
-  nombre        String   @unique @db.NVarChar(50)
-  activo        Boolean  @default(true)
-  barra         String?  @db.NVarChar(50)
-  tokenHash     String?  @db.NVarChar(255)
-  version       Int
-  creadaEn      DateTime @default(now())
-  actualizadoEn DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  nombre            String   @unique @db.NVarChar(50)
+  activo            Boolean  @default(true)
+  barra             String?  @db.NVarChar(50)
+  tokenHash         String?  @db.NVarChar(255)
+  version           Int
+  creadaEn          DateTime @default(now())
+  actualizadoEn     DateTime @updatedAt
+  aumentoPorcentaje Int      @default(0)
 
   aperturas   AperturaCaja[]
   cierres     CierreCaja[]

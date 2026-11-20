@@ -18,7 +18,7 @@ export const obtenerCambios = async (cajaId: number, desde: number) => {
 
     const [ caja, envases, categorias, productos, variantes, promociones, promocionAlcances, promocionEnvases, usuarios] = 
     await Promise.all([
-        prisma.caja.findUniqueOrThrow({ where: {id: cajaId}, select: { id: true, nombre: true, barra: true}}),
+        prisma.caja.findUniqueOrThrow({ where: {id: cajaId}, select: { id: true, nombre: true, barra: true, aumentoPorcentaje: true}}),
         prisma.envase.findMany({ where, select: {id: true, nombre: true, orden: true, activo: true, version: true}}),
         prisma.categoria.findMany({ where, select: {
             id: true, nombre: true, orden: true, activo: true, version: true

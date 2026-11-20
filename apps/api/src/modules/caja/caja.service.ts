@@ -10,7 +10,8 @@ const seleccion = {
     nombre: true,
     activo: true,
     barra: true,
-    version: true
+    version: true,
+    aumentoPorcentaje: true
 } as const;
 
 export const listarCajas = async() => {
@@ -38,7 +39,7 @@ const NOMBRE_REPETIDO = 'Ya existe una caja con ese nombre';
 export const crearCaja = async (usuarioId: number, input: CajaInput) => {
     try {
         return await escribirCatalogo(usuarioId, 'CAJA_CREAR', input, (tx, version) =>
-            tx.caja.create({ data: { nombre: input.nombre, barra: input.barra ?? null, version }, select: seleccion })
+            tx.caja.create({ data: { nombre: input.nombre, barra: input.barra ?? null, version, aumentoPorcentaje: input.aumentoPorcentaje }, select: seleccion })
         );
     } catch (error: any) {
         if (error.code === 'P2002') throw AppError.conflicto(NOMBRE_REPETIDO);
@@ -56,6 +57,7 @@ export const actualizarCaja = async (usuarioId: number, id: number, input: CajaU
                 data: {
                     // undefined = no vino en el body, no se toca. null en barra = quitarla.
                     ...(input.nombre !== undefined && { nombre: input.nombre }),
+                    ...(input.aumentoPorcentaje !== undefined && { aumentoPorcentaje: input.aumentoPorcentaje }),
                     ...(input.barra !== undefined && { barra: input.barra }),
                     version
                 },

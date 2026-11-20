@@ -1879,7 +1879,8 @@ export const CajaScalarFieldEnum = {
   tokenHash: 'tokenHash',
   version: 'version',
   creadaEn: 'creadaEn',
-  actualizadoEn: 'actualizadoEn'
+  actualizadoEn: 'actualizadoEn',
+  aumentoPorcentaje: 'aumentoPorcentaje'
 } as const
 
 export type CajaScalarFieldEnum = (typeof CajaScalarFieldEnum)[keyof typeof CajaScalarFieldEnum]

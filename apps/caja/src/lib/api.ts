@@ -6,6 +6,7 @@ type CajaRemota = {
     id: number;
     nombre: string;
     barra: string | null;
+    aumentoPorcentaje: number
 };
 
 type Fila = Record<string, unknown>;

@@ -1,3 +1,4 @@
+export const AUMENTO_MAXIMO = 100;
 export const TAMANO_LOTE = 50;
 export const INTERVALO_SYNC_MS = 2 * 60 * 1000; // 2 minutos
 export const DIAS_MARGEN_BORRADO = 7; // 7 dias
