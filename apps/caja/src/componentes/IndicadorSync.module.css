@@ -3,13 +3,14 @@
 
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: var(--espacio-chico);
+  padding: 6px var(--espacio-medio);
   border: 1px solid var(--color-borde);
-  border-radius: 999px;
+  border-radius: var(--radio-pildora);
   background: var(--color-superficie);
   color: var(--color-estado);
   font: inherit;
+  font-size: var(--texto-sm);
   font-weight: 600;
   white-space: nowrap;
 }
@@ -17,8 +18,8 @@
 /* Puntito de color: el estado se distingue de un vistazo */
 .indicador::before {
   content: "";
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   background: var(--color-estado);
 }
@@ -32,6 +33,11 @@
 .indicador:not(:disabled) {
   cursor: pointer;
   border-color: var(--color-estado);
+}
+
+.indicador:focus-visible {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 2px;
 }
 
 .suave {

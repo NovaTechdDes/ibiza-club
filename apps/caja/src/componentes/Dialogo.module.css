@@ -1,0 +1,151 @@
+/* Centrada en la ventana. Si no entra (pantalla baja), la que scrollea es la tarjeta */
+.pantalla {
+  height: 100%;
+  display: grid;
+  place-items: center;
+  padding: var(--espacio-medio);
+}
+
+.tarjeta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espacio);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: var(--espacio-grande);
+  box-shadow: var(--sombra-alta);
+}
+
+.chico {
+  width: min(440px, 100%);
+}
+
+.medio {
+  width: min(560px, 100%);
+}
+
+.grande {
+  width: min(780px, 100%);
+}
+
+.cabecera {
+  display: grid;
+  gap: 4px;
+  text-align: center;
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--texto-xl);
+}
+
+.ayuda {
+  margin: 0;
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+  text-wrap: balance;
+}
+
+/* Visor: fondo hundido, número grande y el "$" o "#" más chico y suave */
+.cifra {
+  margin: 0;
+  padding: var(--espacio-medio) var(--espacio);
+  border-radius: var(--radio);
+  background: var(--color-superficie-alta);
+  font-size: var(--texto-3xl);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.prefijo {
+  margin-right: 6px;
+  font-size: 0.55em;
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}
+
+.mensaje {
+  min-height: 1.5em;
+  margin: 0;
+  font-size: var(--texto-sm);
+  font-weight: 500;
+  text-align: center;
+}
+
+.error {
+  color: var(--color-peligro);
+}
+
+.aviso {
+  color: var(--color-texto-suave);
+}
+
+/*
+ * flex-basis 0 + min-width max-content: reparten el ancho en partes iguales,
+ * pero ninguno se achica por debajo de su texto. Si no entran, bajan de fila.
+ */
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espacio-chico);
+}
+
+.acciones > * {
+  flex: 1 1 0;
+  min-width: max-content;
+}
+
+/* ---- Opciones ---- */
+
+.opciones {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-chico);
+}
+
+.unaColumna {
+  grid-template-columns: 1fr;
+}
+
+.opcion {
+  min-height: var(--tactil-min);
+  padding: var(--espacio-chico) var(--espacio-medio);
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font: inherit;
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color var(--transicion),
+    border-color var(--transicion),
+    color var(--transicion),
+    transform 80ms ease;
+}
+
+.opcion:active {
+  transform: scale(0.97);
+}
+
+@media (hover: hover) {
+  .opcion:hover:not([aria-pressed="true"]) {
+    background: var(--color-superficie-hover);
+  }
+}
+
+/* Elegida: violeta suave. El violeta lleno queda para el botón que confirma */
+.opcion[aria-pressed="true"] {
+  background: var(--color-acento-suave);
+  border-color: var(--color-acento);
+  color: var(--color-acento);
+}
+
+.opcion:focus-visible {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 2px;
+}

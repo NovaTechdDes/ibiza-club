@@ -1,66 +1,87 @@
 .marco {
     height: 100%;
     display: grid;
-    grid-template-columns: 280px minmax(0, 1fr);
+    grid-template-columns: 260px minmax(0, 1fr);
 }
+
+/* ---- Menú lateral ---- */
 
 .lateral {
     display: flex;
     flex-direction: column;
     gap: var(--espacio);
+    min-height: 0;
     padding: var(--espacio);
     background: var(--color-superficie);
     border-right: 1px solid var(--color-borde);
-    min-height: 0;
 }
 
 .marca {
     display: grid;
     gap: 2px;
-    padding: 8px 8px var(--espacio);
+    padding: var(--espacio-chico) var(--espacio-chico) var(--espacio);
     border-bottom: 1px solid var(--color-borde);
 }
 
 .marca strong {
-    font-size: 22px;
-    color: var(--color-acento);
+    font-size: var(--texto-lg);
+    font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
-.marca span,
-.usuario span {
+.marca span {
+    font-size: var(--texto-sm);
     color: var(--color-texto-suave);
-    font-size: 15px;
 }
 
 .menu {
     flex: 1;
     display: grid;
     align-content: start;
-    gap: 8px;
+    gap: 4px;
     overflow-y: auto;
 }
 
 .item {
-    min-height: var(--tactil-min);
-    padding: 0 var(--espacio);
-    border: 1px solid transparent;
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-medio);
+    min-height: var(--tactil-chico);
+    padding: 0 var(--espacio-medio);
+    border: 0;
     border-radius: var(--radio);
     background: transparent;
-    color: var(--color-texto);
+    color: var(--color-texto-suave);
     font: inherit;
     font-weight: 600;
     text-align: left;
     cursor: pointer;
+    transition:
+        background-color var(--transicion),
+        color var(--transicion);
 }
 
-.item:hover {
-    background: var(--color-superficie-alta);
+.item svg {
+    flex-shrink: 0;
+}
+
+.item:active {
+    background: var(--color-superficie-hover);
+}
+
+@media (hover: hover) {
+    .item:hover {
+        background: var(--color-superficie-alta);
+        color: var(--color-texto);
+    }
 }
 
 .item:focus-visible {
-    outline: 2px solid var(--color-acento);
+    outline: 3px solid var(--color-acento);
+    outline-offset: -3px;
 }
 
+/* La sección abierta: lo único violeta del menú */
 .itemActivo,
 .itemActivo:hover {
     background: var(--color-acento-suave);
@@ -69,17 +90,44 @@
 
 .pie {
     display: grid;
-    gap: 12px;
+    gap: var(--espacio-chico);
     padding-top: var(--espacio);
     border-top: 1px solid var(--color-borde);
 }
 
 .usuario {
+    display: flex;
+    align-items: center;
+    gap: var(--espacio-medio);
+    padding: 0 var(--espacio-chico) var(--espacio-chico);
+}
+
+.inicial {
     display: grid;
-    gap: 2px;
-    padding: 0 8px;
+    flex-shrink: 0;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--color-acento-suave);
+    color: var(--color-acento);
+    font-size: var(--texto-sm);
+    font-weight: 700;
+}
+
+.datosUsuario {
+    display: grid;
+    min-width: 0;
+    line-height: 1.3;
     overflow-wrap: anywhere;
 }
+
+.datosUsuario span {
+    font-size: var(--texto-sm);
+    color: var(--color-texto-suave);
+}
+
+/* ---- Contenido ---- */
 
 .contenido {
     display: flex;
@@ -88,26 +136,29 @@
     min-height: 0;
 }
 
+/* Sin conexión: franja roja suave, no un bloque rojo lleno */
 .aviso {
-    padding: 12px calc(var(--espacio) * 1.5);
-    background: var(--color-peligro);
-    color: var(--color-sobre-acento);
+    padding: var(--espacio-medio) var(--espacio-grande);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-peligro) 35%, transparent);
+    background: color-mix(in srgb, var(--color-peligro) 10%, transparent);
+    color: var(--color-peligro);
+    font-size: var(--texto-sm);
 }
 
 .encabezado {
-    padding: calc(var(--espacio) * 1.5) calc(var(--espacio) * 1.5) var(--espacio);
+    padding: var(--espacio-grande) var(--espacio-grande) var(--espacio);
 }
 
 .encabezado h1 {
     margin: 0;
-    font-size: 28px;
+    font-size: var(--texto-xl);
 }
 
 .seccion {
     flex: 1;
     min-height: 0;
     overflow: auto;
-    padding: 0 calc(var(--espacio) * 1.5) calc(var(--espacio) * 1.5);
+    padding: 0 var(--espacio-grande) var(--espacio-grande);
 }
 
 .vacio {
@@ -144,5 +195,10 @@
     .pie {
         grid-template-columns: 1fr auto;
         align-items: center;
+    }
+
+    .encabezado,
+    .seccion {
+        padding-inline: var(--espacio);
     }
 }

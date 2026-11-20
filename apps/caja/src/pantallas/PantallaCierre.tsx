@@ -5,10 +5,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 import { CLAVE_APERTURA, useApertura } from "../hooks/useApertura";
 import { avisarOperacionNueva } from "../hooks/useSubida";
-import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
+import { Boton, TecladoNumerico } from "@ibiza/ui";
 
 import estilos from "./PantallaCierre.module.css";
 import { PedirPin } from "../componentes/PedirPin";
+import { Acciones, Cifra, Dialogo, Mensaje } from "../componentes/Dialogo";
 import type { Usuario } from "../db/usuario";
 import { fechaDeApertura, horaLocal } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
@@ -119,42 +120,36 @@ export const PantallaCierre = ({ onVolver, pendiente = false }: Props) => {
       r.diferencia === 0 ? "Exacto" : r.diferencia < 0 ? "Faltan" : "Sobran";
 
     return (
-      <div className={estilos.pantalla}>
-        <Tarjeta className={estilos.tarjeta}>
-          <h1 className={estilos.titulo}>Caja cerrada</h1>
+      <Dialogo titulo="Caja cerrada">
+        <div className={estilos.filas}>
+          <Fila etiqueta="Fondo" monto={r.fondo} />
+          <Fila etiqueta="Ventas en efectivo" monto={r.efectivo} />
+          <Fila etiqueta="Retiros" monto={-r.retiros} />
+          <Fila etiqueta="Esperado" monto={r.esperado} destacada />
+          <Fila etiqueta="Contado" monto={r.contado} destacada />
+        </div>
 
-          <div className={estilos.filas}>
-            <Fila etiqueta="Fondo" monto={r.fondo} />
-            <Fila etiqueta="Ventas en efectivo" monto={r.efectivo} />
-            <Fila etiqueta="Retiros" monto={-r.retiros} />
-            <Fila etiqueta="Esperado" monto={r.esperado} destacada />
-            <Fila etiqueta="Contado" monto={r.contado} destacada />
+        <p className={`${estilos.diferencia} ${claseDif}`}>
+          {textoDif}
+          {r.diferencia !== 0 &&
+            ` $ ${Math.abs(r.diferencia).toLocaleString("es-AR")}`}
+        </p>
+
+        <div className={estilos.filas}>
+          <Fila etiqueta="Tarjeta" monto={r.tarjeta} />
+          <Fila etiqueta="Transferencia" monto={r.transferencia} />
+          <div className={estilos.fila}>
+            <span>Ventas / Anuladas</span>
+            <span>
+              {r.cantVentas} / {r.cantAnuladas}
+            </span>
           </div>
+        </div>
 
-          <p className={`${estilos.diferencia} ${claseDif}`}>
-            {textoDif}
-            {r.diferencia !== 0 &&
-              ` $ ${Math.abs(r.diferencia).toLocaleString("es-AR")}`}
-          </p>
-
-          <div className={estilos.filas}>
-            <Fila etiqueta="Tarjeta" monto={r.tarjeta} />
-            <Fila etiqueta="Transferencia" monto={r.transferencia} />
-            <div className={estilos.fila}>
-              <span>Ventas / Anuladas</span>
-              <span>
-                {r.cantVentas} / {r.cantAnuladas}
-              </span>
-            </div>
-          </div>
-
-          <div className={`${estilos.acciones} ${estilos.accionUnica}`}>
-            <Boton variante="primario" onClick={terminar}>
-              Terminar
-            </Boton>
-          </div>
-        </Tarjeta>
-      </div>
+        <Acciones>
+          <Boton onClick={terminar}>Terminar</Boton>
+        </Acciones>
+      </Dialogo>
     );
   }
 
@@ -172,42 +167,35 @@ export const PantallaCierre = ({ onVolver, pendiente = false }: Props) => {
     );
   }
   return (
-    <div className={estilos.pantalla}>
-      <Tarjeta className={estilos.tarjeta}>
-        <h1 className={estilos.titulo}>
-          {pendiente ? "Cierre pendiente" : "Cierre de caja"}
-        </h1>
-        <p className={estilos.ayuda}>
-          {pendiente
-            ? `La caja quedó abierta desde ${apertura ? fechaTicket(fechaDeApertura(apertura)) : "otra noche"}. Contá el efectivo y cerrala para empezar la noche`
-            : "Contá el efectivo de la caja y cargá el total"}
-        </p>
-        <p className={estilos.monto}>$ {contado.toLocaleString("es-AR")}</p>
-        <p className={estilos.error}>
-          {cerrar.isError &&
-            (cerrar.error instanceof Error
-              ? cerrar.error.message
-              : "No se pudo cerrar la caja")}
-        </p>
-        <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
-        <div className={estilos.acciones}>
-          <Boton
-            variante="secundario"
-            disabled={cerrar.isPending}
-            onClick={onVolver}
-          >
-            Cancelar
-          </Boton>
-          <Boton
-            variante="primario"
-            disabled={cerrar.isPending}
-            onClick={pedirConfirmacion}
-          >
-            {cerrar.isPending ? "Cerrando" : "Cerrar caja"}
-          </Boton>
-        </div>
-      </Tarjeta>
-    </div>
+    <Dialogo
+      titulo={pendiente ? "Cierre pendiente" : "Cierre de caja"}
+      ayuda={
+        pendiente
+          ? `La caja quedó abierta desde ${apertura ? fechaTicket(fechaDeApertura(apertura)) : "otra noche"}. Contá el efectivo y cerrala para empezar la noche.`
+          : "Contá el efectivo de la caja y cargá el total."
+      }
+    >
+      <Cifra prefijo="$">{contado.toLocaleString("es-AR")}</Cifra>
+      <Mensaje>
+        {cerrar.isError &&
+          (cerrar.error instanceof Error
+            ? cerrar.error.message
+            : "No se pudo cerrar la caja")}
+      </Mensaje>
+      <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
+      <Acciones>
+        <Boton
+          variante="secundario"
+          disabled={cerrar.isPending}
+          onClick={onVolver}
+        >
+          Cancelar
+        </Boton>
+        <Boton disabled={cerrar.isPending} onClick={pedirConfirmacion}>
+          {cerrar.isPending ? "Cerrando..." : "Cerrar caja"}
+        </Boton>
+      </Acciones>
+    </Dialogo>
   );
 };
 

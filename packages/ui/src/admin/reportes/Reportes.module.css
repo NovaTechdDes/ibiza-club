@@ -3,34 +3,32 @@
     gap: var(--espacio);
 }
 
-.pestanas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding-bottom: var(--espacio);
-    border-bottom: 1px solid var(--color-borde);
-}
-
 .ayuda {
     margin: 0;
+    font-size: var(--texto-sm);
     color: var(--color-texto-suave);
 }
 
 .error {
     margin: 0;
+    font-size: var(--texto-sm);
+    font-weight: 500;
     color: var(--color-peligro);
 }
 
-.rango{
+.rango {
     display: flex;
     flex-wrap: wrap;
     align-items: end;
-    gap: 8px;
+    gap: var(--espacio-chico);
 }
 
-/* En pantallas angostas la tabla se desplaza sola sin romper el resto de la página */
+/* La tabla en un recuadro. En pantallas angostas se desplaza sola sin romper el resto */
 .desplazable {
     overflow-x: auto;
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-grande);
+    background: var(--color-superficie);
 }
 
 .tabla {
@@ -41,7 +39,7 @@
 
 .tabla th,
 .tabla td {
-    padding: 10px 12px;
+    padding: var(--espacio-medio) var(--espacio);
     border-bottom: 1px solid var(--color-borde);
     text-align: right;
     white-space: nowrap;
@@ -53,14 +51,30 @@
     text-align: left;
 }
 
+/* Encabezado chico, en mayúsculas y sobre fondo hundido: se distingue de los datos */
 .tabla th {
+    background: var(--color-superficie-alta);
+    font-size: var(--texto-xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
     color: var(--color-texto-suave);
-    font-weight: 500;
+}
+
+@media (hover: hover) {
+    .tabla tbody tr:hover td {
+        background: var(--color-superficie-alta);
+    }
+}
+
+.tabla tbody tr:last-child td {
+    border-bottom: 0;
 }
 
 .tabla tfoot td {
+    border-top: 1px solid var(--color-borde-fuerte);
+    border-bottom: 0;
     font-weight: 700;
-    border-bottom: none;
 }
 
 /* Mientras llegan los datos del rango nuevo se siguen viendo los anteriores, atenuados */
@@ -76,7 +90,7 @@
 
 .subtitulo {
     margin: 0;
-    font-size: 17px;
+    font-size: var(--texto-md);
     font-weight: 600;
 }
 
@@ -85,37 +99,36 @@
     color: var(--color-texto-suave);
 }
 
-
 .tabla .texto {
     text-align: left;
 }
 
-.faltante{
+.faltante {
     color: var(--color-peligro);
     font-weight: 600;
 }
 
-.sobrante{
+.sobrante {
     color: var(--color-exito);
     font-weight: 600;
 }
 
-.conectada{
+.conectada {
     color: var(--color-exito);
     font-weight: 600;
 }
 
-.sinContacto{
+.sinContacto {
     color: var(--color-peligro);
     font-weight: 600;
 }
 
-.nunca{
+.nunca {
     color: var(--color-texto-suave);
     font-weight: 600;
 }
 
-.atrasada{
+.atrasada {
     color: var(--color-aviso);
     font-weight: 600;
 }

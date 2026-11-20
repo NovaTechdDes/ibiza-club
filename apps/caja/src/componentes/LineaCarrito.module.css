@@ -1,7 +1,7 @@
 .linea {
     display: grid;
     gap: 6px;
-    padding: 12px 0;
+    padding: var(--espacio-medio) 0;
     border-bottom: 1px solid var(--color-borde);
 }
 
@@ -9,7 +9,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
+    gap: var(--espacio-medio);
     min-width: 0;
 }
 
@@ -33,7 +33,7 @@
 .detalle {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--espacio-chico);
     min-width: 0;
     font-size: var(--texto-sm);
     color: var(--color-texto-suave);
@@ -42,7 +42,7 @@
 
 /* Etiqueta chica con el envase: se distingue de un vistazo vaso de tanque */
 .envase {
-    padding: 2px 8px;
+    padding: 2px var(--espacio-chico);
     border-radius: var(--radio-pildora);
     background: var(--color-superficie-alta);
     color: var(--color-texto);
@@ -75,12 +75,16 @@
     transition: background-color var(--transicion), transform 80ms ease;
 }
 
-.paso:hover {
+.paso:active {
+    transform: scale(0.92);
     background: var(--color-superficie-hover);
 }
 
-.paso:active {
-    transform: scale(0.92);
+/* Hover solo con mouse: en la pantalla táctil quedaría "pegado" después de tocar */
+@media (hover: hover) {
+    .paso:hover {
+        background: var(--color-superficie-hover);
+    }
 }
 
 .paso:focus-visible {
@@ -92,14 +96,14 @@
     min-width: 32px;
     text-align: center;
     font-size: var(--texto-md);
-    font-weight: 700;
+    font-weight: 600;
 }
 
 /* La promo como línea de descuento, igual que en el ticket */
 .promo {
     display: flex;
     justify-content: space-between;
-    padding: 4px 10px;
+    padding: 4px var(--espacio-medio);
     border-radius: var(--radio-chico);
     background: color-mix(in srgb, var(--color-exito) 10%, transparent);
     color: var(--color-exito);

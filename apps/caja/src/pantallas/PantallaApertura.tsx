@@ -7,10 +7,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useSesion } from "../stores/sesion";
 import { useState } from "react";
 import { CLAVE_APERTURA } from "../hooks/useApertura";
-import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
+import { Boton, TecladoNumerico } from "@ibiza/ui";
 
-import estilos from "./PantallaApertura.module.css";
 import { PedirPin } from "../componentes/PedirPin";
+import { Acciones, Cifra, Dialogo, Mensaje } from "../componentes/Dialogo";
 import { avisarOperacionNueva } from "../hooks/useSubida";
 import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
 import { confirmar } from "../lib/alertas";
@@ -88,34 +88,29 @@ export function PantallaApertura({ cajero }: { cajero: Usuario }) {
   }
 
   return (
-    <div className={estilos.pantalla}>
-      <Tarjeta className={estilos.tarjeta}>
-        <h1 className={estilos.titulo}>Fondo de cambio</h1>
-        <p className={estilos.monto}>$ {fondo.toLocaleString("es-AR")}</p>
+    <Dialogo
+      titulo="Fondo de cambio"
+      ayuda={`Abre ${cajero.nombre}. Cargá el efectivo que hay en la caja para dar vuelto.`}
+    >
+      <Cifra prefijo="$">{fondo.toLocaleString("es-AR")}</Cifra>
 
-        {/* Siempre ocupa su lugar: asi e teclado no se mueve bajo el dedo */}
-        <p className={estilos.error}>
-          {abrir.isError &&
-            (abrir.error instanceof Error
-              ? abrir.error.message
-              : "No se pudo abrir la caja")}
-        </p>
+      <Mensaje>
+        {abrir.isError &&
+          (abrir.error instanceof Error
+            ? abrir.error.message
+            : "No se pudo abrir la caja")}
+      </Mensaje>
 
-        <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
+      <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
 
-        <div className={estilos.acciones}>
-          <Boton
-            variante="secundario"
-            disabled={abrir.isPending}
-            onClick={salir}
-          >
-            Salir
-          </Boton>
-          <Boton disabled={abrir.isPending} onClick={pedirAutorizacion}>
-            {abrir.isPending ? "Abriendo..." : "Abrir Caja"}
-          </Boton>
-        </div>
-      </Tarjeta>
-    </div>
+      <Acciones>
+        <Boton variante="secundario" disabled={abrir.isPending} onClick={salir}>
+          Salir
+        </Boton>
+        <Boton disabled={abrir.isPending} onClick={pedirAutorizacion}>
+          {abrir.isPending ? "Abriendo..." : "Abrir caja"}
+        </Boton>
+      </Acciones>
+    </Dialogo>
   );
 }

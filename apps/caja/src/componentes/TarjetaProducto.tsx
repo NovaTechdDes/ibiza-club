@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Boton, Tarjeta } from "@ibiza/ui";
+import { Tarjeta } from "@ibiza/ui";
 import type { ProductoVenta, VarianteVenta } from "../db/productos";
 import estilos from "./TarjetaProducto.module.css";
+
 interface Props {
   producto: ProductoVenta;
   onElegir: (variante: VarianteVenta) => void;
@@ -14,8 +15,9 @@ export function TarjetaProducto({ producto, onElegir }: Props) {
 
   return (
     <Tarjeta className={estilos.tarjeta}>
-      <div className={estilos.encabezado}>
-        {imagen && (
+      {/* La foto siempre ocupa su lugar: sin imagen va la inicial, así todas las tarjetas miden lo mismo */}
+      <div className={estilos.foto}>
+        {imagen ? (
           <img
             className={estilos.imagen}
             src={imagen}
@@ -23,24 +25,30 @@ export function TarjetaProducto({ producto, onElegir }: Props) {
             alt=""
             draggable={false}
           />
+        ) : (
+          <span className={estilos.inicial} aria-hidden="true">
+            {producto.nombre.charAt(0)}
+          </span>
         )}
-        <strong className={estilos.nombre}>{producto.nombre}</strong>
       </div>
 
+      <strong className={estilos.nombre}>{producto.nombre}</strong>
+
+      {/* button propio y no Boton: es un selector de dos renglones (envase y precio) con su propio estilo */}
       <div className={estilos.variantes}>
         {producto.variantes.map((variante) => (
-          <Boton
+          <button
             key={variante.id}
-            variante="secundario"
+            type="button"
             className={estilos.variante}
             onClick={() => onElegir(variante)}
           >
-            <span>{variante.envaseNombre}</span>
+            <span className={estilos.envase}>{variante.envaseNombre}</span>
             <span className={estilos.precio}>
               <span className={estilos.moneda}>$</span>
               {variante.precio.toLocaleString("es-AR")}
             </span>
-          </Boton>
+          </button>
         ))}
       </div>
     </Tarjeta>

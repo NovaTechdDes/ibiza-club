@@ -42,6 +42,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { CLAVE_BAJADA } from "../hooks/useBajada";
 import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
 import type { Usuario } from "../db/usuario";
+import { useApertura } from "../hooks/useApertura";
+import { fechaTicket } from "../lib/ticket";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -56,6 +58,7 @@ const ICONO_MEDIO: Record<MedioPago, typeof IconoEfectivo> = {
 
 export function PantallaVenta({ vinculacion }: Props) {
   const usuario = useSesion((estado) => estado.usuario);
+  const { data: apertura } = useApertura();
   const queryClient = useQueryClient();
 
   const carrito = useCarritoCalculado();
@@ -83,7 +86,8 @@ export function PantallaVenta({ vinculacion }: Props) {
     categorias?.find((c) => c.id === categoriaId) ?? categorias?.[0];
 
   async function pedirVaciar() {
-    if (await confirmar("¿Vaciar el carrito?", "Vaciar")) vaciar();
+    if (await confirmar("¿Vaciar el carrito?", "Vaciar", { peligro: true }))
+      vaciar();
   }
 
   function volverDeAdmin() {
@@ -154,6 +158,16 @@ export function PantallaVenta({ vinculacion }: Props) {
           <span className={estilos.caja}>{vinculacion.cajaNombre}</span>
           <span className={estilos.cajero}>{usuario?.nombre}</span>
         </div>
+        {/* La misma letra y fecha que salen en el ticket: el encargado las compara con la barra.
+            Solo con jornada: sin jornada se calculan en cada venta y pueden cambiar en el corte */}
+        {apertura?.jornadaLetra && apertura.jornadaFecha && (
+          <div className={estilos.jornada}>
+            <span className={estilos.letra}>{apertura.jornadaLetra}</span>
+            <span className={estilos.fecha}>
+              {fechaTicket(apertura.jornadaFecha)}
+            </span>
+          </div>
+        )}
         <IndicadorSync />
         <AvisoActualizacion />
         {cobrar.data && (
@@ -201,7 +215,7 @@ export function PantallaVenta({ vinculacion }: Props) {
         </div>
 
         <div className={estilos.sesion}>
-          <BotonTema />
+          <BotonTema className={estilos.tema} />
           <Boton
             variante="secundario"
             className={estilos.accion}
@@ -321,7 +335,7 @@ export function PantallaVenta({ vinculacion }: Props) {
                 disabled={cobrar.isPending || carrito.cantidad === 0}
                 onClick={() => cobrar.mutate(medio)}
               >
-                <Icono tamaño={22} />
+                <Icono tamaño={26} />
                 {NOMBRE_MEDIO[medio]}
               </Boton>
             );

@@ -1,13 +1,20 @@
-import { horaLocal } from "@ibiza/shared";
+import { horaLocal, NOMBRE_MEDIO } from "@ibiza/shared";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
+import { Boton, TecladoNumerico } from "@ibiza/ui";
 import { buscarVentaParaAnular, registrarAnulacion } from "../db/anulacion";
 import type { Usuario } from "../db/usuario";
 import { useApertura } from "../hooks/useApertura";
 import { useSesion } from "../stores/sesion";
 import { avisarOperacionNueva } from "../hooks/useSubida";
 import { PedirPin } from "../componentes/PedirPin";
+import {
+  Acciones,
+  Cifra,
+  Dialogo,
+  Mensaje,
+  Opciones,
+} from "../componentes/Dialogo";
 
 import estilos from "./PantallaAnulacion.module.css";
 import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
@@ -99,6 +106,7 @@ export const PantallaAnulacion = ({ onVolver }: Props) => {
       await confirmar(
         `¿Anular el ticket #${venta.numero} de $ ${venta.total.toLocaleString("es-AR")}?`,
         "Sí, anular",
+        { peligro: true },
       )
     )
       anular.mutate(usuario);
@@ -121,91 +129,87 @@ export const PantallaAnulacion = ({ onVolver }: Props) => {
   // Etapa 1: buscar el ticket por número
   if (!venta) {
     return (
-      <div className={estilos.pantalla}>
-        <Tarjeta className={estilos.tarjeta}>
-          <h1 className={estilos.titulo}>Anular venta</h1>
-          <p className={estilos.monto}># {numero}</p>
-          <p className={estilos.error}>
-            {buscar.isError &&
-              mensaje(buscar.error, "No se pudo buscar el ticket")}
-          </p>
-          <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
-          <div className={estilos.acciones}>
-            <Boton variante="secundario" onClick={onVolver}>
-              Cancelar
-            </Boton>
-            <Boton
-              variante="primario"
-              disabled={numero === 0 || buscar.isPending}
-              onClick={() => buscar.mutate()}
-            >
-              {buscar.isPending ? "Buscando" : "Buscar"}
-            </Boton>
-          </div>
-        </Tarjeta>
-      </div>
+      <Dialogo
+        titulo="Anular venta"
+        ayuda="Pedí el ticket físico y cargá su número."
+      >
+        <Cifra prefijo="#">{numero}</Cifra>
+        <Mensaje>
+          {buscar.isError &&
+            mensaje(buscar.error, "No se pudo buscar el ticket")}
+        </Mensaje>
+        <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
+        <Acciones>
+          <Boton variante="secundario" onClick={onVolver}>
+            Cancelar
+          </Boton>
+          <Boton
+            disabled={numero === 0 || buscar.isPending}
+            onClick={() => buscar.mutate()}
+          >
+            {buscar.isPending ? "Buscando..." : "Buscar"}
+          </Boton>
+        </Acciones>
+      </Dialogo>
     );
   }
 
   // Etapa 2: comparar con el ticket físico, elegir motivo y anular
   return (
-    <div className={estilos.pantalla}>
-      <Tarjeta className={estilos.tarjeta}>
-        <h1 className={estilos.titulo}>Anular ticket #{venta.numero}</h1>
-
-        <div className={estilos.detalle}>
-          <p>
-            {horaLocal(new Date(venta.ocurridaEn))} hs · {venta.medioPago}
-          </p>
-          <ul className={estilos.items}>
-            {venta.items.map((item, i) => (
-              <li key={i}>
-                {item.cantidad} x {item.nombre}
-              </li>
-            ))}
-          </ul>
-          <p className={estilos.total}>
-            TOTAL $ {venta.total.toLocaleString("es-AR")}
-          </p>
-        </div>
-
-        <div className={estilos.motivos}>
-          {MOTIVOS_ANULACION.map((elem) => (
-            <Boton
-              key={elem}
-              variante={motivo === elem ? "primario" : "secundario"}
-              onClick={() => {
-                setMotivo(elem);
-                anular.reset();
-              }}
-            >
-              {elem}
-            </Boton>
-          ))}
-        </div>
-
-        <p className={estilos.error}>
-          {anular.isError &&
-            mensaje(anular.error, "No se pudo anular la venta")}
+    <Dialogo
+      titulo={`Ticket #${venta.numero}`}
+      ayuda="Compará con el ticket físico antes de anular."
+    >
+      {/* Se ve como el ticket impreso: renglones con cantidad y nombre, total abajo */}
+      <div className={estilos.ticket}>
+        <p className={estilos.meta}>
+          {horaLocal(new Date(venta.ocurridaEn))} hs ·{" "}
+          {NOMBRE_MEDIO[venta.medioPago]}
         </p>
+        <ul className={estilos.items}>
+          {venta.items.map((item, i) => (
+            <li key={i}>
+              <span className={estilos.cantidad}>{item.cantidad} x</span>
+              {item.nombre}
+            </li>
+          ))}
+        </ul>
+        <p className={estilos.total}>
+          <span>Total</span>
+          <span>$ {venta.total.toLocaleString("es-AR")}</span>
+        </p>
+      </div>
 
-        <div className={estilos.acciones}>
-          <Boton
-            variante="secundario"
-            disabled={anular.isPending}
-            onClick={otroTicket}
-          >
-            Otro ticket
-          </Boton>
-          <Boton
-            variante="primario"
-            disabled={!motivo || anular.isPending}
-            onClick={pedirAutorizacion}
-          >
-            {anular.isPending ? "Anulando" : "Anular"}
-          </Boton>
-        </div>
-      </Tarjeta>
-    </div>
+      <Opciones
+        opciones={MOTIVOS_ANULACION}
+        elegida={motivo}
+        onElegir={(elegido) => {
+          setMotivo(elegido);
+          anular.reset();
+        }}
+      />
+
+      <Mensaje>
+        {anular.isError && mensaje(anular.error, "No se pudo anular la venta")}
+      </Mensaje>
+
+      {/* Anular en rojo: es lo único de estas pantallas que da vuelta una venta */}
+      <Acciones>
+        <Boton
+          variante="secundario"
+          disabled={anular.isPending}
+          onClick={otroTicket}
+        >
+          Otro ticket
+        </Boton>
+        <Boton
+          variante="peligro"
+          disabled={!motivo || anular.isPending}
+          onClick={pedirAutorizacion}
+        >
+          {anular.isPending ? "Anulando..." : "Anular"}
+        </Boton>
+      </Acciones>
+    </Dialogo>
   );
 };

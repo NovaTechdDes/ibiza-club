@@ -1,5 +1,5 @@
+import { Pestanas } from "../Pestanas";
 import { type ComponentType, useState } from "react";
-import { Boton } from "../../componentes/Boton";
 import { Categorias } from "./Categorias";
 import { Envases } from "./Envases";
 import estilos from "./Catalogo.module.css";
@@ -34,18 +34,11 @@ export function SeccionCatalogo() {
   const Contenido = actual?.componente;
   return (
     <div className={estilos.pantalla}>
-      <div className={estilos.pestanas}>
-        {PESTANAS.map((elem) => (
-          <Boton
-            aria-pressed={pestana === elem.id}
-            key={elem.id}
-            variante={pestana === elem.id ? "primario" : "secundario"}
-            onClick={() => setPestana(elem.id)}
-          >
-            {elem.titulo}
-          </Boton>
-        ))}
-      </div>
+      <Pestanas
+        pestanas={PESTANAS}
+        elegida={pestana}
+        onElegir={setPestana}
+      />
       {Contenido ? (
         <Contenido />
       ) : (

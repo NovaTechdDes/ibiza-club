@@ -1,8 +1,14 @@
 .teclado {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  font-size: 28px; /* Boton usa font: inherit, así que toma este tamaño */
+  gap: var(--espacio-chico);
+  font-size: var(--texto-xl); /* Boton usa font: inherit, así que toma este tamaño */
+}
+
+/* Más alta que un botón común: el teclado se usa con apuro y así se falla menos */
+.tecla {
+  min-height: 64px;
+  font-weight: 500;
 }
 
 /* Deja libre la primera columna: el 0 queda debajo del 8, como en un teclado de teléfono */

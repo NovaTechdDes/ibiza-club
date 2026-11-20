@@ -1,9 +1,10 @@
 import { LARGO_PIN, Rol } from "@ibiza/shared";
 import { Usuario, verificarPin } from "../db/usuario";
 import { useUsuarios } from "../hooks/useUsuarios";
-import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
+import { Boton, TecladoNumerico } from "@ibiza/ui";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+import { Acciones, Dialogo, Mensaje } from "./Dialogo";
 import estilos from "./PedirPin.module.css";
 
 type Props = {
@@ -34,43 +35,40 @@ export const PedirPin = ({ titulo, roles, onCorrecto, onCancelar }: Props) => {
 
   if (!elegido) {
     return (
-      <div className={estilos.pantalla}>
-        <Tarjeta className={estilos.tarjeta}>
-          <h1 className={estilos.titulo}>{titulo}</h1>
+      <Dialogo titulo={titulo} ayuda="Tocá tu nombre">
+        {isPending && <Mensaje tipo="aviso">Cargando usuarios...</Mensaje>}
+        {isError && <Mensaje>No se pudieron leer los usuarios.</Mensaje>}
+        {usuariosFiltrados?.length === 0 && (
+          <Mensaje tipo="aviso">
+            Todavía no hay usuarios en esta caja. La primera vez hace falta
+            internet para bajarlos.
+          </Mensaje>
+        )}
 
-          {isPending && <p className={estilos.aviso}>Cargando usuarios...</p>}
-          {isError && (
-            <p className={estilos.error}>No se pudieron leer los usuarios.</p>
-          )}
-          {usuariosFiltrados?.length === 0 && (
-            <p className={estilos.aviso}>
-              Todavía no hay usuarios en esta caja. La primera vez hace falta
-              internet para bajarlos.
-            </p>
-          )}
+        <div className={estilos.usuarios}>
+          {usuariosFiltrados?.map((usuario) => (
+            <button
+              key={usuario.id}
+              type="button"
+              className={estilos.usuario}
+              onClick={() => setElegido(usuario)}
+            >
+              <span className={estilos.inicial} aria-hidden="true">
+                {usuario.nombre.charAt(0)}
+              </span>
+              <span className={estilos.nombre}>{usuario.nombre}</span>
+            </button>
+          ))}
+        </div>
 
-          <div className={estilos.usuarios}>
-            {usuariosFiltrados?.map((usuario) => (
-              <Boton
-                key={usuario.id}
-                variante="secundario"
-                onClick={() => setElegido(usuario)}
-              >
-                {usuario.nombre}
-              </Boton>
-            ))}
-            {onCancelar && (
-              <Boton
-                variante="secundario"
-                className={estilos.volver}
-                onClick={onCancelar}
-              >
-                Volver
-              </Boton>
-            )}
-          </div>
-        </Tarjeta>
-      </div>
+        {onCancelar && (
+          <Acciones>
+            <Boton variante="secundario" onClick={onCancelar}>
+              Volver
+            </Boton>
+          </Acciones>
+        )}
+      </Dialogo>
     );
   }
 
@@ -101,40 +99,36 @@ export const PedirPin = ({ titulo, roles, onCorrecto, onCancelar }: Props) => {
   }
 
   return (
-    <div className={estilos.pantalla}>
-      <Tarjeta className={estilos.tarjeta}>
-        <h1 className={estilos.titulo}>{elegido.nombre}</h1>
+    <Dialogo titulo={elegido.nombre} ayuda="Ingresá tu PIN">
+      <div
+        className={estilos.puntos}
+        role="img"
+        aria-label={`${pin.length} de ${LARGO_PIN} dígitos`}
+      >
+        {Array.from({ length: LARGO_PIN }, (_, indice) => (
+          <span
+            key={indice}
+            className={`${estilos.punto} ${indice < pin.length ? estilos.puntoLleno : ""}`}
+          />
+        ))}
+      </div>
 
-        <div
-          className={estilos.puntos}
-          role="img"
-          aria-label={`${pin.length} de ${LARGO_PIN} dígitos`}
-        >
-          {Array.from({ length: LARGO_PIN }, (_, indice) => (
-            <span
-              key={indice}
-              className={`${estilos.punto} ${indice < pin.length ? estilos.puntoLleno : ""}`}
-            />
-          ))}
-        </div>
+      <Mensaje>
+        {verificar.data === false && "PIN incorrecto"}
+        {verificar.isError && "No se pudo verificar el PIN"}
+      </Mensaje>
 
-        {/* Siempre ocupa su lugar: así el teclado no se mueve bajo el dedo */}
-        <p className={estilos.error}>
-          {verificar.data === false && "PIN incorrecto"}
-          {verificar.isError && "No se pudo verificar el PIN"}
-        </p>
+      <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
 
-        <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
-
+      <Acciones>
         <Boton
           variante="secundario"
-          className={estilos.volver}
           disabled={verificar.isPending}
           onClick={volver}
         >
           Volver
         </Boton>
-      </Tarjeta>
-    </div>
+      </Acciones>
+    </Dialogo>
   );
 };

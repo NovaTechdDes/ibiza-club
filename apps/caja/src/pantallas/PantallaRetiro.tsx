@@ -1,4 +1,4 @@
-import { Boton, Tarjeta, TecladoNumerico } from "@ibiza/ui";
+import { Boton, TecladoNumerico } from "@ibiza/ui";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useApertura } from "../hooks/useApertura";
@@ -9,6 +9,13 @@ import { avisarOperacionNueva } from "../hooks/useSubida";
 import estilos from "./PantallaRetiro.module.css";
 import type { Usuario } from "../db/usuario";
 import { PedirPin } from "../componentes/PedirPin";
+import {
+  Acciones,
+  Cifra,
+  Dialogo,
+  Mensaje,
+  Opciones,
+} from "../componentes/Dialogo";
 import { fechaOperativa, horaLocal } from "@ibiza/shared";
 import {
   imprimirConReintento,
@@ -128,50 +135,56 @@ export const PantallaRetiro = ({ onVolver }: Props) => {
     );
   }
 
+  // Dos columnas: a la izquierda el monto y el teclado, a la derecha el motivo y
+  // los botones. En una sola columna no entraba en 768 px de alto.
   return (
-    <div className={estilos.pantalla}>
-      <Tarjeta className={estilos.tarjeta}>
-        <h1 className={estilos.titulo}>Retiro</h1>
-        <p className={estilos.monto}>$ {monto.toLocaleString("es-AR")}</p>
-        <p className={estilos.error}>
-          {retirar.isError &&
-            (retirar.error instanceof Error
-              ? retirar.error.message
-              : "No se pudo retirar de la caja")}
-        </p>
-        <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
-        <div className={estilos.motivos}>
-          {MOTIVOS_RETIRO.map((elem) => (
-            <Boton
-              onClick={() => {
-                setMotivo(elem);
-                retirar.reset();
-              }}
-              key={elem}
-              variante={motivo === elem ? "primario" : "secundario"}
-            >
-              {elem}
-            </Boton>
-          ))}
+    <Dialogo
+      titulo="Retiro de efectivo"
+      ayuda="Cargá el monto que sale de la caja y elegí el motivo."
+      tamaño="grande"
+    >
+      <div className={estilos.columnas}>
+        <div className={estilos.columna}>
+          <Cifra prefijo="$">{monto.toLocaleString("es-AR")}</Cifra>
+          <TecladoNumerico onDigito={teclear} onBorrar={borrar} />
         </div>
 
-        <div className={estilos.acciones}>
-          <Boton
-            variante="secundario"
-            disabled={retirar.isPending}
-            onClick={onVolver}
-          >
-            Cancelar
-          </Boton>
-          <Boton
-            variante="primario"
-            disabled={monto === 0 || !motivo || retirar.isPending}
-            onClick={pedirAutorizacion}
-          >
-            {retirar.isPending ? "Retirando" : "Retirar"}
-          </Boton>
+        <div className={estilos.columna}>
+          <span className={estilos.etiqueta}>Motivo</span>
+          <Opciones
+            opciones={MOTIVOS_RETIRO}
+            elegida={motivo}
+            columnas={1}
+            onElegir={(elegido) => {
+              setMotivo(elegido);
+              retirar.reset();
+            }}
+          />
+
+          <Mensaje>
+            {retirar.isError &&
+              (retirar.error instanceof Error
+                ? retirar.error.message
+                : "No se pudo retirar de la caja")}
+          </Mensaje>
+
+          <Acciones className={estilos.abajo}>
+            <Boton
+              variante="secundario"
+              disabled={retirar.isPending}
+              onClick={onVolver}
+            >
+              Cancelar
+            </Boton>
+            <Boton
+              disabled={monto === 0 || !motivo || retirar.isPending}
+              onClick={pedirAutorizacion}
+            >
+              {retirar.isPending ? "Retirando..." : "Retirar"}
+            </Boton>
+          </Acciones>
         </div>
-      </Tarjeta>
-    </div>
+      </div>
+    </Dialogo>
   );
 };

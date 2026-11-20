@@ -1,0 +1,46 @@
+/* Una "vaina" hundida y la pestaña elegida como una tarjeta que sobresale */
+.pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    justify-self: start;
+    max-width: 100%;
+    padding: 4px;
+    border-radius: var(--radio);
+    background: var(--color-superficie-alta);
+}
+
+.pestana {
+    min-height: var(--tactil-chico);
+    padding: 0 var(--espacio);
+    border: 1px solid transparent;
+    border-radius: var(--radio-chico);
+    background: transparent;
+    color: var(--color-texto-suave);
+    font: inherit;
+    font-size: var(--texto-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        background-color var(--transicion),
+        color var(--transicion);
+}
+
+@media (hover: hover) {
+    .pestana:hover:not([aria-pressed="true"]) {
+        color: var(--color-texto);
+    }
+}
+
+.pestana[aria-pressed="true"] {
+    background: var(--color-superficie);
+    border-color: var(--color-borde);
+    color: var(--color-acento);
+    box-shadow: var(--sombra);
+}
+
+.pestana:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
+}

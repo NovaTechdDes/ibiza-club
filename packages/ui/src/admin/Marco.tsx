@@ -2,6 +2,14 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Boton } from "../componentes/Boton";
 import { BotonTema } from "../componentes/BotonTema";
+import {
+    IconoCaja,
+    IconoCatalogo,
+    IconoPromo,
+    IconoReportes,
+    IconoSalir,
+    IconoUsuarios,
+} from "../componentes/Iconos";
 import { useApiAdmin } from "./api";
 import estilos from "./Marco.module.css";
 import { NOMBRE_ROL, seccionesDe, type IdSeccion } from "./secciones";
@@ -12,6 +20,15 @@ type Props = {
     enLinea: boolean;
     // En el escritorio: cierra la sesión y vuelve a la venta (F22).
     onVolver?: (() => void) | undefined;
+};
+
+// Record: si se suma una sección, TypeScript obliga a darle un ícono
+const ICONO_SECCION: Record<IdSeccion, typeof IconoCatalogo> = {
+    catalogo: IconoCatalogo,
+    promociones: IconoPromo,
+    reportes: IconoReportes,
+    usuarios: IconoUsuarios,
+    cajas: IconoCaja,
 };
 
 // Marco de la administración: menú según el rol a la izquierda, sección elegida a la derecha.
@@ -47,7 +64,9 @@ export function Marco({ usuario, enLinea, onVolver }: Props) {
                 </div>
 
                 <nav className={estilos.menu} aria-label="Secciones">
-                    {secciones.map((seccion) => (
+                    {secciones.map((seccion) => {
+                        const Icono = ICONO_SECCION[seccion.id];
+                        return (
                         <button
                             key={seccion.id}
                             type="button"
@@ -55,23 +74,32 @@ export function Marco({ usuario, enLinea, onVolver }: Props) {
                             aria-current={seccion.id === actual?.id ? "page" : undefined}
                             onClick={() => setElegida(seccion.id)}
                         >
+                            <Icono />
                             {seccion.titulo}
                         </button>
-                    ))}
+                        );
+                    })}
                 </nav>
 
                 <div className={estilos.pie}>
                     <div className={estilos.usuario}>
-                        <strong>{usuario.nombre}</strong>
-                        <span>{NOMBRE_ROL[usuario.rol]}</span>
+                        <span className={estilos.inicial} aria-hidden="true">
+                            {usuario.nombre.charAt(0)}
+                        </span>
+                        <div className={estilos.datosUsuario}>
+                            <strong>{usuario.nombre}</strong>
+                            <span>{NOMBRE_ROL[usuario.rol]}</span>
+                        </div>
                     </div>
                     <BotonTema conTexto />
                     {onVolver ? (
                         <Boton variante="secundario" onClick={onVolver}>
+                            <IconoSalir />
                             Volver a la venta
                         </Boton>
                     ) : (
                         <Boton variante="secundario" onClick={salir}>
+                            <IconoSalir />
                             Cerrar sesión
                         </Boton>
                     )}

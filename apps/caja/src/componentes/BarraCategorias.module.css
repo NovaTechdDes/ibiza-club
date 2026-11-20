@@ -1,9 +1,72 @@
-.barra{
+.barra {
     display: flex;
+    gap: var(--espacio-chico);
     overflow-x: auto;
-    gap: 8px
+    /* Lugar para la barra de scroll horizontal: así no pisa los botones */
+    padding-bottom: 4px;
 }
 
-.barra > * {
+.categoria {
+    display: inline-flex;
     flex-shrink: 0;
+    align-items: center;
+    gap: var(--espacio-chico);
+    min-height: var(--tactil-chico);
+    padding: 0 var(--espacio-medio) 0 var(--espacio);
+    border: 1px solid var(--color-borde);
+    border-radius: var(--radio-pildora);
+    background: var(--color-superficie);
+    color: var(--color-texto);
+    font: inherit;
+    font-size: var(--texto-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+        background-color var(--transicion),
+        border-color var(--transicion),
+        color var(--transicion),
+        transform 80ms ease;
+}
+
+.contador {
+    min-width: 22px;
+    padding: 1px 6px;
+    border-radius: var(--radio-pildora);
+    background: var(--color-superficie-alta);
+    color: var(--color-texto-suave);
+    font-size: var(--texto-xs);
+    font-weight: 600;
+    text-align: center;
+    transition: background-color var(--transicion), color var(--transicion);
+}
+
+.categoria:active {
+    transform: scale(0.97);
+    background: var(--color-superficie-hover);
+}
+
+@media (hover: hover) {
+    .categoria:hover:not([aria-pressed="true"]) {
+        background: var(--color-superficie-hover);
+        border-color: var(--color-borde-fuerte);
+    }
+}
+
+/* La elegida: el violeta es "lo activo" de esta pantalla */
+.categoria[aria-pressed="true"] {
+    background: var(--color-acento);
+    border-color: var(--color-acento);
+    color: var(--color-sobre-acento);
+}
+
+/* Sobre el violeta, el contador se aclara (u oscurece en tema oscuro) con el color del texto */
+.categoria[aria-pressed="true"] .contador {
+    background: color-mix(in srgb, var(--color-sobre-acento) 20%, transparent);
+    color: var(--color-sobre-acento);
+}
+
+.categoria:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
 }

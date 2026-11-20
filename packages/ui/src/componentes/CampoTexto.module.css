@@ -1,27 +1,48 @@
-.campo{
+.campo {
     display: grid;
-    gap: 8px;
+    gap: var(--espacio-chico);
 }
 
 .etiqueta {
     color: var(--color-texto-suave);
+    font-size: var(--texto-sm);
+    font-weight: 500;
 }
 
 .input {
     min-height: var(--tactil-min);
-    padding: 0 16px;
-    border: 1px solid var(--color-borde);
+    padding: 0 var(--espacio);
+    border: 1px solid var(--color-borde-fuerte);
     border-radius: var(--radio);
-    background: var(--color-superficie-alta);
-    color: var(--color-texto); 
+    background: var(--color-superficie);
+    color: var(--color-texto);
     font: inherit;
     user-select: text;
+    transition:
+        border-color var(--transicion),
+        box-shadow var(--transicion);
 }
 
+.input::placeholder {
+    color: var(--color-texto-suave);
+}
 
-.input:focus{
-    outline: 2px solid var(--color-acento);
+@media (hover: hover) {
+    .input:hover:not(:disabled):not(:focus) {
+        border-color: var(--color-texto-suave);
+    }
+}
+
+/* Foco: borde violeta + anillo suave, en vez de un recuadro duro */
+.input:focus {
+    outline: none;
     border-color: var(--color-acento);
+    box-shadow: 0 0 0 3px var(--color-acento-suave);
+}
+
+.input:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 /* El color-scheme lo pone el tema (tema.css): la lista desplegable sigue al claro u oscuro */

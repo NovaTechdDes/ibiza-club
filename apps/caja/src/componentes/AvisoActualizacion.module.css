@@ -1,11 +1,13 @@
+/* Misma píldora que el indicador de sincronización, para que el encabezado se vea parejo */
 .aviso {
   display: inline-flex;
   align-items: center;
-  padding: 8px 14px;
+  padding: 6px var(--espacio-medio);
   border: 1px solid var(--color-acento);
-  border-radius: 999px;
+  border-radius: var(--radio-pildora);
   background: var(--color-acento-suave);
   color: var(--color-acento);
+  font-size: var(--texto-sm);
   font-weight: 600;
   white-space: nowrap;
 }

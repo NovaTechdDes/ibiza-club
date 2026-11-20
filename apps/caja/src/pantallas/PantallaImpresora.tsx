@@ -1,4 +1,5 @@
-import { Boton, CampoTexto, Tarjeta } from "@ibiza/ui";
+import { Boton, CampoTexto } from "@ibiza/ui";
+import { Acciones, Dialogo, Mensaje } from "../componentes/Dialogo";
 import estilos from "./PantallaImpresora.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
@@ -47,16 +48,14 @@ export function PantallaImpresora({ onVolver }: Props) {
 
   if (isError) {
     return (
-      <div className={estilos.pantalla}>
-        <Tarjeta className={estilos.tarjeta}>
-          <p className={estilos.error}>
-            No se pudo leer la configuración de la impresora.
-          </p>
+      <Dialogo titulo="Impresora de esta PC" tamaño="medio">
+        <Mensaje>No se pudo leer la configuración de la impresora.</Mensaje>
+        <Acciones>
           <Boton variante="secundario" onClick={onVolver}>
             Volver
           </Boton>
-        </Tarjeta>
-      </div>
+        </Acciones>
+      </Dialogo>
     );
   }
   return <Formulario inicial={data ?? POR_DEFECTO} onVolver={onVolver} />;
@@ -105,81 +104,78 @@ function Formulario({
 
   const ocupado = probar.isPending || guardar.isPending;
 
-  return (
-    <div className={estilos.pantalla}>
-      <Tarjeta className={estilos.tarjeta}>
-        <h1 className={estilos.titulo}>Impresora de esta PC</h1>
+  // Un solo renglón de mensaje, que siempre ocupa su lugar: el formulario no salta
+  const error =
+    (!config && campos.ip.trim() !== "" && (resultado as string)) ||
+    // El error de Rust llega como texto, no como Error
+    (probar.isError && String(probar.error)) ||
+    (guardar.isError && "No se pudo guardar la configuración.") ||
+    null;
 
-        <form action="" className={estilos.formulario} onSubmit={enviar}>
+  return (
+    <Dialogo
+      titulo="Impresora de esta PC"
+      ayuda="Impresora térmica de red (ESC/POS). Cada PC guarda la suya."
+      tamaño="medio"
+    >
+      <form className={estilos.formulario} onSubmit={enviar}>
+        <CampoTexto
+          etiqueta="IP de la impresora"
+          value={campos.ip}
+          onChange={(e) => cambiar("ip", e.target.value)}
+          inputMode="decimal"
+          spellCheck={false}
+          autoComplete="off"
+        />
+
+        <div className={estilos.fila}>
           <CampoTexto
-            etiqueta="IP de la impresora"
-            value={campos.ip}
-            onChange={(e) => cambiar("ip", e.target.value)}
-            inputMode="decimal"
-            spellCheck={false}
+            etiqueta="Puerto"
+            value={campos.puerto}
+            onChange={(e) => cambiar("puerto", e.target.value)}
+            inputMode="numeric"
             autoComplete="off"
           />
+          <CampoTexto
+            etiqueta="Columnas por renglón"
+            value={campos.ancho}
+            onChange={(e) => cambiar("ancho", e.target.value)}
+            inputMode="numeric"
+            autoComplete="off"
+          />
+        </div>
 
-          <div className={estilos.fila}>
-            <CampoTexto
-              etiqueta="Puerto"
-              value={campos.puerto}
-              onChange={(e) => cambiar("puerto", e.target.value)}
-              inputMode="numeric"
-              autoComplete="off"
-            />
-            <CampoTexto
-              etiqueta="Columnas por renglón"
-              value={campos.ancho}
-              onChange={(e) => cambiar("ancho", e.target.value)}
-              inputMode="numeric"
-              autoComplete="off"
-            />
-          </div>
+        {/* Ok solo quiere decir que los bytes salieron: hay que mirar el papel */}
+        {error ? (
+          <Mensaje>{error}</Mensaje>
+        ) : (
+          <Mensaje tipo="aviso">
+            {probar.isSuccess && "Enviado. Fijate si salió la hoja de prueba."}
+          </Mensaje>
+        )}
 
-          {!config && campos.ip.trim() !== "" && (
-            <p className={estilos.error}>{resultado as string}</p>
-          )}
-          {/* El error de Rust llega como texto, no como Error */}
-          {probar.isError && (
-            <p className={estilos.error}>{String(probar.error)}</p>
-          )}
-          {guardar.isError && (
-            <p className={estilos.error}>
-              No se pudo guardar la configuración.
-            </p>
-          )}
-          {/* Ok solo quiere decir que los bytes salieron: hay que mirar el papel */}
-          {probar.isSuccess && (
-            <p className={estilos.aviso}>
-              Enviado. Fijate si salió la hoja de prueba.
-            </p>
-          )}
-
-          <div className={estilos.botones}>
-            <Boton
-              type="button"
-              variante="secundario"
-              onClick={onVolver}
-              disabled={ocupado}
-            >
-              Volver
-            </Boton>
-
-            <Boton
-              type="button"
-              variante="secundario"
-              disabled={!config || ocupado}
-              onClick={() => config && probar.mutate(config)}
-            >
-              {probar.isPending ? "Probando..." : "Probar"}
-            </Boton>
-            <Boton type="submit" disabled={!config || ocupado}>
-              {guardar.isPending ? "Guardando..." : "Guardar"}
-            </Boton>
-          </div>
-        </form>
-      </Tarjeta>
-    </div>
+        <Acciones>
+          <Boton
+            type="button"
+            variante="secundario"
+            onClick={onVolver}
+            disabled={ocupado}
+          >
+            Volver
+          </Boton>
+          <Boton
+            type="button"
+            variante="secundario"
+            disabled={!config || ocupado}
+            onClick={() => config && probar.mutate(config)}
+          >
+            {probar.isPending ? "Probando..." : "Probar"}
+          </Boton>
+          <Boton type="submit" disabled={!config || ocupado}>
+            {guardar.isPending ? "Guardando..." : "Guardar"}
+          </Boton>
+        </Acciones>
+      </form>
+    </Dialogo>
   );
 }

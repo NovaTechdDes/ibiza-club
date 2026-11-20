@@ -1,66 +1,39 @@
-.pantalla {
-  height: 100%;
+/* Recuadro con borde punteado, como el papel del ticket */
+.ticket {
   display: grid;
-  place-items: center;
-  padding: var(--espacio);
+  gap: var(--espacio-chico);
+  padding: var(--espacio-medio) var(--espacio);
+  border: 1px dashed var(--color-borde-fuerte);
+  border-radius: var(--radio);
+  background: var(--color-superficie-alta);
 }
 
-.tarjeta {
-  width: min(480px, 100%);
-  max-height: 100%;
-  overflow-y: auto;
-}
-
-.titulo {
-  margin: 0 0 var(--espacio);
-  font-size: 28px;
-  text-align: center;
-}
-
-.monto {
+.meta {
   margin: 0;
-  font-size: 48px;
-  font-weight: 700;
-  text-align: center;
-}
-
-.error {
-  min-height: 1.5em;
-  margin: 12px 0;
-  color: var(--color-peligro);
-  text-align: center;
-}
-
-.motivos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: var(--espacio);
-}
-
-.acciones {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: var(--espacio);
-}
-
-.detalle {
-  margin: 12px 0;
-  line-height: 1.6;
-  font-size: 18px;
-}
-
-.detalle p {
-  margin: 0;
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
 }
 
 .items {
-  margin: 8px 0;
-  padding-left: 20px;
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cantidad {
+  margin-right: var(--espacio-chico);
+  font-weight: 600;
+  color: var(--color-texto-suave);
 }
 
 .total {
-  font-size: 24px;
+  display: flex;
+  justify-content: space-between;
+  margin: 0;
+  padding-top: var(--espacio-chico);
+  border-top: 1px solid var(--color-borde-fuerte);
+  font-size: var(--texto-lg);
   font-weight: 700;
 }

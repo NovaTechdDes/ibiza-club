@@ -6,19 +6,20 @@
 }
 
 .tarjeta {
-    width: min(480px, 100%);
-    padding: calc(var(--espacio) * 2);
+    width: min(440px, 100%);
+    padding: var(--espacio-grande);
+    box-shadow: var(--sombra-alta);
 }
 
 .titulo {
     margin: 0;
-    font-size: 28px;
+    font-size: var(--texto-xl);
 }
 
 .ayuda {
-    margin: 8px 0 calc(var(--espacio) * 1.5);
+    margin: 4px 0 var(--espacio-grande);
+    font-size: var(--texto-sm);
     color: var(--color-texto-suave);
-    font-size: 16px;
 }
 
 .formulario {
@@ -28,5 +29,7 @@
 
 .error {
     margin: 0;
+    font-size: var(--texto-sm);
+    font-weight: 500;
     color: var(--color-peligro);
 }

@@ -1,24 +1,22 @@
 import { useMutation } from "@tanstack/react-query";
-import estilos from "./PantallaActualizacion.module.css";
+import { Boton } from "@ibiza/ui";
 import { instalarActualizacion } from "../lib/actualizacion";
-import { Boton, Tarjeta } from "@ibiza/ui";
+import { Acciones, Dialogo, Mensaje } from "../componentes/Dialogo";
+import estilos from "./PantallaActualizacion.module.css";
 
 export function PantallaActualizacion({ version }: { version: string }) {
   const instalar = useMutation({ mutationFn: instalarActualizacion });
 
   return (
-    <div className={estilos.pantalla}>
-      <Tarjeta className={estilos.tarjeta}>
-        <h1 className={estilos.titulo}>Versión {version}</h1>
-        <p className={estilos.texto}>
-          Hay una actualización lista. La caja se cierra unos segundos y se
-          vuelve a abrir sola.
-        </p>
+    <Dialogo
+      titulo={`Versión ${version}`}
+      ayuda="Hay una actualización lista. La caja se cierra unos segundos y se vuelve a abrir sola."
+    >
+      <Mensaje>
+        {instalar.isError && `No se pudo instalar: ${String(instalar.error)}`}
+      </Mensaje>
 
-        <p className={estilos.error}>
-          {instalar.isError && `No se pudo instalar: ${String(instalar.error)}`}
-        </p>
-
+      <Acciones>
         <Boton
           className={estilos.boton}
           disabled={instalar.isPending}
@@ -26,7 +24,7 @@ export function PantallaActualizacion({ version }: { version: string }) {
         >
           {instalar.isPending ? "Instalando…" : "Instalar y reiniciar"}
         </Boton>
-      </Tarjeta>
-    </div>
+      </Acciones>
+    </Dialogo>
   );
 }

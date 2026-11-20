@@ -1,14 +1,17 @@
+/* El token se muestra una sola vez: recuadro violeta para que no pase desapercibido */
 .cartel {
     display: grid;
-    gap: 12px;
+    gap: var(--espacio-medio);
     padding: var(--espacio);
-    background: var(--color-superficie-alta);
-    border: 2px solid var(--color-acento);
-    border-radius: var(--radio);
+    border: 1px solid var(--color-acento);
+    border-radius: var(--radio-grande);
+    background: var(--color-acento-suave);
 }
 
 .aviso {
     margin: 0;
+    font-size: var(--texto-sm);
+    font-weight: 500;
     color: var(--color-aviso);
 }
 
@@ -16,11 +19,12 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 12px;
+    gap: var(--espacio-medio);
 }
 
 .etiqueta {
     min-width: 110px;
+    font-size: var(--texto-sm);
     color: var(--color-texto-suave);
 }
 
@@ -28,6 +32,11 @@
 .valor {
     flex: 1;
     min-width: 0;
+    padding: var(--espacio-chico) var(--espacio-medio);
+    border-radius: var(--radio-chico);
+    background: var(--color-superficie);
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: var(--texto-sm);
     overflow-wrap: anywhere;
     user-select: all;
-} 
+}

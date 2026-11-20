@@ -1,49 +1,45 @@
-.pantalla {
-  height: 100%;
+.filas {
   display: grid;
-  place-items: center;
-  padding: var(--espacio);
+  gap: var(--espacio-chico);
 }
 
-.tarjeta {
-  width: min(480px, 100%);
-  max-height: 100%;
-  overflow-y: auto;
+.fila {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--espacio);
+  font-size: var(--texto-base);
+  color: var(--color-texto-suave);
 }
 
-.titulo {
-  margin: 0 0 var(--espacio);
-  font-size: 28px;
-  text-align: center;
+.destacada {
+  font-size: var(--texto-md);
+  font-weight: 600;
+  color: var(--color-texto);
 }
 
-.monto {
+/* El resultado del arqueo: una píldora grande con el color del estado */
+.diferencia {
+  --color-estado: var(--color-texto);
+
   margin: 0;
-  font-size: 48px;
+  padding: var(--espacio-medio);
+  border: 1px solid color-mix(in srgb, var(--color-estado) 35%, transparent);
+  border-radius: var(--radio);
+  background: color-mix(in srgb, var(--color-estado) 10%, transparent);
+  color: var(--color-estado);
+  font-size: var(--texto-xl);
   font-weight: 700;
   text-align: center;
 }
 
-.error {
-  min-height: 1.5em;
-  margin: 12px 0;
-  color: var(--color-peligro);
-  text-align: center;
+.exacto {
+  --color-estado: var(--color-exito);
 }
 
-.acciones {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-top: var(--espacio);
+.falta {
+  --color-estado: var(--color-peligro);
 }
 
-.accionUnica { grid-template-columns: 1fr; }
-.ayuda { opacity: .7; text-align: center; }
-.filas { display: flex; flex-direction: column; gap: .5rem; width: 100%; }
-.fila { display: flex; justify-content: space-between; font-size: 1.2rem; }
-.destacada { font-weight: 700; font-size: 1.4rem; }
-.diferencia { text-align: center; font-size: 2rem; font-weight: 800; }
-.exacto { color: var(--color-exito); }
-.falta { color: var(--color-peligro); }
-.sobra { color: var(--color-aviso); }
+.sobra {
+  --color-estado: var(--color-aviso);
+}

@@ -1,62 +1,117 @@
 .tarjeta {
     display: flex;
-    gap: var(--espacio);
-    justify-content: space-between;
     flex-direction: column;
-    min-height: 150px;
-    color: var(--color-texto);
+    gap: var(--espacio-medio);
+    padding: var(--espacio-medio);
 }
 
+/* Alto fijo, con o sin foto: la grilla queda pareja */
+.foto {
+    display: grid;
+    place-items: center;
+    height: 96px;
+    border-radius: var(--radio);
+    background: var(--color-superficie-alta);
+    overflow: hidden;
+}
+
+.imagen {
+    width: 100%;
+    height: 100%;
+    padding: var(--espacio-chico);
+    object-fit: contain;
+}
+
+.inicial {
+    font-size: var(--texto-2xl);
+    font-weight: 600;
+    color: var(--color-texto-suave);
+    opacity: 0.6;
+}
+
+/* Máximo 2 renglones y siempre lugar para 2: los botones quedan alineados en toda la fila */
 .nombre {
-    font-family: var(--fuente-titulo);
-    font-size: 1.3rem;
-    font-weight: 700;
-    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    min-height: 2lh;
+    font-size: var(--texto-md);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -0.01em;
 }
 
+/*
+ * Envases pegados al fondo de la tarjeta. Con flex-wrap, los que no entran bajan
+ * a otra fila y estiran hasta llenarla (3 envases: 2 arriba y 1 ancho abajo).
+ * Nunca se salen de la tarjeta: un botón no se achica por debajo de su contenido.
+ */
 .variantes {
     display: flex;
-    gap: 8px;
     flex-wrap: wrap;
+    gap: var(--espacio-chico);
+    margin-top: auto;
 }
 
 .variante {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    /* 90px: entran 2 por fila en la tarjeta más angosta de la grilla (220px) */
+    flex: 1 1 90px;
+    display: grid;
+    justify-items: center;
     gap: 2px;
-    flex: 1;
-    padding: 12px 8px;
-    font-weight: 600;
+    min-height: var(--tactil-min);
+    padding: var(--espacio-chico);
+    border: 1px solid var(--color-borde-fuerte);
+    border-radius: var(--radio);
+    background: var(--color-superficie);
+    color: var(--color-texto);
+    font: inherit;
+    cursor: pointer;
+    transition:
+        background-color var(--transicion),
+        border-color var(--transicion),
+        transform 80ms ease;
+}
+
+.envase {
+    font-size: var(--texto-xs);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
 }
 
 /* nowrap: con el botón angosto, el "$" se iba a otra línea */
 .precio {
-    font-size: var(--texto-lg);
-    font-weight: 800;
-    line-height: 1.2;
+    font-size: var(--texto-md);
+    font-weight: 700;
     white-space: nowrap;
-    color: var(--color-acento);
 }
 
 /* En em: sigue el tamaño del precio si después se cambia */
 .moneda {
-    font-size: 0.7em;
-    font-weight: 700;
     margin-right: 2px;
+    font-size: 0.75em;
+    font-weight: 600;
+    color: var(--color-texto-suave);
 }
 
-
-.encabezado {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+/* Al tocar se tiñe de violeta un instante: es la señal de que se agregó al carrito */
+.variante:active {
+    transform: scale(0.97);
+    background: var(--color-acento-suave);
+    border-color: var(--color-acento);
 }
 
-.imagen {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    border-radius: 4px;
-    flex-shrink: 0;
+@media (hover: hover) {
+    .variante:hover {
+        border-color: var(--color-acento);
+    }
+}
+
+.variante:focus-visible {
+    outline: 3px solid var(--color-acento);
+    outline-offset: 2px;
 }

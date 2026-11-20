@@ -1,18 +1,24 @@
 .boton {
-    /* Flex para que un ícono y el texto queden alineados al centro */
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: var(--espacio-chico);
     min-height: var(--tactil-min);
-    padding: 0 24px;
-    border: 0;
+    padding: 0 var(--espacio-grande);
+    /* Borde transparente en todas las variantes: si una lo pinta, no cambia de alto */
+    border: 1px solid transparent;
     border-radius: var(--radio);
-    font: inherit;
-    font-weight: 700;
+    font: inherit; /* hereda el tamaño: el teclado numérico lo agranda desde afuera */
+    font-weight: 600;
+    line-height: 1.2;
     cursor: pointer;
-    transition: transform 80ms ease, background-color 120ms ease;
+    transition:
+        background-color var(--transicion),
+        border-color var(--transicion),
+        transform 80ms ease;
 }
+
+/* ---- Variantes ---- */
 
 .primario {
     background: var(--color-acento);
@@ -20,22 +26,55 @@
     box-shadow: var(--sombra-acento);
 }
 
-.primario:active {
-    background: var(--color-acento-fuerte);
-}
-
 .secundario {
     background: var(--color-superficie-alta);
     color: var(--color-texto);
 }
 
+/* Rojo suave: en una lista con un "Dar de baja" por fila, el rojo lleno grita.
+   Se llena solo al tocar o pasar el mouse, que es cuando importa */
 .peligro {
-    background: var(--color-peligro);
-    color: var(--color-sobre-acento);
+    background: color-mix(in srgb, var(--color-peligro) 10%, transparent);
+    border-color: color-mix(in srgb, var(--color-peligro) 35%, transparent);
+    color: var(--color-peligro);
 }
+
+/* ---- Estados ---- */
 
 .boton:active {
     transform: scale(0.97);
+}
+
+.primario:active {
+    background: var(--color-acento-fuerte);
+}
+
+.secundario:active {
+    background: var(--color-superficie-hover);
+}
+
+.peligro:active {
+    background: var(--color-peligro);
+    border-color: var(--color-peligro);
+    color: var(--color-sobre-acento);
+}
+
+/* Hover solo si hay mouse (panel web). En pantalla táctil :hover queda
+   "pegado" después de tocar y el botón parece seguir apretado. */
+@media (hover: hover) {
+    .primario:hover:not(:disabled) {
+        background: var(--color-acento-fuerte);
+    }
+
+    .secundario:hover:not(:disabled) {
+        background: var(--color-superficie-hover);
+    }
+
+    .peligro:hover:not(:disabled) {
+        background: var(--color-peligro);
+        border-color: var(--color-peligro);
+        color: var(--color-sobre-acento);
+    }
 }
 
 .boton:focus-visible {
@@ -43,14 +82,9 @@
     outline-offset: 2px;
 }
 
-.boton:disabled{
+.boton:disabled {
     opacity: 0.4;
     cursor: not-allowed;
     box-shadow: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-    .boton {
-        transition: none;
-    }
+    transform: none;
 }

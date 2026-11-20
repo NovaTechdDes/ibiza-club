@@ -3,36 +3,101 @@
   display: grid;
   grid-template-columns: 1fr 400px;
   grid-template-rows: auto minmax(0, 1fr);
-  gap: var(--espacio);
-  padding: var(--espacio);
+  gap: var(--espacio-medio);
+  padding: var(--espacio-medio);
 }
+
+/* ---- Encabezado ---- */
 
 .encabezado {
   grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 12px;
-  padding: 10px 12px 10px var(--espacio);
+  gap: var(--espacio-medio);
+  padding: var(--espacio-chico) var(--espacio-chico) var(--espacio-chico) var(--espacio);
   background: var(--color-superficie);
   border: 1px solid var(--color-borde);
-  border-radius: var(--radio);
+  border-radius: var(--radio-grande);
   box-shadow: var(--sombra);
+}
+
+/* Nombre de la caja en el color del texto: el violeta queda para lo activo */
+.identidad {
+  display: grid;
+  line-height: 1.25;
+}
+
+.caja {
+  font-size: var(--texto-md);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.cajero,
+.ultima {
+  font-size: var(--texto-sm);
+  color: var(--color-texto-suave);
+}
+
+/* Letra y fecha de la jornada, como en el ticket: la letra en un cuadrado invertido */
+.jornada {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-chico);
+  padding-left: var(--espacio-medio);
+  border-left: 1px solid var(--color-borde);
+}
+
+.letra {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radio-chico);
+  background: var(--color-texto);
+  color: var(--color-superficie);
+  font-size: var(--texto-lg);
+  font-weight: 700;
+}
+
+.fecha {
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-texto-suave);
+}
+
+.acciones {
+  display: flex;
+  gap: var(--espacio-chico);
+  margin-left: auto;
+}
+
+.sesion {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-chico);
+  padding-left: var(--espacio-medio);
+  border-left: 1px solid var(--color-borde);
 }
 
 /*
  * Acciones del encabezado: ícono + texto, fondo de superficie con borde fino.
- * Más angostas que un Boton normal: tienen que entrar todas en una fila.
+ * Más bajas y angostas que un Boton normal: tienen que entrar todas en una fila.
  */
 .encabezado .accion {
-  padding-inline: 14px;
+  min-height: var(--tactil-chico);
+  padding-inline: var(--espacio-medio);
   background: var(--color-superficie);
-  border: 1px solid var(--color-borde);
+  border-color: var(--color-borde);
   font-size: var(--texto-sm);
-  font-weight: 600;
   white-space: nowrap;
-  transition: transform 80ms ease, background-color var(--transicion),
-    border-color var(--transicion);
+}
+
+.encabezado .tema {
+  width: var(--tactil-chico);
+  min-height: var(--tactil-chico);
 }
 
 /* El ícono en el tono suave; el texto, en el normal */
@@ -42,13 +107,8 @@
   transition: color var(--transicion);
 }
 
-.encabezado .accion:hover:not(:disabled) {
+.encabezado .accion:active:not(:disabled) {
   background: var(--color-superficie-hover);
-  border-color: var(--color-borde-fuerte);
-}
-
-.encabezado .accion:hover:not(:disabled) svg {
-  color: var(--color-acento);
 }
 
 /* Cerrar caja: rojo, pero suave. Se llena de rojo solo al pasar o tocar */
@@ -58,65 +118,52 @@
   color: var(--color-peligro);
 }
 
-.encabezado .accionPeligro svg,
-.encabezado .accionPeligro:hover:not(:disabled) svg {
-  color: currentColor;
-}
-
-.encabezado .accionPeligro:hover:not(:disabled),
 .encabezado .accionPeligro:active:not(:disabled) {
   background: var(--color-peligro);
   border-color: var(--color-peligro);
   color: var(--color-sobre-acento);
 }
 
-.identidad {
-  display: grid;
-  line-height: 1.2;
-  margin-right: 4px;
+@media (hover: hover) {
+  .encabezado .accion:hover:not(:disabled) {
+    background: var(--color-superficie-hover);
+    border-color: var(--color-borde-fuerte);
+  }
+
+  .encabezado .accion:hover:not(:disabled) svg {
+    color: var(--color-acento);
+  }
+
+  .encabezado .accionPeligro:hover:not(:disabled) {
+    background: var(--color-peligro);
+    border-color: var(--color-peligro);
+    color: var(--color-sobre-acento);
+  }
 }
 
-.caja {
-  font-family: var(--fuente-titulo);
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--color-acento);
+/* Después del bloque de hover: en Cerrar caja el ícono sigue siempre al texto */
+.encabezado .accionPeligro svg,
+.encabezado .accionPeligro:hover:not(:disabled) svg {
+  color: currentColor;
 }
 
-.cajero,
-.ultima {
-  color: var(--color-texto-suave);
-  font-size: 0.9rem;
-}
-
-.acciones {
-  display: flex;
-  gap: 8px;
-  margin-left: auto;
-}
-
-.sesion {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding-left: 12px;
-  border-left: 1px solid var(--color-borde);
-}
+/* ---- Productos ---- */
 
 .productos {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--espacio-medio);
   overflow: hidden;
 }
 
-.grilla{
+.grilla {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
   display: grid;
-  gap: 12px;
+  gap: var(--espacio-medio);
+  /* 220px: lo mínimo para que entren 2 envases por fila en la tarjeta */
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   align-content: start;
 }
@@ -126,11 +173,13 @@
   color: var(--color-texto-suave);
 }
 
+/* ---- Carrito ---- */
+
 .carrito {
   min-height: 0;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: var(--espacio-medio);
 }
 
 .carritoEncabezado {
@@ -142,21 +191,20 @@
 .carritoTitulo {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-family: var(--fuente-titulo);
+  gap: var(--espacio-chico);
   font-size: var(--texto-md);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 
 .contador {
   min-width: 24px;
-  padding: 1px 8px;
+  padding: 1px var(--espacio-chico);
   border-radius: var(--radio-pildora);
   background: var(--color-acento-suave);
   color: var(--color-acento);
   font-size: var(--texto-xs);
-  font-weight: 700;
+  font-weight: 600;
   text-align: center;
 }
 
@@ -166,7 +214,7 @@
   align-items: center;
   gap: 6px;
   min-height: var(--tactil-chico);
-  padding: 0 12px;
+  padding: 0 var(--espacio-medio);
   border: 0;
   border-radius: var(--radio);
   background: transparent;
@@ -178,10 +226,16 @@
   transition: background-color var(--transicion), color var(--transicion);
 }
 
-.vaciar:hover:not(:disabled),
 .vaciar:active:not(:disabled) {
   background: color-mix(in srgb, var(--color-peligro) 10%, transparent);
   color: var(--color-peligro);
+}
+
+@media (hover: hover) {
+  .vaciar:hover:not(:disabled) {
+    background: color-mix(in srgb, var(--color-peligro) 10%, transparent);
+    color: var(--color-peligro);
+  }
 }
 
 .vaciar:disabled {
@@ -207,7 +261,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--espacio-chico);
   color: var(--color-texto-suave);
   font-size: var(--texto-sm);
   text-align: center;
@@ -221,7 +275,7 @@
 .resumen {
   display: grid;
   gap: 4px;
-  padding-top: 12px;
+  padding-top: var(--espacio-medio);
   border-top: 1px solid var(--color-borde);
 }
 
@@ -241,9 +295,8 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-family: var(--fuente-titulo);
   font-size: var(--texto-2xl);
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1.1;
   letter-spacing: -0.02em;
 }
@@ -258,24 +311,28 @@
 /* Igual que en las tarjetas: el "$" más chico que el número */
 .moneda {
   font-size: 0.6em;
-  font-weight: 700;
+  font-weight: 600;
   margin-right: 4px;
   color: var(--color-texto-suave);
 }
 
+/*
+ * Los 3 medios de pago en una fila, con el ícono arriba: siguen siendo los botones
+ * más grandes de la pantalla, pero ocupan una sola fila y le dejan lugar al carrito.
+ * Si se suma un cuarto medio, baja a otra fila en vez de apretarse.
+ */
 .pagos {
   display: grid;
-  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--espacio-chico);
 }
 
-/* Los botones que cierran la venta: los más grandes de la pantalla */
 .carrito .pago {
-  min-height: 60px;
-  font-size: var(--texto-md);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-}
-
-.carrito .pago:hover:not(:disabled) {
-  background: var(--color-acento-fuerte);
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  min-height: 80px;
+  padding: var(--espacio-chico) 4px;
+  font-size: var(--texto-base);
+  text-align: center;
 }

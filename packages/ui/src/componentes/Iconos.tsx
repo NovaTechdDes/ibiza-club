@@ -133,6 +133,92 @@ export function IconoMenos(props: IconoProps) {
     );
 }
 
+// Tecla de retroceso: borra el último dígito en el teclado numérico
+export function IconoBorrar(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M21 5H9l-6 7 6 7h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1Z" />
+            <path d="m12 9 5 5M17 9l-5 5" />
+        </Icono>
+    );
+}
+
+export function IconoSol(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+        </Icono>
+    );
+}
+
+export function IconoLuna(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a8.5 8.5 0 1 0 11 11Z" />
+        </Icono>
+    );
+}
+
+/* ---- Secciones de la administración ---- */
+
+export function IconoCatalogo(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
+        </Icono>
+    );
+}
+
+export function IconoPromo(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M3 12V4a1 1 0 0 1 1-1h8l9 9-9 9Z" />
+            <circle cx="7.5" cy="7.5" r="1.5" />
+        </Icono>
+    );
+}
+
+export function IconoReportes(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M3 3v18h18" />
+            <path d="M8 17v-5M13 17V8M18 17v-8" />
+        </Icono>
+    );
+}
+
+export function IconoUsuarios(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <circle cx="9" cy="8" r="4" />
+            <path d="M2 21a7 7 0 0 1 14 0" />
+            <path d="M16 3.5a4 4 0 0 1 0 9M22 21a7 7 0 0 0-4-6.3" />
+        </Icono>
+    );
+}
+
+export function IconoCaja(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <rect x="2" y="3" width="20" height="13" rx="2" />
+            <path d="M8 21h8M12 16v5" />
+        </Icono>
+    );
+}
+
+export function IconoSalir(props: IconoProps) {
+    return (
+        <Icono {...props}>
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+            <path d="M10 17l-5-5 5-5M5 12h11" />
+        </Icono>
+    );
+}
+
 export function IconoCandado(props: IconoProps) {
     return (
         <Icono {...props}>

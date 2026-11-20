@@ -1,4 +1,3 @@
-import { Boton } from "@ibiza/ui";
 import estilos from "./BarraCategorias.module.css";
 import type { CategoriaVenta } from "../db/productos";
 
@@ -8,6 +7,8 @@ interface Props {
   onElegir: (id: number) => void;
 }
 
+// Píldoras con contador. La elegida se marca con aria-pressed, y el CSS la pinta
+// leyendo ese mismo atributo: no hay una clase aparte que se pueda desincronizar.
 export const BarraCategorias = ({
   categorias,
   seleccionadaId,
@@ -16,13 +17,16 @@ export const BarraCategorias = ({
   return (
     <div className={estilos.barra}>
       {categorias.map((categoria) => (
-        <Boton
+        <button
           key={categoria.id}
+          type="button"
+          className={estilos.categoria}
+          aria-pressed={categoria.id === seleccionadaId}
           onClick={() => onElegir(categoria.id)}
-          variante={categoria.id === seleccionadaId ? "primario" : "secundario"}
         >
           {categoria.nombre}
-        </Boton>
+          <span className={estilos.contador}>{categoria.productos.length}</span>
+        </button>
       ))}
     </div>
   );

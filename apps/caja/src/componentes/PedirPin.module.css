@@ -1,59 +1,84 @@
-.pantalla {
-  height: 100%;
-  display: grid;
-  place-items: center;
-  padding: var(--espacio);
-}
-
-.tarjeta {
-  width: min(480px, 100%);
-  max-height: 100%;
-  overflow-y: auto;
-}
-
-.titulo {
-  margin: 0 0 var(--espacio);
-  font-size: 28px;
-  text-align: center;
-}
-
-.aviso {
-  margin: 0;
-  color: var(--color-texto-suave);
-  text-align: center;
-}
-
+/* Usuarios en 2 columnas, cada uno con su inicial: se encuentra el nombre de un vistazo */
 .usuarios {
   display: grid;
-  gap: 12px;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--espacio-chico);
+}
+
+.usuario {
+  display: flex;
+  align-items: center;
+  gap: var(--espacio-medio);
+  min-width: 0;
+  min-height: var(--tactil-min);
+  padding: var(--espacio-chico) var(--espacio-medio);
+  border: 1px solid var(--color-borde-fuerte);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+  color: var(--color-texto);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color var(--transicion),
+    border-color var(--transicion),
+    transform 80ms ease;
+}
+
+.usuario:active {
+  transform: scale(0.97);
+  background: var(--color-acento-suave);
+  border-color: var(--color-acento);
+}
+
+@media (hover: hover) {
+  .usuario:hover {
+    border-color: var(--color-acento);
+  }
+}
+
+.usuario:focus-visible {
+  outline: 3px solid var(--color-acento);
+  outline-offset: 2px;
+}
+
+.inicial {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-superficie-alta);
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+  font-weight: 700;
+}
+
+.nombre {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .puntos {
   display: flex;
   justify-content: center;
   gap: var(--espacio);
+  padding: var(--espacio-chico) 0;
 }
 
 .punto {
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-borde);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--color-borde-fuerte);
   border-radius: 50%;
+  transition: background-color var(--transicion), border-color var(--transicion);
 }
 
 .puntoLleno {
   border-color: var(--color-acento);
   background: var(--color-acento);
-}
-
-.error {
-  min-height: 1.5em;
-  margin: 12px 0;
-  color: var(--color-peligro);
-  text-align: center;
-}
-
-.volver {
-  width: 100%;
-  margin-top: var(--espacio);
 }
