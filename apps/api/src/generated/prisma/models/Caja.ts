@@ -48,6 +48,7 @@ export type CajaMinAggregateOutputType = {
   creadaEn: Date | null
   actualizadoEn: Date | null
   aumentoPorcentaje: number | null
+  tipo: string | null
 }
 
 export type CajaMaxAggregateOutputType = {
@@ -60,6 +61,7 @@ export type CajaMaxAggregateOutputType = {
   creadaEn: Date | null
   actualizadoEn: Date | null
   aumentoPorcentaje: number | null
+  tipo: string | null
 }
 
 export type CajaCountAggregateOutputType = {
@@ -72,6 +74,7 @@ export type CajaCountAggregateOutputType = {
   creadaEn: number
   actualizadoEn: number
   aumentoPorcentaje: number
+  tipo: number
   _all: number
 }
 
@@ -98,6 +101,7 @@ export type CajaMinAggregateInputType = {
   creadaEn?: true
   actualizadoEn?: true
   aumentoPorcentaje?: true
+  tipo?: true
 }
 
 export type CajaMaxAggregateInputType = {
@@ -110,6 +114,7 @@ export type CajaMaxAggregateInputType = {
   creadaEn?: true
   actualizadoEn?: true
   aumentoPorcentaje?: true
+  tipo?: true
 }
 
 export type CajaCountAggregateInputType = {
@@ -122,6 +127,7 @@ export type CajaCountAggregateInputType = {
   creadaEn?: true
   actualizadoEn?: true
   aumentoPorcentaje?: true
+  tipo?: true
   _all?: true
 }
 
@@ -221,6 +227,7 @@ export type CajaGroupByOutputType = {
   creadaEn: Date
   actualizadoEn: Date
   aumentoPorcentaje: number
+  tipo: string
   _count: CajaCountAggregateOutputType | null
   _avg: CajaAvgAggregateOutputType | null
   _sum: CajaSumAggregateOutputType | null
@@ -256,6 +263,7 @@ export type CajaWhereInput = {
   creadaEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
   actualizadoEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
   aumentoPorcentaje?: Prisma.IntFilter<"Caja"> | number
+  tipo?: Prisma.StringFilter<"Caja"> | string
   aperturas?: Prisma.AperturaCajaListRelationFilter
   cierres?: Prisma.CierreCajaListRelationFilter
   ventas?: Prisma.VentaListRelationFilter
@@ -275,6 +283,7 @@ export type CajaOrderByWithRelationInput = {
   creadaEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
   aumentoPorcentaje?: Prisma.SortOrder
+  tipo?: Prisma.SortOrder
   aperturas?: Prisma.AperturaCajaOrderByRelationAggregateInput
   cierres?: Prisma.CierreCajaOrderByRelationAggregateInput
   ventas?: Prisma.VentaOrderByRelationAggregateInput
@@ -297,6 +306,7 @@ export type CajaWhereUniqueInput = Prisma.AtLeast<{
   creadaEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
   actualizadoEn?: Prisma.DateTimeFilter<"Caja"> | Date | string
   aumentoPorcentaje?: Prisma.IntFilter<"Caja"> | number
+  tipo?: Prisma.StringFilter<"Caja"> | string
   aperturas?: Prisma.AperturaCajaListRelationFilter
   cierres?: Prisma.CierreCajaListRelationFilter
   ventas?: Prisma.VentaListRelationFilter
@@ -316,6 +326,7 @@ export type CajaOrderByWithAggregationInput = {
   creadaEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
   aumentoPorcentaje?: Prisma.SortOrder
+  tipo?: Prisma.SortOrder
   _count?: Prisma.CajaCountOrderByAggregateInput
   _avg?: Prisma.CajaAvgOrderByAggregateInput
   _max?: Prisma.CajaMaxOrderByAggregateInput
@@ -336,6 +347,7 @@ export type CajaScalarWhereWithAggregatesInput = {
   creadaEn?: Prisma.DateTimeWithAggregatesFilter<"Caja"> | Date | string
   actualizadoEn?: Prisma.DateTimeWithAggregatesFilter<"Caja"> | Date | string
   aumentoPorcentaje?: Prisma.IntWithAggregatesFilter<"Caja"> | number
+  tipo?: Prisma.StringWithAggregatesFilter<"Caja"> | string
 }
 
 export type CajaCreateInput = {
@@ -347,6 +359,7 @@ export type CajaCreateInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
@@ -366,6 +379,7 @@ export type CajaUncheckedCreateInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
@@ -384,6 +398,7 @@ export type CajaUpdateInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
@@ -403,6 +418,7 @@ export type CajaUncheckedUpdateInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
@@ -421,6 +437,7 @@ export type CajaCreateManyInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
 }
 
 export type CajaUpdateManyMutationInput = {
@@ -432,6 +449,7 @@ export type CajaUpdateManyMutationInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CajaUncheckedUpdateManyInput = {
@@ -444,6 +462,7 @@ export type CajaUncheckedUpdateManyInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
 }
 
 export type CajaCountOrderByAggregateInput = {
@@ -456,6 +475,7 @@ export type CajaCountOrderByAggregateInput = {
   creadaEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
   aumentoPorcentaje?: Prisma.SortOrder
+  tipo?: Prisma.SortOrder
 }
 
 export type CajaAvgOrderByAggregateInput = {
@@ -474,6 +494,7 @@ export type CajaMaxOrderByAggregateInput = {
   creadaEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
   aumentoPorcentaje?: Prisma.SortOrder
+  tipo?: Prisma.SortOrder
 }
 
 export type CajaMinOrderByAggregateInput = {
@@ -486,6 +507,7 @@ export type CajaMinOrderByAggregateInput = {
   creadaEn?: Prisma.SortOrder
   actualizadoEn?: Prisma.SortOrder
   aumentoPorcentaje?: Prisma.SortOrder
+  tipo?: Prisma.SortOrder
 }
 
 export type CajaSumOrderByAggregateInput = {
@@ -622,6 +644,7 @@ export type CajaCreateWithoutAperturasInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
@@ -640,6 +663,7 @@ export type CajaUncheckedCreateWithoutAperturasInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
@@ -673,6 +697,7 @@ export type CajaUpdateWithoutAperturasInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
@@ -691,6 +716,7 @@ export type CajaUncheckedUpdateWithoutAperturasInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
@@ -708,6 +734,7 @@ export type CajaCreateWithoutCierresInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
@@ -726,6 +753,7 @@ export type CajaUncheckedCreateWithoutCierresInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
@@ -759,6 +787,7 @@ export type CajaUpdateWithoutCierresInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
@@ -777,6 +806,7 @@ export type CajaUncheckedUpdateWithoutCierresInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
@@ -794,6 +824,7 @@ export type CajaCreateWithoutVentasInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionCreateNestedManyWithoutCajaInput
@@ -812,6 +843,7 @@ export type CajaUncheckedCreateWithoutVentasInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
   anulaciones?: Prisma.AnulacionUncheckedCreateNestedManyWithoutCajaInput
@@ -845,6 +877,7 @@ export type CajaUpdateWithoutVentasInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUpdateManyWithoutCajaNestedInput
@@ -863,6 +896,7 @@ export type CajaUncheckedUpdateWithoutVentasInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
   anulaciones?: Prisma.AnulacionUncheckedUpdateManyWithoutCajaNestedInput
@@ -880,6 +914,7 @@ export type CajaCreateWithoutAnulacionesInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
@@ -898,6 +933,7 @@ export type CajaUncheckedCreateWithoutAnulacionesInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
@@ -931,6 +967,7 @@ export type CajaUpdateWithoutAnulacionesInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
@@ -949,6 +986,7 @@ export type CajaUncheckedUpdateWithoutAnulacionesInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
@@ -966,6 +1004,7 @@ export type CajaCreateWithoutMovimientosInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
@@ -984,6 +1023,7 @@ export type CajaUncheckedCreateWithoutMovimientosInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
@@ -1017,6 +1057,7 @@ export type CajaUpdateWithoutMovimientosInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
@@ -1035,6 +1076,7 @@ export type CajaUncheckedUpdateWithoutMovimientosInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
@@ -1052,6 +1094,7 @@ export type CajaCreateWithoutAuditoriasInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
@@ -1070,6 +1113,7 @@ export type CajaUncheckedCreateWithoutAuditoriasInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
@@ -1103,6 +1147,7 @@ export type CajaUpdateWithoutAuditoriasInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
@@ -1121,6 +1166,7 @@ export type CajaUncheckedUpdateWithoutAuditoriasInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
@@ -1138,6 +1184,7 @@ export type CajaCreateWithoutEstadoSyncInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaCreateNestedManyWithoutCajaInput
@@ -1156,6 +1203,7 @@ export type CajaUncheckedCreateWithoutEstadoSyncInput = {
   creadaEn?: Date | string
   actualizadoEn?: Date | string
   aumentoPorcentaje?: number
+  tipo?: string
   aperturas?: Prisma.AperturaCajaUncheckedCreateNestedManyWithoutCajaInput
   cierres?: Prisma.CierreCajaUncheckedCreateNestedManyWithoutCajaInput
   ventas?: Prisma.VentaUncheckedCreateNestedManyWithoutCajaInput
@@ -1189,6 +1237,7 @@ export type CajaUpdateWithoutEstadoSyncInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUpdateManyWithoutCajaNestedInput
@@ -1207,6 +1256,7 @@ export type CajaUncheckedUpdateWithoutEstadoSyncInput = {
   creadaEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   actualizadoEn?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   aumentoPorcentaje?: Prisma.IntFieldUpdateOperationsInput | number
+  tipo?: Prisma.StringFieldUpdateOperationsInput | string
   aperturas?: Prisma.AperturaCajaUncheckedUpdateManyWithoutCajaNestedInput
   cierres?: Prisma.CierreCajaUncheckedUpdateManyWithoutCajaNestedInput
   ventas?: Prisma.VentaUncheckedUpdateManyWithoutCajaNestedInput
@@ -1301,6 +1351,7 @@ export type CajaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   creadaEn?: boolean
   actualizadoEn?: boolean
   aumentoPorcentaje?: boolean
+  tipo?: boolean
   aperturas?: boolean | Prisma.Caja$aperturasArgs<ExtArgs>
   cierres?: boolean | Prisma.Caja$cierresArgs<ExtArgs>
   ventas?: boolean | Prisma.Caja$ventasArgs<ExtArgs>
@@ -1323,9 +1374,10 @@ export type CajaSelectScalar = {
   creadaEn?: boolean
   actualizadoEn?: boolean
   aumentoPorcentaje?: boolean
+  tipo?: boolean
 }
 
-export type CajaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nombre" | "activo" | "barra" | "tokenHash" | "version" | "creadaEn" | "actualizadoEn" | "aumentoPorcentaje", ExtArgs["result"]["caja"]>
+export type CajaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "nombre" | "activo" | "barra" | "tokenHash" | "version" | "creadaEn" | "actualizadoEn" | "aumentoPorcentaje" | "tipo", ExtArgs["result"]["caja"]>
 export type CajaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   aperturas?: boolean | Prisma.Caja$aperturasArgs<ExtArgs>
   cierres?: boolean | Prisma.Caja$cierresArgs<ExtArgs>
@@ -1358,6 +1410,7 @@ export type $CajaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     creadaEn: Date
     actualizadoEn: Date
     aumentoPorcentaje: number
+    tipo: string
   }, ExtArgs["result"]["caja"]>
   composites: {}
 }
@@ -1743,6 +1796,7 @@ export interface CajaFieldRefs {
   readonly creadaEn: Prisma.FieldRef<"Caja", 'DateTime'>
   readonly actualizadoEn: Prisma.FieldRef<"Caja", 'DateTime'>
   readonly aumentoPorcentaje: Prisma.FieldRef<"Caja", 'Int'>
+  readonly tipo: Prisma.FieldRef<"Caja", 'String'>
 }
     
 

@@ -289,6 +289,21 @@ Solo para tener en cuenta; **no cambia el orden de la hoja de ruta**. La apertur
 - **Bloquea aunque no sea un paso**: ver "Producción (antes de abrir el boliche)". Además, `CORS_ORIGENES` de producción tiene que incluir `http://tauri.localhost`.
 - **Si no da el tiempo**: hacer F14 → F15 → F25 → F26, abrir con la administración por API (Postman o scripts) y sumar las pantallas después.
 
+## Parte 3: cajas de entrada (agendado el 21/11/2026)
+
+En la puerta hay **2 PCs con impresora** que cobran las entradas. Hacen lo mismo que una caja de barra (PIN, fondo, retiros, cambio de cajero, anulación, auditoría, cierre con arqueo ciego, sincronización y updater), pero venden **3 tipos de entrada con precio fijo** en vez de bebidas y comidas. Para retomar: "seguimos con el paso E1".
+
+- Decidido (21/11/2026): **la misma app, el mismo instalador y el mismo release**, no una app aparte. Cada caja tiene un campo `tipo` (`BARRA` / `ENTRADA`, default `BARRA`) que edita el Admin y baja con la sincronización, igual que `aumentoPorcentaje`: la PC sabe qué es por su token. Así no hay dos updaters, dos workflows ni dos SQLite, y una PC se pasa de barra a entrada (o se reemplaza una rota) desde la administración, sin reinstalar. No es un ajuste local: lo decide el Admin desde la nube.
+- Decidido (21/11/2026): las entradas usan **el modelo que ya existe**, como la comida en M1. `SECCIONES` suma `ENTRADA`; categoría "Entradas" con sección `ENTRADA`; cada tipo de entrada es un Producto con una sola Variante en envase "Unidad". Venta, ítems, subida, anulación, cierre, promos y reportes no cambian. `SECCIONES_POR_TIPO` en `shared`: `BARRA → [BEBIDA, COMIDA]`, `ENTRADA → [ENTRADA]`.
+- Decidido (21/11/2026): **un ticket por persona**. 3 entradas = 3 tickets ("1/3", "2/3", "3/3") con corte entre cada uno; cada uno con letra de la semana, fecha, caja, número de venta, tipo de entrada, precio, medio de pago y hora. **Precio fijo** por tipo, sin cambios por horario (si algún día hace falta, alcanza con una promo con horario).
+
+- [ ] **E1** — Backend: `tipo` en `Caja`, migración, `TIPOS_CAJA` y `SECCIONES_POR_TIPO` en `shared`, `ENTRADA` en `SECCIONES`, schema Zod, servicio de cajas y bajada (la fila `caja` ya viene siempre).
+- [ ] **E2** — Caja: migración 6 de SQLite y guardar el tipo igual que `aumentoPorcentaje` (`apps/caja/src/db/ajustes.ts`).
+- [ ] **E3** — Caja: la venta muestra solo las secciones de su tipo (sin pestañas en una caja de entrada; `PantallaVenta.tsx` ya filtra `SECCIONES` por las categorías que existen) y el encabezado indica que es caja de entrada.
+- [ ] **E4** — Ticket de entrada en Rust: comando nuevo junto a `imprimir_ticket` (`ticket.rs` y `lib/impresora.ts`) que imprime un ticket por unidad con "n/N" y corte.
+- [ ] **E5** — Administración: campo "Tipo" en `admin/cajas/Cajas.tsx` y sección "Entradas" en `admin/catalogo/Categorias.tsx` (usa `NOMBRE_SECCION`). Reportes: separar entradas de barra (por sección o por tipo de caja).
+- [ ] **E6** — Prueba de punta a punta y release de la caja.
+
 ## Cambios de rumbo
 
 Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción. Se integra al resto del documento más adelante.
@@ -359,6 +374,9 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 - Consumiciones: ¿cómo llegan a la barra (vale/pulsera/entrada)? ¿Quién las autoriza? ¿Hay tope por persona? ¿Se cuentan aparte en el cierre?
 - ¿En Efectivo se muestra "paga con" y vuelto (montos rápidos en botones)?
 - ¿Cómo se maneja SmartScreen sin certificado de firma de código? (se ve en F26). Lo demás del updater quedó resuelto en F25: obligatoria solo con la caja cerrada, y los releases del repo privado pasan por la API.
+- Entradas (Parte 3): ¿alguna incluye consumición (un vale para canjear en la barra)? Consultar al cliente.
+- Entradas (Parte 3): al anular una venta de varias entradas, por defecto se anula la venta completa y hay que recuperar todos los tickets (misma regla que en la barra). Confirmar con el cliente.
+- Entradas (Parte 3): nombres y precios de los 3 tipos de entrada.
 
 ### Producción (antes de abrir el boliche)
 

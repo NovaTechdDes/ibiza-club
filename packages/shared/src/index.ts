@@ -6,6 +6,7 @@ export * from './tipo-promocion.js'
 export * from './tipo-movimiento.js'
 export * from './accion-auditoria.js'
 export * from './seccion.js'
+export * from './tipo-caja.js'
 
 export * from './schemas/envase.js';
 export * from './schemas/categoria.js';

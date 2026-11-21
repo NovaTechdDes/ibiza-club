@@ -108,7 +108,8 @@ export const CajaScalarFieldEnum = {
   version: 'version',
   creadaEn: 'creadaEn',
   actualizadoEn: 'actualizadoEn',
-  aumentoPorcentaje: 'aumentoPorcentaje'
+  aumentoPorcentaje: 'aumentoPorcentaje',
+  tipo: 'tipo'
 } as const
 
 export type CajaScalarFieldEnum = (typeof CajaScalarFieldEnum)[keyof typeof CajaScalarFieldEnum]

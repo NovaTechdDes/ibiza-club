@@ -22,6 +22,7 @@ model Caja {
   creadaEn          DateTime @default(now())
   actualizadoEn     DateTime @updatedAt
   aumentoPorcentaje Int      @default(0)
+  tipo              String   @default("BARRA") @db.NVarChar(10)
 
   aperturas   AperturaCaja[]
   cierres     CierreCaja[]
