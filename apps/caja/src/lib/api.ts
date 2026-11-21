@@ -1,4 +1,4 @@
-import type { OperacionSubida } from "@ibiza/shared";
+import type { OperacionSubida, TipoCaja } from "@ibiza/shared";
 import axios from "axios";
 import type { Rechazada, RefOperacion } from "../db/cola";
 
@@ -6,7 +6,8 @@ type CajaRemota = {
     id: number;
     nombre: string;
     barra: string | null;
-    aumentoPorcentaje: number
+    aumentoPorcentaje: number;
+    tipo: TipoCaja;
 };
 
 type Fila = Record<string, unknown>;

@@ -26,6 +26,7 @@ type DatosTicket = {
   total: number;
   medioPago: MedioPago;
   instante: Date;
+  conEnvase: boolean;
 };
 
 // Arma el contenido; cómo se ve en el papel lo decide Rust
@@ -37,6 +38,7 @@ export const armarTicket = ({
   total,
   medioPago,
   instante,
+  conEnvase,
 }: DatosTicket): Ticket => ({
   letra: jornada.letra,
   fecha: fechaTicket(jornada.fecha),
@@ -44,7 +46,7 @@ export const armarTicket = ({
   numero,
   lineas: lineas.map((linea) => ({
     cantidad: linea.cantidad,
-    nombre: `${linea.nombre} (${linea.envaseNombre})`,
+    nombre: conEnvase ? `${linea.nombre} (${linea.envaseNombre})` : linea.nombre,
     precioUnitario: linea.precio,
     promocionNombre: linea.promocionNombre,
     descuento: linea.descuento,

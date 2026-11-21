@@ -5,7 +5,7 @@ import { leerConfigCaja } from "../db/ajustes";
 import type { Apertura, Jornada } from "../db/apertura";
 import { registrarVenta } from "../db/ventas";
 import { avisaError } from "../lib/alertas";
-import { imprimirConReintento, imprimirTicket } from "../lib/impresora";
+import { imprimirConReintento, imprimirEntradas, imprimirTicket } from "../lib/impresora";
 import { calcularJornada } from "../lib/jornada";
 import { armarTicket } from "../lib/ticket";
 import { useCarrito } from "../stores/carrito";
@@ -15,6 +15,7 @@ import { useCarritoCalculado } from "./useCarritoCalculado";
 import { useImpresora } from "./useImpresora";
 import { useVinculacion } from "./useVinculacion";
 import { avisarOperacionNueva } from "./useSubida";
+import { useTipoCaja } from "./useCatalogo";
 
 
 
@@ -38,6 +39,7 @@ export const useCobrar = () => {
   const { data: apertura } = useApertura();
   const { data: vinculacion } = useVinculacion();
   const { data: impresora } = useImpresora();
+  const { data: tipo } = useTipoCaja();
   const usuario = useSesion((estado) => estado.usuario);
   const venta = useCarritoCalculado();
   const vaciar = useCarrito((estado) => estado.vaciar);
@@ -62,6 +64,7 @@ export const useCobrar = () => {
       });
 
       // 3. El ticket. Si la impresora falla pregunta si reintentar, pero nunca tira error
+      const esEntrada = tipo === "ENTRADA";
       const ticket = armarTicket({
         jornada,
         caja: vinculacion.cajaNombre,
@@ -70,11 +73,15 @@ export const useCobrar = () => {
         total: venta.total,
         medioPago,
         instante,
+        conEnvase: !esEntrada,
       });
+      const imprimir = esEntrada ? imprimirEntradas : imprimirTicket;
       await imprimirConReintento(impresora ?? null, {
-        titulo: `No se imprimió el ticket #${numero}`,
+        titulo: esEntrada
+          ? `No se imprimieron las entradas de la venta #${numero}`
+          : `No se imprimió el ticket #${numero}`,
         aclaracion: "La venta ya quedó guardada.",
-        imprimir: (c) => imprimirTicket(c.ip, c.puerto, c.ancho, ticket),
+        imprimir: (c) => imprimir(c.ip, c.puerto, c.ancho, ticket),
       });
 
       return numero;

@@ -3,6 +3,7 @@ use std::net::{SocketAddr, TcpStream};
 use std::time::Duration;
 
 use crate::cierre::{Cierre, armar_cierre};
+use crate::entrada::armar_entradas;
 use crate::escpos::{
     AVANZAR_Y_CORTAR, CENTRADO, INICIAR, IZQUIERDA, TABLA_CP850, TEXTO_GRANDE, TEXTO_NORMAL,
     a_cp850,
@@ -69,6 +70,17 @@ pub fn imprimir_ticket(
     ticket: Ticket,
 ) -> Result<(), String> {
     enviar(&ip, puerto, &armar_ticket(&ticket, ancho))
+}
+
+// Mismo Ticket que la barra: cambia solo el papel (uno por entrada, con "n/N")
+#[tauri::command(async)]
+pub fn imprimir_entradas(
+    ip: String,
+    puerto: u16,
+    ancho: usize,
+    ticket: Ticket,
+) -> Result<(), String> {
+    enviar(&ip, puerto, &armar_entradas(&ticket, ancho))
 }
 
 #[tauri::command(async)]

@@ -87,7 +87,10 @@ export const CierreSubidaSchema = OperacionBase.extend({
     aperturaIdLocal: Id,
     diferencia: z.number().int(),
     cerradoPorId: Id,
-    contado: Plata, esperado: Plata,
+    contado: Plata,
+    // Puede ser negativo (ej: retiro y después anulación de una venta en efectivo).
+    // Si se rechazara, el cierre trabaría la cola de subida para siempre.
+    esperado: z.number().int(),
     totalTarjeta: Plata,
     totalTransferencia: Plata,
     pendiente: z.boolean().default(false)

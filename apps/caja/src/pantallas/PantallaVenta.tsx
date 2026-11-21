@@ -23,7 +23,8 @@ import {
   NOMBRE_MEDIO,
   NOMBRE_SECCION,
   type Seccion,
-  SECCIONES,
+  SECCIONES_POR_TIPO,
+  NOMBRE_TIPO_CAJA,
   type MedioPago,
 } from "@ibiza/shared";
 import { confirmar } from "../lib/alertas";
@@ -31,7 +32,7 @@ import { AvisoActualizacion } from "../componentes/AvisoActualizacion";
 
 import estilos from "./PantallaVenta.module.css";
 import { type Vinculacion } from "../db/ajustes";
-import { useCategoriaVenta } from "../hooks/useCatalogo";
+import { useCategoriaVenta, useTipoCaja } from "../hooks/useCatalogo";
 import { useSesion } from "../stores/sesion";
 import { useState } from "react";
 import { BarraCategorias } from "../componentes/BarraCategorias";
@@ -92,8 +93,9 @@ export function PantallaVenta({ vinculacion }: Props) {
   >("venta");
 
   const { data: categorias } = useCategoriaVenta();
+  const { data: tipo } = useTipoCaja();
 
-  const secciones = SECCIONES.filter((s) =>
+  const secciones = (tipo ? SECCIONES_POR_TIPO[tipo] : []).filter((s) =>
     categorias?.some((c) => c.seccion === s),
   );
 
@@ -180,6 +182,9 @@ export function PantallaVenta({ vinculacion }: Props) {
         <div className={estilos.identidad}>
           <span className={estilos.caja}>{vinculacion.cajaNombre}</span>
           <span className={estilos.cajero}>{usuario?.nombre}</span>
+          {tipo === "ENTRADA" && (
+            <p className={estilos.etiqueta}>{NOMBRE_TIPO_CAJA[tipo]}</p>
+          )}
         </div>
         {/* La misma letra y fecha que salen en el ticket: el encargado las compara con la barra.
             Solo con jornada: sin jornada se calculan en cada venta y pueden cambiar en el corte */}
@@ -295,7 +300,9 @@ export function PantallaVenta({ vinculacion }: Props) {
           </>
         ) : (
           <p className={estilos.vacio}>
-            Todavía no hay productos. Esperá la sincronización.
+            {tipo === "ENTRADA"
+              ? "No hay entradas cargadas"
+              : "Todavía no hay productos. Esperá la sincronización."}
           </p>
         )}
       </Tarjeta>

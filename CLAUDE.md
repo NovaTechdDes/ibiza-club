@@ -297,10 +297,15 @@ En la puerta hay **2 PCs con impresora** que cobran las entradas. Hacen lo mismo
 - Decidido (21/11/2026): las entradas usan **el modelo que ya existe**, como la comida en M1. `SECCIONES` suma `ENTRADA`; categoría "Entradas" con sección `ENTRADA`; cada tipo de entrada es un Producto con una sola Variante en envase "Unidad". Venta, ítems, subida, anulación, cierre, promos y reportes no cambian. `SECCIONES_POR_TIPO` en `shared`: `BARRA → [BEBIDA, COMIDA]`, `ENTRADA → [ENTRADA]`.
 - Decidido (21/11/2026): **un ticket por persona**. 3 entradas = 3 tickets ("1/3", "2/3", "3/3") con corte entre cada uno; cada uno con letra de la semana, fecha, caja, número de venta, tipo de entrada, precio, medio de pago y hora. **Precio fijo** por tipo, sin cambios por horario (si algún día hace falta, alcanza con una promo con horario).
 
-- [ ] **E1** — Backend: `tipo` en `Caja`, migración, `TIPOS_CAJA` y `SECCIONES_POR_TIPO` en `shared`, `ENTRADA` en `SECCIONES`, schema Zod, servicio de cajas y bajada (la fila `caja` ya viene siempre).
-- [ ] **E2** — Caja: migración 6 de SQLite y guardar el tipo igual que `aumentoPorcentaje` (`apps/caja/src/db/ajustes.ts`).
-- [ ] **E3** — Caja: la venta muestra solo las secciones de su tipo (sin pestañas en una caja de entrada; `PantallaVenta.tsx` ya filtra `SECCIONES` por las categorías que existen) y el encabezado indica que es caja de entrada.
-- [ ] **E4** — Ticket de entrada en Rust: comando nuevo junto a `imprimir_ticket` (`ticket.rs` y `lib/impresora.ts`) que imprime un ticket por unidad con "n/N" y corte.
+- [x] **E1** — Backend: `tipo` en `Caja`, migración, `TIPOS_CAJA` y `SECCIONES_POR_TIPO` en `shared`, `ENTRADA` en `SECCIONES`, schema Zod, servicio de cajas y bajada (la fila `caja` ya viene siempre) (hecho, 21/11/2026).
+  - `packages/shared/src/tipo-caja.ts`: `TIPOS_CAJA`, `TipoCaja`, `NOMBRE_TIPO_CAJA` y `SECCIONES_POR_TIPO` (el orden importa: la primera sección es la pestaña inicial). Migración `tipo_caja`: `NVARCHAR(10) NOT NULL DEFAULT 'BARRA'`.
+  - `tipo` en `CajaInputSchema` es solo `.optional()`, **sin `.default()`**: `CajaUpdateSchema` reutiliza el shape y un default haría que cualquier edición sin `tipo` pase la caja a `BARRA`. El default de "crear" lo pone la base.
+  - **Prisma 7: `db:migrate` no regenera el cliente.** Después de cada cambio en `schema.prisma` hay que correr también `pnpm --filter @ibiza/api db:generate` (y reiniciar `pnpm dev` y, si hace falta, el TS Server de VS Code).
+- [x] **E2** — Caja: guardar el tipo igual que `aumentoPorcentaje` (`apps/caja/src/db/ajustes.ts`) (hecho, 21/11/2026).
+  - **Sin migración 6**: el tipo va en la tabla clave/valor `Ajustes` (clave `tipoCaja`) y `aplicarCambios` guarda la fila `caja` en cada bajada, así que llega en la primera sincronización sin volver `versionCatalogo` a 0. `leerTipoCaja()` valida el texto con un _type guard_ y, si no hay valor, devuelve `"BARRA"`.
+  - De paso se arregló un bug de la subida: `CierreSubidaSchema` exigía `esperado >= 0`, un cierre con esperado negativo daba 400 y trababa toda la cola. Ahora acepta negativos.
+- [x] **E3** — Caja: la venta muestra solo las secciones de su tipo (sin pestañas en una caja de entrada; `PantallaVenta.tsx` ya filtra `SECCIONES` por las categorías que existen) y el encabezado indica que es caja de entrada.
+- [x] **E4** — Ticket de entrada en Rust: comando nuevo junto a `imprimir_ticket` (`ticket.rs` y `lib/impresora.ts`) que imprime un ticket por unidad con "n/N" y corte.
 - [ ] **E5** — Administración: campo "Tipo" en `admin/cajas/Cajas.tsx` y sección "Entradas" en `admin/catalogo/Categorias.tsx` (usa `NOMBRE_SECCION`). Reportes: separar entradas de barra (por sección o por tipo de caja).
 - [ ] **E6** — Prueba de punta a punta y release de la caja.
 
@@ -377,6 +382,7 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 - Entradas (Parte 3): ¿alguna incluye consumición (un vale para canjear en la barra)? Consultar al cliente.
 - Entradas (Parte 3): al anular una venta de varias entradas, por defecto se anula la venta completa y hay que recuperar todos los tickets (misma regla que en la barra). Confirmar con el cliente.
 - Entradas (Parte 3): nombres y precios de los 3 tipos de entrada.
+- Retiros: hoy la caja deja retirar más efectivo del que hay (pasó el 20/11: fondo $20.000, retiro $150.000, esperado −$130.000). ¿Se limita? Ojo: avisar "no hay tanto efectivo" le revela el esperado al cajero y choca con el arqueo ciego. Igual el esperado puede quedar negativo sin error (retiro y después anulación de una venta en efectivo), por eso `CierreSubidaSchema` acepta `esperado` negativo desde el 21/11/2026.
 
 ### Producción (antes de abrir el boliche)
 

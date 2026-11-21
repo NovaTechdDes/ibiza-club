@@ -2,6 +2,7 @@ use tauri_plugin_sql::{Migration, MigrationKind};
 
 mod actualizacion;
 mod cierre;
+mod entrada;
 mod escpos;
 mod imagen;
 mod impresora;
@@ -68,6 +69,7 @@ pub fn run() {
             pin::verificar_pin,
             impresora::imprimir_prueba,
             impresora::imprimir_ticket,
+            impresora::imprimir_entradas,
             impresora::imprimir_retiro,
             impresora::imprimir_cierre,
             imagen::cachear_imagenes,

@@ -54,6 +54,9 @@ export type Cierre = {
 export const imprimirTicket = (ip: string, puerto: number, ancho: number, ticket: Ticket) =>
     invoke<void>("imprimir_ticket", { ip, puerto, ancho, ticket });
 
+export const imprimirEntradas = (ip: string, puerto: number, ancho: number, ticket: Ticket) =>
+    invoke<void>("imprimir_entradas", { ip, puerto, ancho, ticket });
+
 export const imprimirRetiro = (ip: string, puerto: number, ancho: number, retiro: Retiro) =>
     invoke<void>('imprimir_retiro', {ip, puerto, ancho, retiro})
 

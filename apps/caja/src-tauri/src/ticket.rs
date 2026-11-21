@@ -10,24 +10,24 @@ use crate::escpos::{
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct LineaTicket {
-    cantidad: u32,
-    nombre: String,
-    precio_unitario: i64,
-    promocion_nombre: Option<String>,
-    descuento: i64,
+    pub(crate) cantidad: u32,
+    pub(crate) nombre: String,
+    pub(crate) precio_unitario: i64,
+    pub(crate) promocion_nombre: Option<String>,
+    pub(crate) descuento: i64,
 }
 
 #[derive(Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct Ticket {
-    letra: String,
-    fecha: String,
-    caja: String,
-    numero: u32,
-    lineas: Vec<LineaTicket>,
-    total: i64,
-    medio_pago: String,
-    hora: String,
+    pub(crate) letra: String,
+    pub(crate) fecha: String,
+    pub(crate) caja: String,
+    pub(crate) numero: u32,
+    pub(crate) lineas: Vec<LineaTicket>,
+    pub(crate) total: i64,
+    pub(crate) medio_pago: String,
+    pub(crate) hora: String,
 }
 
 // 10000 -> "$10.000", -4000 -> "-$4.000"
@@ -60,7 +60,7 @@ const SANGRIA: &str = "    ";
 // Parte el texto en renglones cortando entre palabras. El primero mide `primero` y los
 // demás `siguientes` (el primero es más corto porque a la derecha va el monto).
 // Una palabra que no entra ni en un renglón entero se corta donde haga falta.
-fn partir(texto: &str, primero: usize, siguientes: usize) -> Vec<String> {
+pub(crate) fn partir(texto: &str, primero: usize, siguientes: usize) -> Vec<String> {
     let mut renglones: Vec<String> = Vec::new();
     let mut actual = String::new();
 

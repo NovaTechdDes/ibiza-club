@@ -1,3 +1,4 @@
+import { type TipoCaja, TIPOS_CAJA } from "@ibiza/shared";
 import { obtenerDb, Sentencia, transaccion } from "./conexion";
 
 export type Vinculacion = {
@@ -84,11 +85,23 @@ export const guardarVinculacion = (vinculacion: Vinculacion) =>
         Object.entries(vinculacion).map(([clave, valor]) => sentenciaAjuste(clave, valor))
 );
 
-
 export const leerAumento = async(): Promise<number> => {
     const db = await obtenerDb();
     const filas = await db.select<{ valor: string}[]>(
         `SELECT valor FROM Ajustes WHERE clave = 'aumentoPorcentaje'`
     );
     return Number(filas[0]?.valor ?? 0);
+};
+
+const esTipoCaja = (valor: string | undefined): valor is TipoCaja =>
+    TIPOS_CAJA.some((tipo) => tipo === valor);
+
+export const leerTipoCaja = async (): Promise<TipoCaja> => {
+    const db = await obtenerDb();
+    const filas = await db.select<{valor: string}[]>(
+        "SELECT valor FROM Ajustes WHERE clave = 'tipoCaja'"
+    );
+
+    const valor = filas[0]?.valor;
+    return esTipoCaja(valor) ? valor : "BARRA"
 }

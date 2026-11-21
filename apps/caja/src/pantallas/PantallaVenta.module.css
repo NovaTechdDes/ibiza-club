@@ -40,6 +40,18 @@
   color: var(--color-texto-suave);
 }
 
+/* Tipo de caja (solo en las de entrada): píldora neutra, sin violeta, que no es algo activo */
+.etiqueta {
+  padding: 2px var(--espacio-chico);
+  border-radius: var(--radio-pildora);
+  border: 1px solid var(--color-borde-fuerte);
+  font-size: var(--texto-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 /* Letra y fecha de la jornada, como en el ticket: la letra en un cuadrado invertido */
 .jornada {
   display: flex;
