@@ -3,18 +3,20 @@ import { Usuario, verificarPin } from "../db/usuario";
 import { useUsuarios } from "../hooks/useUsuarios";
 import { Boton, TecladoNumerico } from "@ibiza/ui";
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Acciones, Dialogo, Mensaje } from "./Dialogo";
 import estilos from "./PedirPin.module.css";
 
 type Props = {
   titulo: string;
   roles?: Rol[];
+  // Se dibuja arriba del diálogo (el logo en la entrada del cajero)
+  encabezado?: ReactNode;
   onCorrecto: (usuario: Usuario) => void;
   onCancelar?: () => void;
 };
 type Intento = { usuario: Usuario; pin: string };
-export const PedirPin = ({ titulo, roles, onCorrecto, onCancelar }: Props) => {
+export const PedirPin = ({ titulo, roles, encabezado, onCorrecto, onCancelar }: Props) => {
   const { data: usuarios, isPending, isError } = useUsuarios();
 
   const [elegido, setElegido] = useState<Usuario | null>(null);
@@ -35,7 +37,7 @@ export const PedirPin = ({ titulo, roles, onCorrecto, onCancelar }: Props) => {
 
   if (!elegido) {
     return (
-      <Dialogo titulo={titulo} ayuda="Tocá tu nombre">
+      <Dialogo titulo={titulo} ayuda="Tocá tu nombre" encabezado={encabezado}>
         {isPending && <Mensaje tipo="aviso">Cargando usuarios...</Mensaje>}
         {isError && <Mensaje>No se pudieron leer los usuarios.</Mensaje>}
         {usuariosFiltrados?.length === 0 && (
@@ -99,7 +101,7 @@ export const PedirPin = ({ titulo, roles, onCorrecto, onCancelar }: Props) => {
   }
 
   return (
-    <Dialogo titulo={elegido.nombre} ayuda="Ingresá tu PIN">
+    <Dialogo titulo={elegido.nombre} ayuda="Ingresá tu PIN" encabezado={encabezado}>
       <div
         className={estilos.puntos}
         role="img"

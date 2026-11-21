@@ -13,6 +13,7 @@ import {
   IconoRetiro,
   IconoTarjeta,
   IconoTransferencia,
+  Logo,
   Pestanas,
   Tarjeta,
 } from "@ibiza/ui";
@@ -175,6 +176,7 @@ export function PantallaVenta({ vinculacion }: Props) {
   return (
     <div className={estilos.pantalla}>
       <header className={estilos.encabezado}>
+        <Logo variante="triangulo" />
         <div className={estilos.identidad}>
           <span className={estilos.caja}>{vinculacion.cajaNombre}</span>
           <span className={estilos.cajero}>{usuario?.nombre}</span>

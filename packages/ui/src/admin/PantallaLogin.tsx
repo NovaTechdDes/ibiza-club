@@ -3,6 +3,7 @@ import axios from "axios";
 import { useState, type FormEvent } from "react";
 import { Boton } from "../componentes/Boton";
 import { CampoTexto } from "../componentes/CampoTexto";
+import { Logo } from "../componentes/Logo";
 import { Tarjeta } from "../componentes/Tarjeta";
 import { mensajeDeError, useApiAdmin } from "./api";
 import estilos from "./PantallaLogin.module.css";
@@ -43,6 +44,7 @@ export function PantallaLogin({ enLinea, onVolver }: Props) {
 
     return (
         <div className={estilos.pantalla}>
+            <Logo />
             <Tarjeta className={estilos.tarjeta}>
                 <h1 className={estilos.titulo}>Administración</h1>
                 <p className={estilos.ayuda}>Entrá con tu email y contraseña. El PIN de la caja no sirve acá.</p>

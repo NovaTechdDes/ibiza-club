@@ -1,0 +1,14 @@
+.logo {
+    display: block;
+    flex-shrink: 0;
+    width: auto;
+    user-select: none;
+}
+
+.completo {
+    height: var(--logo-grande);
+}
+
+.triangulo {
+    height: var(--logo-chico);
+}

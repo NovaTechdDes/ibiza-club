@@ -68,6 +68,10 @@ html, body, #root {
     --tactil-min: 52px;
     --tactil-chico: 44px;
 
+    /* Logo: grande en las pantallas de entrada (PIN, login); chico en el encabezado */
+    --logo-grande: 112px;
+    --logo-chico: 32px;
+
     /* Formas y espacios */
     --radio-chico: 8px;
     --radio: 10px;

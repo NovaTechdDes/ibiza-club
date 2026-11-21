@@ -351,6 +351,7 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 ## Pendientes y preguntas abiertas
 
 - Integración con Mercado Pago (consultar al cliente).
+- **Logo**: los PNG de `packages/ui/src/assets/` y `apps/caja/src-tauri/icons/icono-fuente.png` son provisorios, recortados de una foto de WhatsApp. Pedir al cliente el original (PNG transparente o SVG) y reemplazarlos con los mismos nombres; después correr `pnpm tauri icon src-tauri/icons/icono-fuente.png` en `apps/caja` y borrar `android/`, `ios/` y `64x64.png`.
 - Recomendar equipamiento para comprar (PCs táctiles, impresoras, UPS, cajones) y conseguir una impresora para probar.
 - Confirmar horario de corte de la jornada (propuesta 18:00 a 10:00).
 - Diseño de la pantalla de cobro.

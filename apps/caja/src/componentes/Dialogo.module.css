@@ -1,8 +1,12 @@
-/* Centrada en la ventana. Si no entra (pantalla baja), la que scrollea es la tarjeta */
+/* Centrada en la ventana (con el encabezado opcional arriba).
+   Si no entra (pantalla baja), la que scrollea es la tarjeta */
 .pantalla {
   height: 100%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--espacio-grande);
   padding: var(--espacio-medio);
 }
 
@@ -10,6 +14,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--espacio);
+  min-height: 0;
   max-height: 100%;
   overflow-y: auto;
   padding: var(--espacio-grande);

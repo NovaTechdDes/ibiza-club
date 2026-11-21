@@ -15,12 +15,15 @@ type DialogoProps = {
   ayuda?: ReactNode;
   // chico: teclado numérico · medio: formularios · grande: dos columnas
   tamaño?: Tamaño;
+  // Va arriba de la tarjeta, fuera de ella (el logo en la pantalla del PIN)
+  encabezado?: ReactNode;
   children: ReactNode;
 };
 
-export function Dialogo({ titulo, ayuda, tamaño = "chico", children }: DialogoProps) {
+export function Dialogo({ titulo, ayuda, tamaño = "chico", encabezado, children }: DialogoProps) {
   return (
     <div className={estilos.pantalla}>
+      {encabezado}
       <Tarjeta className={`${estilos.tarjeta} ${estilos[tamaño]}`}>
         <header className={estilos.cabecera}>
           <h1 className={estilos.titulo}>{titulo}</h1>

@@ -6,6 +6,7 @@ export * from "./componentes/CampoSelect"
 export * from "./componentes/BotonTema";
 export * from "./componentes/Iconos";
 export * from "./componentes/Pestanas";
+export * from "./componentes/Logo";
 
 
 export * from "./tema";
