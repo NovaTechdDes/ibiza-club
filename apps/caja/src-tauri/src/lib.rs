@@ -1,3 +1,4 @@
+use tauri::Manager;
 use tauri_plugin_sql::{Migration, MigrationKind};
 
 mod actualizacion;
@@ -6,6 +7,7 @@ mod entrada;
 mod escpos;
 mod imagen;
 mod impresora;
+mod pantalla_cliente;
 mod pin;
 mod retiro;
 mod ticket;
@@ -63,6 +65,21 @@ pub fn run() {
                 .add_migrations(BASE, migraciones)
                 .build(),
         )
+        // Corre una vez al arrancar, cuando la ventana "main" de tauri.conf.json ya existe
+        .setup(|app| {
+            // Sin `?`: si falla la pantalla del cliente, la caja igual tiene que vender
+            if let Err(e) = pantalla_cliente::abrir(app.handle()) {
+                eprintln!("No se pudo abrir la pantalla del cliente: {e}");
+            }
+            Ok(())
+        })
+        // Tauri cierra la app cuando no queda ninguna ventana. Con la del cliente abierta,
+        // cerrar la caja dejaría el proceso vivo: lo cerramos a mano
+        .on_window_event(|window, event| {
+            if window.label() == "main" && matches!(event, tauri::WindowEvent::Destroyed) {
+                window.app_handle().exit(0);
+            }
+        })
         .invoke_handler(tauri::generate_handler![
             greet,
             transaccion::transaccion,

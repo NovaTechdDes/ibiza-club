@@ -1,0 +1,68 @@
+/*
+ * Pantalla del cliente: un monitor que se mira de lejos y que nadie toca.
+ *
+ * Excepción a "solo tokens": los tamaños grandes van en vh/vw y no en px,
+ * porque no sabemos de qué tamaño será esa pantalla (puede ser un monitor
+ * chico o una TV). Así el logo y el mensaje ocupan siempre la misma proporción.
+ */
+
+.pantalla {
+    height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: var(--espacio-grande);
+    background: var(--color-fondo);
+    color: var(--color-texto);
+    overflow: hidden;
+    /* Nadie la usa con el mouse: si el puntero quedó encima, que no se vea */
+    cursor: none;
+    user-select: none;
+}
+
+/*
+ * Logo.module.css ya les da una altura con una sola clase. Con dos clases
+ * (.pantalla .logo) estas ganan siempre, sin depender del orden en que carga el CSS.
+ */
+.pantalla .logo {
+    height: 40vh;
+    max-width: 80vw;
+    object-fit: contain;
+    animation: aparecer 600ms ease-out;
+}
+
+.pantalla .triangulo {
+    height: 22vh;
+}
+
+.gracias {
+    display: grid;
+    justify-items: center;
+    gap: 2vh;
+    text-align: center;
+    animation: aparecer 400ms ease-out;
+}
+
+.titulo {
+    margin: 0;
+    font-family: var(--fuente-titulo);
+    /* min() para que en una pantalla muy ancha y baja no se salga por arriba */
+    font-size: min(16vw, 22vh);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.subtitulo {
+    margin: 0;
+    font-size: min(5vw, 7vh);
+    font-weight: 500;
+    color: var(--color-texto-suave);
+}
+
+/* prefers-reduced-motion ya lo resuelve tema.css (animation-duration: 0ms) */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+}

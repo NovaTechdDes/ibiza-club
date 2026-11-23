@@ -1,0 +1,9 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "cliente",
+  "description":  "Pantalla del cliente: solo eventos, sin base ni updater",
+  "windows": ["cliente"],
+  "permissions": [
+    "core:default"
+  ]
+}
