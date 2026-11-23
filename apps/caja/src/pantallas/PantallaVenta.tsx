@@ -54,6 +54,7 @@ import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
 import type { Usuario } from "../db/usuario";
 import { useApertura } from "../hooks/useApertura";
 import { fechaTicket } from "../lib/ticket";
+import { descartarCarrito } from "../lib/descartes";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -72,7 +73,6 @@ export function PantallaVenta({ vinculacion }: Props) {
   const queryClient = useQueryClient();
 
   const carrito = useCarritoCalculado();
-  const vaciar = useCarrito((estado) => estado.vaciar);
   const agregar = useCarrito((estado) => estado.agregar);
   const cambiarCantidad = useCarrito((estado) => estado.cambiarCantidad);
 
@@ -110,8 +110,9 @@ export function PantallaVenta({ vinculacion }: Props) {
     categoriasSeccion?.[0];
 
   async function pedirVaciar() {
+    if (!usuario) return;
     if (await confirmar("¿Vaciar el carrito?", "Vaciar", { peligro: true }))
-      vaciar();
+      descartarCarrito(usuario.id);
   }
 
   function volverDeAdmin() {

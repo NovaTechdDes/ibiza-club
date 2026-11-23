@@ -1,5 +1,5 @@
 export const ACCIONES_AUDITORIA = [
-    "INGRESO", "SALIDA", "RETIRO", "ANULACION", "CONFIG_IMPRESORA", 'CIERRE'
+    "INGRESO", "SALIDA", "RETIRO", "ANULACION", "CONFIG_IMPRESORA", 'CIERRE', 'ITEMS_QUITADOS', 'CARRITO_VACIADO'
 ] as const ;
 
 export type AccionAuditoria = (typeof  ACCIONES_AUDITORIA)[number];

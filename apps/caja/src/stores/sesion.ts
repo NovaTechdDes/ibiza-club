@@ -2,6 +2,7 @@
 import { create } from "zustand";
 import { Usuario } from "../db/usuario";
 import { registrarAuditoria } from "../db/auditoria";
+import { descartarCarrito } from "../lib/descartes";
 
 type SesionState = {
     usuario: Usuario | null;
@@ -18,7 +19,10 @@ export const useSesion = create<SesionState>((set, get) => ({
     salir: () => {
         const actual = get().usuario;
         set({ usuario: null});
-        if(actual) registrarAuditoria({ accion: "SALIDA", usuarioId: actual.id}).catch(console.error);
+        if(actual) {
+            descartarCarrito(actual.id);
+            registrarAuditoria({ accion: "SALIDA", usuarioId: actual.id}).catch(console.error);
+        }
     }
 
 }))

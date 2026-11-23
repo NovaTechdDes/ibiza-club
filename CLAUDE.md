@@ -277,6 +277,17 @@ Para cuando F25 y lo demás funcione; hoy no es prioridad. Para retomar: "seguim
   - Se amplió a las cinco acciones que pedían PIN de encargado: apertura, retiro, anulación, cierre y configurar la impresora. Si quien está en la caja es Encargado o Admin, no se pide PIN (ya lo puso al entrar): solo una confirmación con el monto o el ticket (`confirmar` de `lib/alertas.ts`). El cierre ya tenía "¿Contaste $X?" y no suma otra; la impresora abre directo. Un Cajero sigue pidiendo el PIN de un encargado. La operación queda registrada con el mismo usuario como cajero y como autorizante.
   - La decisión vive en `apps/caja/src/lib/autorizacion.ts`: `ROLES_AUTORIZAN` (única copia de `["ENCARGADO", "ADMIN"]`) y `puedeAutorizar(usuario, roles?)`, un _type guard_ (`usuario is Usuario`).
   - Riesgo aceptado: si el encargado deja la caja sin tocar "Salir", cualquiera puede retirar con una confirmación (queda auditado a su nombre). Avisarle al cliente.
+- [ ] **M5** — Registrar lo que se descarta del carrito, para detectar a quien cobra sin pasar la venta.
+  - Decidido (23/11/2026):
+    - **Restar un ítem no escribe en la base**: el carrito lo anota en memoria, en una lista `quitados` aparte de `items`.
+    - **Al cobrar**, si hay `quitados`, se guardan con la venta **en la misma transacción** (acción `ITEMS_QUITADOS`, con el número de venta). Sin quitados no se escribe nada de más.
+    - **Al vaciar**, se guarda lo que había en el carrito más los `quitados` y el total descartado (acción `CARRITO_VACIADO`).
+    - **Salir con el carrito cargado o con `quitados` cuenta como vaciar**, a nombre de quien sale. Hoy `salir()` no limpia el carrito y lo hereda el próximo cajero.
+    - **Quitar y volver a agregar igual queda anotado** (no se descuenta): es más simple y no deja esconder maniobras.
+    - Después de cobrar o vaciar se limpian `items` y `quitados`.
+  - Va en `AuditoriaCaja` (`accion` + `detalle` JSON), que ya sube por la cola: **sin migraciones**. La API acepta cualquier `accion` de hasta 50 caracteres, así que no hace falta deploy previo. El registro **no va dentro de `vaciar()` del store**: `useCobrar` lo llama después de cada venta. El store solo anota y limpia; guardan la pantalla (vaciar o salir) y el cobro.
+  - Sub-pasos: **M5a** acciones nuevas en `shared` y `quitados` en el store del carrito (hecho, 23/11/2026) · **M5b** guardar al vaciar y al salir (hecho, 23/11/2026) · **M5c** guardar los quitados junto con la venta · **M5d** reporte "Descartes por cajero" (endpoint y pestaña en Reportes) · **M5e** prueba de punta a punta.
+  - M5a: `quitados` es un `ItemQuitado[]` (`varianteId`, `nombre`, `envaseNombre`, `precio`, `cantidad`), agrupado por `varianteId`. `cambiarCantidad` anota solo con un cambio negativo y nunca más de lo que había. `vaciar()` limpia las dos listas y no registra nada.
 
 ### Observación: qué hace falta para instalar en producción (anotado el 11/11/2026)
 
@@ -310,7 +321,7 @@ En la puerta hay **2 PCs con impresora** que cobran las entradas. Hacen lo mismo
   - Reportes: se separa **por tipo de caja**. `ventasPorCaja` devuelve `tipo` en cada caja y un arreglo `tipos` con los totales; `VentasPorCaja.tsx` muestra la columna Tipo y la tabla "Por tipo de caja" solo si hay alguna caja de entrada.
   - `Categorias.tsx` no se tocó: arma las opciones desde `SECCIONES`, así que "Entradas" aparece sola.
   - Cargar entradas: envase "Unidad" → categoría "Entradas" (sección Entrada) → un producto por tipo de entrada → una sola variante con envase Unidad y su precio. Cuidar que ninguna promo las alcance y dejar el aumento en 0 en las cajas de entrada.
-- [ ] **E6** — Prueba de punta a punta y release de la caja.
+- [x] **E6** — Prueba de punta a punta y release de la caja.
 
 ## Cambios de rumbo
 
