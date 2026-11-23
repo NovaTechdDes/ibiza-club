@@ -7,6 +7,7 @@ import { registrarVenta } from "../db/ventas";
 import { avisaError } from "../lib/alertas";
 import { imprimirConReintento, imprimirEntradas, imprimirTicket } from "../lib/impresora";
 import { calcularJornada } from "../lib/jornada";
+import { avisarEntradaVendida } from "../lib/pantallaCliente";
 import { armarTicket } from "../lib/ticket";
 import { useCarrito } from "../stores/carrito";
 import { useSesion } from "../stores/sesion";
@@ -16,9 +17,6 @@ import { useImpresora } from "./useImpresora";
 import { useVinculacion } from "./useVinculacion";
 import { avisarOperacionNueva } from "./useSubida";
 import { useTipoCaja } from "./useCatalogo";
-
-
-
 
 // Con jornada, la letra y la fecha quedaron fijas al abrir la caja.
 // Sin jornada, salen de la hora de la venta, sin ningún paso manual.
@@ -65,8 +63,13 @@ export const useCobrar = () => {
         quitados
       });
 
-      // 3. El ticket. Si la impresora falla pregunta si reintentar, pero nunca tira error
+      // 3. Aviso a la pantalla del cliente y ticket. El aviso va antes de imprimir:
+      //    el cliente ve el "Gracias" al pagar, aunque la impresora tarde o falle.
+      //    Si la impresora falla pregunta si reintentar, pero nunca tira error
       const esEntrada = tipo === "ENTRADA";
+      if (esEntrada) {
+        avisarEntradaVendida();
+      }
       const ticket = armarTicket({
         jornada,
         caja: vinculacion.cajaNombre,
