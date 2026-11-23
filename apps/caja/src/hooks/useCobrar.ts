@@ -43,6 +43,7 @@ export const useCobrar = () => {
   const usuario = useSesion((estado) => estado.usuario);
   const venta = useCarritoCalculado();
   const vaciar = useCarrito((estado) => estado.vaciar);
+  const quitados = useCarrito((estado) => estado.quitados);
 
   return useMutation({
     mutationFn: async (medioPago: MedioPago) => {
@@ -61,6 +62,7 @@ export const useCobrar = () => {
         medioPago,
         aperturaId: apertura.id,
         cajeroId: usuario.id,
+        quitados
       });
 
       // 3. El ticket. Si la impresora falla pregunta si reintentar, pero nunca tira error

@@ -1,7 +1,7 @@
 import { ItemQuitado, useCarrito } from "../stores/carrito";
 import { registrarAuditoria } from "../db/auditoria";
 
-const subtotal = (lista: ItemQuitado[]) =>
+export const subtotal = (lista: ItemQuitado[]) =>
     lista.reduce((suma, i) => suma + i.precio * i.cantidad, 0);
 
 export const descartarCarrito = (usuarioId: number) => {
