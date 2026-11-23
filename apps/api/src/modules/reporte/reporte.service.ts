@@ -1,6 +1,7 @@
-import { MEDIOS_PAGO, type MedioPago, type RangoReporte, TIPOS_CAJA, rangoJornada } from '@ibiza/shared';
+import { type AccionAuditoria, MEDIOS_PAGO, type MedioPago, type RangoReporte, TIPOS_CAJA, rangoJornada } from '@ibiza/shared';
 import { Prisma } from '../../generated/prisma/client.js';
 import { prisma } from '../../db/prisma.js';
+import z from 'zod';
 
 const instantes = ({desde, hasta}: RangoReporte) => ({
     gte: rangoJornada(desde).inicio,
@@ -271,3 +272,82 @@ export const estadoSincronizacion = async () => {
 
     return { generadoEn: ahora, versionActual, cajas, totales };
 };
+
+const ACCIONES_DESCARTE: AccionAuditoria[] = ['ITEMS_QUITADOS', 'CARRITO_VACIADO'];
+
+const DetalleDescarteSchema = z.object({ total: z.number().int()});
+
+const montoDescartado = (detalle: string | null) => {
+    if(!detalle) return 0;
+    try {
+        const r = DetalleDescarteSchema.safeParse(JSON.parse(detalle));
+        return r.success ? r.data.total : 0;
+    } catch  {
+        return 0;
+    }
+}
+
+type Descartes = {vaciados: number; montoVaciado: number; quitados: number; montoQuitado: number};
+
+export const descartePorCajero = async (rango: RangoReporte) => {
+    const [registros, ventas] = await Promise.all([
+        prisma.auditoriaCaja.findMany({
+            where: { ocurridaEn: instantes(rango), accion: { in: ACCIONES_DESCARTE}},
+            select: {usuarioId: true, accion: true, detalle: true}
+        }),
+        prisma.venta.groupBy({
+            by: ['cajeroId'],
+            where: ventasValidas(rango),
+            _count: { _all: true},
+            _sum: {subTotal: true}
+        })
+    ]);
+
+    const porCajero = new Map<number, Descartes>();
+    for(const r of registros){
+        if(r.usuarioId === null) continue;
+
+        const acc = porCajero.get(r.usuarioId) ?? { vaciados: 0, montoVaciado: 0, quitados: 0, montoQuitado: 0};
+        const monto = montoDescartado(r.detalle);
+        if(r.accion === 'CARRITO_VACIADO'){
+            acc.vaciados += 1;
+            acc.montoVaciado += monto;
+        }else{
+            acc.quitados += 1;
+            acc.montoQuitado += monto;
+        }
+        porCajero.set(r.usuarioId, acc)
+    }
+
+    const ids = [...new Set([...porCajero.keys(), ...ventas.map((v) => v.cajeroId)])];
+    const usuarios = await prisma.usuario.findMany({
+        select: {id: true, nombre: true},
+        where: {id: { in: ids}}
+    });
+
+    const cajeros = usuarios.map((u) => {
+        const d = porCajero.get(u.id) ?? { vaciados: 0, montoVaciado: 0, quitados: 0, montoQuitado: 0};
+        const v = ventas.find((x) => x.cajeroId === u.id);
+        return {
+            usuarioId: u.id,
+            nombre: u.nombre,
+            ventas: v?._count._all ?? 0,
+            vendido: v?._sum.subTotal ?? 0,
+            ...d,
+            descartado: d.montoVaciado + d.montoQuitado
+        };
+    });
+
+    cajeros.sort((a, b) => b.descartado - a.descartado);
+
+    const totales = cajeros.reduce((acc, c) => ({
+        vendido: acc.vendido + c.vendido,
+        vaciados: acc.vaciados + c.vaciados,
+        quitados: acc.quitados + c.quitados,
+        descartado: acc.descartado + c.descartado
+    }), { vendido: 0, vaciados: 0, quitados: 0, descartado: 0});
+
+    return {
+        ...rango, cajeros, totales
+    }
+}

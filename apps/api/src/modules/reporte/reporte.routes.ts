@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { RangoReporteQuerySchema, type RangoReporte } from "@ibiza/shared";
 import { validar } from "../../middleware/validar.js";
-import { arqueo, estadoSincronizacion, ventasPorCaja, ventasPorMedioPago, ventasPorPromo } from "./reporte.service.js";
+import { arqueo, descartePorCajero, estadoSincronizacion, ventasPorCaja, ventasPorMedioPago, ventasPorPromo } from "./reporte.service.js";
 
 export const reporteRouter: Router = Router();
 
@@ -22,7 +22,12 @@ reporteRouter.get('/arqueo', validar({ query: RangoReporteQuerySchema}), async (
     res.json(await arqueo(req.query as RangoReporte))
 });
 
+reporteRouter.get('/descartes', validar({ query: RangoReporteQuerySchema}), async (req, res) => {
+    res.json(await descartePorCajero(req.query as RangoReporte))
+});
+
 // Sin validar: es el estado actual, no recibe rango de fechas
 reporteRouter.get('/sync', async (_req, res) => {
     res.json(await estadoSincronizacion());
 });
+

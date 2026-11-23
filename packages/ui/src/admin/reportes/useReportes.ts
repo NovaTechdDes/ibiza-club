@@ -4,7 +4,7 @@ import { keepPreviousData, useQuery } from "@tanstack/react-query";
 
 export const CLAVE_REPORTES = ["admin", "reportes"] as const;
 
-export type RutaReporte = "/ventas/medio-pago" | "/ventas/caja" | "/ventas/promo" | "/arqueo";
+export type RutaReporte = "/ventas/medio-pago" | "/ventas/caja" | "/ventas/promo" | "/arqueo" | "/descartes";
 
 export function useReporte<T>(ruta: RutaReporte, rango: RangoReporte){
     const { api } = useApiAdmin();

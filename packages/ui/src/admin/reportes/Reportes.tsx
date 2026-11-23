@@ -13,8 +13,15 @@ import { VentasPorMedio } from "./VentasPorMedio";
 import { VentasPorPromo } from "./VentasPorPromo";
 import { Arqueos } from "./Arqueos";
 import { Sincronizacion } from "./Sincronizacion";
+import { DescartesPorCajero } from "./DescartesPorCajero";
 
-type Pestana = "medio-pago" | "caja" | "promo" | "arqueo" | "sincronizacion";
+type Pestana =
+  | "medio-pago"
+  | "caja"
+  | "promo"
+  | "arqueo"
+  | "sincronizacion"
+  | "descartes";
 
 // Unión discriminada: usaRango decide la forma de componente.
 // Con rango recibe las fechas ya validadas; sin rango (Sincronización) no recibe nada.
@@ -51,6 +58,13 @@ const PESTANAS: readonly DatosPestana[] = [
     paso: "F19d",
     usaRango: true,
     componente: Arqueos,
+  },
+  {
+    id: "descartes",
+    titulo: "Descartes",
+    paso: "M5d",
+    usaRango: true,
+    componente: DescartesPorCajero,
   },
   {
     id: "sincronizacion",
