@@ -306,7 +306,10 @@ En la puerta hay **2 PCs con impresora** que cobran las entradas. Hacen lo mismo
   - De paso se arregló un bug de la subida: `CierreSubidaSchema` exigía `esperado >= 0`, un cierre con esperado negativo daba 400 y trababa toda la cola. Ahora acepta negativos.
 - [x] **E3** — Caja: la venta muestra solo las secciones de su tipo (sin pestañas en una caja de entrada; `PantallaVenta.tsx` ya filtra `SECCIONES` por las categorías que existen) y el encabezado indica que es caja de entrada.
 - [x] **E4** — Ticket de entrada en Rust: comando nuevo junto a `imprimir_ticket` (`ticket.rs` y `lib/impresora.ts`) que imprime un ticket por unidad con "n/N" y corte.
-- [ ] **E5** — Administración: campo "Tipo" en `admin/cajas/Cajas.tsx` y sección "Entradas" en `admin/catalogo/Categorias.tsx` (usa `NOMBRE_SECCION`). Reportes: separar entradas de barra (por sección o por tipo de caja).
+- [x] **E5** — Administración: campo "Tipo" en `admin/cajas/Cajas.tsx` y sección "Entradas" en `admin/catalogo/Categorias.tsx` (usa `NOMBRE_SECCION`). Reportes: separar entradas de barra (por sección o por tipo de caja) (hecho, 23/11/2026).
+  - Reportes: se separa **por tipo de caja**. `ventasPorCaja` devuelve `tipo` en cada caja y un arreglo `tipos` con los totales; `VentasPorCaja.tsx` muestra la columna Tipo y la tabla "Por tipo de caja" solo si hay alguna caja de entrada.
+  - `Categorias.tsx` no se tocó: arma las opciones desde `SECCIONES`, así que "Entradas" aparece sola.
+  - Cargar entradas: envase "Unidad" → categoría "Entradas" (sección Entrada) → un producto por tipo de entrada → una sola variante con envase Unidad y su precio. Cuidar que ninguna promo las alcance y dejar el aumento en 0 en las cajas de entrada.
 - [ ] **E6** — Prueba de punta a punta y release de la caja.
 
 ## Cambios de rumbo

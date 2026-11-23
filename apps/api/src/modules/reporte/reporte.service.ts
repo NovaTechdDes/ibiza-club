@@ -1,7 +1,7 @@
-import { MEDIOS_PAGO, type MedioPago, type RangoReporte, rangoJornada } from '@ibiza/shared';
+import { MEDIOS_PAGO, type MedioPago, type RangoReporte, TIPOS_CAJA, rangoJornada } from '@ibiza/shared';
 import { Prisma } from '../../generated/prisma/client.js';
 import { prisma } from '../../db/prisma.js';
-import { number } from 'zod';
+
 const instantes = ({desde, hasta}: RangoReporte) => ({
     gte: rangoJornada(desde).inicio,
     lt: rangoJornada(hasta).fin
@@ -12,7 +12,6 @@ const ventasValidas = (rango: RangoReporte): Prisma.VentaWhereInput => ({
     ocurridaEn: instantes(rango),
     anulacion: {is: null}
 });
-
 
 export const ventasPorMedioPago = async (rango: RangoReporte) => {
     const [ grupos, anuladas ] = await Promise.all([
@@ -68,7 +67,7 @@ export const ventasPorCaja = async(rango: RangoReporte) => {
     // groupBy no trae relaciones: nombre y barra se buscan aparte.
     // Activas (para que las que no vendieron salgan en 0) + las que vendieron en el rango aunque hoy estén dadas de baja
     const listaCajas = await prisma.caja.findMany({
-        select: { id: true, nombre: true, barra: true },
+        select: { id: true, nombre: true, barra: true, tipo: true },
         where: { OR: [{ activo: true }, { id: { in: ids } }] },
         orderBy: { nombre: 'asc' }
     });
@@ -86,6 +85,7 @@ export const ventasPorCaja = async(rango: RangoReporte) => {
             cajaId: caja.id,
             nombre: caja.nombre,
             barra: caja.barra,
+            tipo: caja.tipo,
             ventas: propios.reduce((acc, g) => acc + g._count._all, 0),
             descuento: propios.reduce((acc, g) => acc + (g._sum.descuento ?? 0), 0),
             total: propios.reduce((acc, g) => acc + (g._sum.total ?? 0), 0),
@@ -106,7 +106,18 @@ export const ventasPorCaja = async(rango: RangoReporte) => {
     }
     const barras = [...porBarra.values()];
 
-    return { ...rango, cajas, barras, anuladas };
+    const tipos = TIPOS_CAJA.map((tipo) => {
+        const propias = cajas.filter((caja) => caja.tipo === tipo);
+        return {
+            tipo,
+            cajas: propias.length,
+            ventas: propias.reduce((acc, c) => acc + c.ventas, 0),
+            descuento: propias.reduce((acc, c) => acc + c.descuento, 0),
+            total: propias.reduce((acc, c) => acc + c.total, 0)
+        }
+    })
+
+    return { ...rango, cajas, barras, anuladas, tipos };
 };
 
 export const ventasPorPromo = async(rango: RangoReporte) => {

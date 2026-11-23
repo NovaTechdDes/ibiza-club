@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from "react";
 import { Boton } from "../../componentes/Boton";
 import { CampoTexto } from "../../componentes/CampoTexto";
+import { CampoSelect } from "../../componentes/CampoSelect";
 
 import estilos from "../catalogo/Catalogo.module.css";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -11,6 +12,8 @@ import {
   type CajaInput,
   CajaInputSchema,
   type CajaListado,
+  NOMBRE_TIPO_CAJA,
+  TIPOS_CAJA,
 } from "@ibiza/shared";
 import { CLAVE_CAJAS, useCajas } from "./useCajas";
 import { TokenNuevo } from "./TokenNuevo";
@@ -20,10 +23,22 @@ type Formulario = {
   barra: string;
   nombre: string;
   aumento: string;
+  tipo: string;
 };
-const VACIO: Formulario = { id: null, barra: "", nombre: "", aumento: "0" };
+const VACIO: Formulario = {
+  id: null,
+  barra: "",
+  nombre: "",
+  aumento: "0",
+  tipo: "BARRA",
+};
 
 type Accion = "generar" | "revocar";
+
+const OPCIONES_TIPO = TIPOS_CAJA.map((t) => ({
+  valor: t,
+  texto: NOMBRE_TIPO_CAJA[t],
+}));
 
 export function Cajas() {
   const { api } = useApiAdmin();
@@ -50,6 +65,7 @@ export function Cajas() {
     barra: form.barra.trim() === "" ? null : form.barra,
     nombre: form.nombre.trim() === "" ? undefined : form.nombre,
     aumentoPorcentaje: form.aumento.trim() === "" ? 0 : Number(form.aumento),
+    tipo: form.tipo,
   });
 
   const guardar = useMutation({
@@ -143,6 +159,7 @@ export function Cajas() {
       barra: caja.barra ?? "",
       nombre: caja.nombre,
       aumento: String(caja.aumentoPorcentaje),
+      tipo: caja.tipo,
     });
   }
 
@@ -162,6 +179,12 @@ export function Cajas() {
           value={form.barra}
           onChange={(e) => setForm({ ...form, barra: e.target.value })}
           className={estilos.campoLargo}
+        />
+        <CampoSelect
+          opciones={OPCIONES_TIPO}
+          etiqueta="Tipo"
+          value={form.tipo}
+          onChange={(e) => setForm({ ...form, tipo: e.target.value })}
         />
         <CampoTexto
           etiqueta="Aumento %"
@@ -221,6 +244,11 @@ export function Cajas() {
               <span className={estilos.etiqueta}>
                 {caja.vinculada ? "Vinculada" : "Sin vincular"}
               </span>
+              {caja.tipo === "ENTRADA" && (
+                <span className={estilos.etiqueta}>
+                  {NOMBRE_TIPO_CAJA[caja.tipo]}
+                </span>
+              )}
               {!caja.activo && (
                 <span className={estilos.etiqueta}>Dada de baja</span>
               )}
