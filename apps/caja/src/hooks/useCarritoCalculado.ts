@@ -5,6 +5,7 @@ import { usePromos } from "./useCatalogo";
 export type LineaVenta = LineaCalculada & {
     nombre: string;
     envaseNombre: string;
+    imagen: string | null;
 }
 
 export const useCarritoCalculado = () => {
@@ -18,7 +19,8 @@ export const useCarritoCalculado = () => {
     return {
         ...linea,
         nombre: item?.nombre ?? '',
-        envaseNombre: item?.envaseNombre ?? ''
+        envaseNombre: item?.envaseNombre ?? '',
+        imagen: item?.imagen ?? null,
     }
   })
 

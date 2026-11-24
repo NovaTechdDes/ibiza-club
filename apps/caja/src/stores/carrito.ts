@@ -6,6 +6,7 @@ import { ProductoVenta, VarianteVenta } from "../db/productos";
 export type ItemVenta = ItemCarrito & {
     nombre: string;
     envaseNombre: string;
+    imagen: string | null;
 };
 
 type CarritoState = {
@@ -47,6 +48,7 @@ export const useCarrito = create<CarritoState>((set) => ({
                         precio: variante.precio,
                         cantidad: 1,
                         nombre: producto.nombre,
+                        imagen: producto.imagen,
                         envaseNombre: variante.envaseNombre
                     }
                 ]

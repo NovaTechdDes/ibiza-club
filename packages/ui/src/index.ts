@@ -17,3 +17,5 @@ export * from "./admin/api";
 export * from "./admin/sesion";
 export * from "./admin/secciones";
 export * from "./admin/useEnLinea";
+// Solo pesos: lo demás de formato es de los reportes
+export { pesos } from "./admin/reportes/formato";

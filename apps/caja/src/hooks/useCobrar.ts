@@ -7,7 +7,7 @@ import { registrarVenta } from "../db/ventas";
 import { avisaError } from "../lib/alertas";
 import { imprimirConReintento, imprimirEntradas, imprimirTicket } from "../lib/impresora";
 import { calcularJornada } from "../lib/jornada";
-import { avisarEntradaVendida } from "../lib/pantallaCliente";
+import { avisarEntradaVendida, avisarVentaBarra } from "../lib/pantallaCliente";
 import { armarTicket } from "../lib/ticket";
 import { useCarrito } from "../stores/carrito";
 import { useSesion } from "../stores/sesion";
@@ -69,6 +69,8 @@ export const useCobrar = () => {
       const esEntrada = tipo === "ENTRADA";
       if (esEntrada) {
         avisarEntradaVendida();
+      }else{
+        avisarVentaBarra(venta.lineas, venta.total);
       }
       const ticket = armarTicket({
         jornada,
