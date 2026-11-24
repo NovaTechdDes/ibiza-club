@@ -87,14 +87,19 @@ export function Promociones() {
 
   return (
     <div className={estilos.pantalla}>
-      {/* Prueba temporal de M9c: en M9e pasa a "Nueva promoción" / "Editar". */}
-      <FormularioPromocion
-        inicial={PROMO_VACIA}
-        titulo="Prueba"
-        guardando={false}
-        onGuardar={(input) => console.log(input)}
-        onCancelar={() => {}}
-      />
+      {/* Prueba temporal de M9c/M9d: en M9e pasa a "Nueva promoción" / "Editar". */}
+      {!cargando && !errorCarga && (
+        <FormularioPromocion
+          inicial={PROMO_VACIA}
+          categorias={categorias.data ?? []}
+          productos={productos.data ?? []}
+          envases={envases.data ?? []}
+          titulo="Prueba"
+          guardando={false}
+          onGuardar={(input) => console.log(input)}
+          onCancelar={() => {}}
+        />
+      )}
       {cargando && !errorCarga && <p className={estilos.ayuda}>Cargando…</p>}
       {errorCarga && (
         <p className={estilos.error} role="alert">

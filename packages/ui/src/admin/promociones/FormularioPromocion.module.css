@@ -14,3 +14,10 @@
   align-items: end;
   gap: var(--espacio-medio);
 }
+
+/* Nombre de la categoría arriba de sus productos. */
+.subtitulo {
+  font-size: var(--texto-sm);
+  font-weight: 600;
+  color: var(--color-texto-suave);
+}

@@ -1,5 +1,13 @@
 import { type FormEvent, useState } from "react";
-import { DIAS_SEMANA, NOMBRE_DIA, type PromocionInput, type TipoPromocion } from "@ibiza/shared";
+import {
+  type Categoria,
+  DIAS_SEMANA,
+  type Envase,
+  NOMBRE_DIA,
+  type Producto,
+  type PromocionInput,
+  type TipoPromocion,
+} from "@ibiza/shared";
 import { Boton } from "../../componentes/Boton";
 import { CampoSelect } from "../../componentes/CampoSelect";
 import { CampoTexto } from "../../componentes/CampoTexto";
@@ -30,20 +38,63 @@ const HORAS = Array.from({ length: 33 }, (_, i) => {
   return { valor: hora, texto: hora };
 });
 
+type ConOrden = { id: number; nombre: string; orden: number; activo: boolean };
+
+// Activos, más los dados de baja que la promo ya tiene (si no, no se podrían quitar).
+const visibles = <T extends ConOrden>(lista: T[], elegidos: number[]) =>
+  lista
+    .filter((e) => e.activo || elegidos.includes(e.id))
+    .sort((a, b) => a.orden - b.orden || a.nombre.localeCompare(b.nombre));
+
+const aOpciones = (lista: ConOrden[]) =>
+  lista.map((e) => ({ id: e.id, texto: e.activo ? e.nombre : `${e.nombre} (baja)` }));
+
 type Props = {
   inicial: FormularioPromo;
+  categorias: Categoria[];
+  productos: Producto[];
+  envases: Envase[];
   titulo: string;
   guardando: boolean;
   onGuardar: (input: PromocionInput) => void;
   onCancelar: () => void;
 };
 
-export function FormularioPromocion({ inicial, titulo, guardando, onGuardar, onCancelar }: Props) {
+export function FormularioPromocion({
+  inicial,
+  categorias,
+  productos,
+  envases,
+  titulo,
+  guardando,
+  onGuardar,
+  onCancelar,
+}: Props) {
   const [form, setForm] = useState(inicial);
   const datos = validarPromo(form);
 
   const cambiar = <K extends keyof FormularioPromo>(campo: K, valor: FormularioPromo[K]) =>
     setForm((f) => ({ ...f, [campo]: valor }));
+
+  const cats = visibles(categorias.filter((c) => c.seccion !== "ENTRADA"), form.categoriaIds);
+  const prods = visibles(productos, form.productoIds);
+  const envs = visibles(envases, form.envaseIds);
+  const categoriaDe = new Map(productos.map((p) => [p.id, p.categoriaId]));
+
+  // Al prender una categoría se quitan sus productos sueltos: ya entran todos.
+  const cambiarCategorias = (ids: number[]) =>
+    setForm((f) => ({
+      ...f,
+      categoriaIds: ids,
+      productoIds: f.productoIds.filter((id) => !ids.includes(categoriaDe.get(id) ?? 0)),
+    }));
+
+  // Cambia solo los productos de una categoría y deja los demás como estaban.
+  const cambiarProductos = (categoriaId: number, ids: number[]) =>
+    setForm((f) => ({
+      ...f,
+      productoIds: [...f.productoIds.filter((id) => categoriaDe.get(id) !== categoriaId), ...ids],
+    }));
 
   // El schema no sabe que se eligió "Con horario": se controla acá antes de mirar sus errores.
   const faltaHorario = !form.todaLaNoche && (form.horaDesde === "" || form.horaHasta === "");
@@ -125,6 +176,49 @@ export function FormularioPromocion({ inicial, titulo, guardando, onGuardar, onC
               value={form.horaHasta} onChange={(e) => cambiar("horaHasta", e.target.value)} />
           </div>
         )}
+      </div>
+
+      <div className={catalogo.grupo}>
+        <span className={catalogo.ayuda}>Categorías enteras</span>
+        <Interruptores<number>
+          etiqueta="Categorías"
+          opciones={aOpciones(cats)}
+          elegidos={form.categoriaIds}
+          onCambiar={cambiarCategorias}
+        />
+      </div>
+
+      <div className={catalogo.grupo}>
+        <span className={catalogo.ayuda}>Productos sueltos</span>
+        {cats.map((cat) => {
+          const deCat = prods.filter((p) => p.categoriaId === cat.id);
+          if (deCat.length === 0) return null;
+          return (
+            <div key={cat.id} className={catalogo.grupo}>
+              <span className={estilos.subtitulo}>{cat.nombre}</span>
+              {form.categoriaIds.includes(cat.id) ? (
+                <span className={catalogo.ayuda}>Entra toda la categoría</span>
+              ) : (
+                <Interruptores<number>
+                  etiqueta={`Productos de ${cat.nombre}`}
+                  opciones={aOpciones(deCat)}
+                  elegidos={form.productoIds.filter((id) => categoriaDe.get(id) === cat.id)}
+                  onCambiar={(ids) => cambiarProductos(cat.id, ids)}
+                />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      <div className={catalogo.grupo}>
+        <span className={catalogo.ayuda}>Envases</span>
+        <Interruptores<number>
+          etiqueta="Envases"
+          opciones={aOpciones(envs)}
+          elegidos={form.envaseIds}
+          onCambiar={(ids) => cambiar("envaseIds", ids)}
+        />
       </div>
 
       <p className={catalogo.error} role="alert">
