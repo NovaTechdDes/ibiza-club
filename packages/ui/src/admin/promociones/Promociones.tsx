@@ -17,7 +17,8 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Boton } from "../../componentes/Boton";
-import { desdePromo, PROMO_VACIA, validarPromo } from "./formularioPromo";
+import { PROMO_VACIA } from "./formularioPromo";
+import { FormularioPromocion } from "./FormularioPromocion";
 
 // id → nombre. Incluye los dados de baja: una promo puede apuntar a un producto inactivo.
 const aMapa = (lista: { id: number; nombre: string }[] | undefined) =>
@@ -30,9 +31,6 @@ export function Promociones() {
   const [error, setError] = useState<string | null>(null);
 
   const promociones = usePromociones();
-  const primera = promociones.data?.[0];
-  if (primera) console.log(validarPromo(desdePromo(primera)));
-  console.log(validarPromo(PROMO_VACIA).error?.issues.map((i) => i.message));
   const productos = useProductos();
   const categorias = useCategorias();
   const envases = useEnvases();
@@ -89,6 +87,14 @@ export function Promociones() {
 
   return (
     <div className={estilos.pantalla}>
+      {/* Prueba temporal de M9c: en M9e pasa a "Nueva promoción" / "Editar". */}
+      <FormularioPromocion
+        inicial={PROMO_VACIA}
+        titulo="Prueba"
+        guardando={false}
+        onGuardar={(input) => console.log(input)}
+        onCancelar={() => {}}
+      />
       {cargando && !errorCarga && <p className={estilos.ayuda}>Cargando…</p>}
       {errorCarga && (
         <p className={estilos.error} role="alert">

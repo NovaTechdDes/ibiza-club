@@ -1,0 +1,16 @@
+/* El .formulario de Catalogo.module.css va en fila; este apila las secciones. */
+.formulario {
+  display: grid;
+  gap: var(--espacio);
+  padding: var(--espacio);
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio-grande);
+  background: var(--color-superficie);
+}
+
+.fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--espacio-medio);
+}
