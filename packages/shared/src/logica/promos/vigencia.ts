@@ -1,5 +1,4 @@
 import { HORA_CORTE_JORNADA } from "../../constantes.js";
-import { DiaPromocion } from "../../dias-promocion.js";
 import { fechaOperativa, horaLocal } from "../jornada.js";
 import { PromoCalculo } from "./descuento.js";
 
@@ -8,11 +7,8 @@ export function minutosDeJornada(hora: string, horaCorte: number = HORA_CORTE_JO
     return (minutos - horaCorte * 60 + 1440) % 1440;
 };
 
-function diaVigente(dias: DiaPromocion, fecha: string): boolean {
-    const dia = new Date(`${fecha}T00:00:00Z`).getUTCDay();
-    if (dias === 'VIERNES') return dia === 5;
-    if (dias === 'SABADO') return dia === 6;
-    return dia === 5 || dia === 6;
+function diaVigente(dias: readonly number[], fecha: string): boolean {
+    return dias.includes(new Date(`${fecha}T00:00:00Z`).getUTCDay());
 }
 
 // ¿La promo se aplica en este instante? Mira pausada, dia de la jornada y horario.

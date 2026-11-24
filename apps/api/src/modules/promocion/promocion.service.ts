@@ -1,4 +1,4 @@
-import { PromocionInput } from "@ibiza/shared";
+import { PromocionInput, diasATexto, textoADias } from "@ibiza/shared";
 import { prisma } from "../../db/prisma.js"
 import { Prisma } from "../../generated/prisma/client.js";
 import { AppError } from "../../errors/app-error.js";
@@ -26,8 +26,9 @@ const seleccion = {
 
 type PromocionDb = Prisma.PromocionGetPayload<{ select: typeof seleccion }>;
 
-const aRespuesta = ({ promocionAlcances, promocionEnvases, ...promo }: PromocionDb) => ({
+const aRespuesta = ({ promocionAlcances, promocionEnvases, dias, ...promo }: PromocionDb) => ({
     ...promo,
+    dias: textoADias(dias),
     productoIds: promocionAlcances.flatMap((a) => a.productoId ? [a.productoId] : []),
     categoriaIds: promocionAlcances.flatMap((a) => a.categoriaId ? [a.categoriaId] : []),
     envaseIds: promocionEnvases.map((e) => e.envaseId)
@@ -40,10 +41,10 @@ const datosPromo = (input: PromocionInput) => ({
     pagar: input.pagar ?? null,
     porcentaje: input.porcentaje ?? null,
     monto: input.monto ?? null,
-    dias: input.dias,
     horaDesde: input.horaDesde ?? null,
     horaHasta: input.horaHasta ?? null,
-    pausada: input.pausada
+    pausada: input.pausada,
+    dias: diasATexto(input.dias),
 });
 
 const validarReferencias = async (input: PromocionInput) => {

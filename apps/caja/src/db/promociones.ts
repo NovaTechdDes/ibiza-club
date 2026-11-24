@@ -1,4 +1,4 @@
-import { DiaPromocion, PromoCalculo, TipoPromocion } from "@ibiza/shared";
+import { PromoCalculo, textoADias, TipoPromocion } from "@ibiza/shared";
 import { obtenerDb } from "./conexion";
 
 type FilaPromo = {
@@ -9,7 +9,7 @@ type FilaPromo = {
      pagar: number | null;
      porcentaje: number | null;
      monto: number | null;
-     dias: DiaPromocion;
+     dias: string;
      horaDesde: string | null;
      horaHasta: string | null;
      pausada: number;
@@ -32,6 +32,7 @@ export const leerPromociones = async(): Promise<PromoCalculo[]> => {
     return promos.map((promo) => ({
         ...promo,
         pausada: promo.pausada === 1,
+        dias: textoADias(promo.dias),
         llevar: promo.llevar ?? undefined,
         pagar: promo.pagar ?? undefined,
         porcentaje: promo.porcentaje ?? undefined,

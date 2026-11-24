@@ -1,11 +1,15 @@
-import type { DiaPromocion } from "@ibiza/shared";
+import { NOMBRE_DIA } from "@ibiza/shared";
 import type { PromocionListada } from "./usePromociones";
 
-const TEXTO_DIAS: Record<DiaPromocion, string> = {
-    VIERNES: "Viernes",
-    SABADO: "Sábados",
-    AMBOS: "Viernes y sábados"
-};
+// [5, 6] → "Vie y Sáb"; los 7 → "Todos los días".
+function textoDias(dias: number[]): string {
+    if (dias.length === 7) return "Todos los días";
+
+    const nombres = dias.map((d) => NOMBRE_DIA[d] ?? `#${d}`);
+    return nombres.length > 1
+        ? `${nombres.slice(0, -1).join(", ")} y ${nombres[nombres.length - 1]}`
+        : nombres.join("");
+}
 
 export function textoBeneficio(promo: PromocionListada): string {
     switch (promo.tipo){
@@ -18,10 +22,9 @@ export function textoBeneficio(promo: PromocionListada): string {
     }
 }
 
-
 export function textoVigencia(promo: PromocionListada): string {
     const horario = promo.horaDesde && promo.horaHasta ? `de ${promo.horaDesde} a ${promo.horaHasta}` : "toda la noche";
-    return `${TEXTO_DIAS[promo.dias]} · ${horario}`;
+    return `${textoDias(promo.dias)} · ${horario}`;
 }
 
 export type Nombres = {
@@ -30,7 +33,7 @@ export type Nombres = {
     envases: Map<number, string>;
 };
 
-const nombrar = (ids: number[], nombres: Map<number, string>) => 
+const nombrar = (ids: number[], nombres: Map<number, string>) =>
     ids.map((id) => nombres.get(id) ?? `#${id}`);
 
 export function textoAlcance(promo: PromocionListada, nombres: Nombres): string {

@@ -9,7 +9,7 @@ const promo = (c: Partial<PromoCalculo> = {}): PromoCalculo => ({
     tipo: "NXM",
     llevar: 2,
     pagar: 1,
-    dias: "VIERNES",
+    dias: [5],
     horaDesde: null,
     horaHasta: null,
     pausada: false,
@@ -26,6 +26,7 @@ const VIERNES = "2026-10-30";
 const SABADO = "2026-10-31";
 const DOMINGO = "2026-11-01";
 const JUEVES = "2026-10-29";
+const MARTES = "2026-10-27";
 
 describe("minutosDeJornada", () => {
     it.each([
@@ -50,27 +51,40 @@ describe("promoVigente", () => {
     })
 
     describe("Dias", () => {
-        it("VIERNES se aplica el viernes 23:00", () => {
+        it("[5] se aplica el viernes 23:00", () => {
             expect(promoVigente(promo(), en(VIERNES, "23:00"))).toBe(true)
         })
-        it("VIERNES no se aplica el sabado 23:00", () => {
+        it("[5] no se aplica el sabado 23:00", () => {
             expect(promoVigente(promo(), en(SABADO, "23:00"))).toBe(false)
         })
-        it("VIERNES se aplica el sabado 03:00 (sigue siendo la jornada del viernes)", () => {
+        it("[5] se aplica el sabado 03:00 (sigue siendo la jornada del viernes)", () => {
             expect(promoVigente(promo(), en(SABADO, "03:00"))).toBe(true)
         })
-        it("SABADO se aplica el domingo 03:00", () => {
-            expect(promoVigente(promo({ dias: "SABADO" }), en(DOMINGO, "03:00"))).toBe(true)
+        it("[6] se aplica el domingo 03:00", () => {
+            expect(promoVigente(promo({ dias: [6] }), en(DOMINGO, "03:00"))).toBe(true)
         })
-        it("SABADO no se aplica el viernes 23:00", () => {
-            expect(promoVigente(promo({ dias: "SABADO" }), en(VIERNES, "23:00"))).toBe(false)
+        it("[6] no se aplica el viernes 23:00", () => {
+            expect(promoVigente(promo({ dias: [6] }), en(VIERNES, "23:00"))).toBe(false)
         })
-        it("AMBOS se aplica viernes y sabado", () => {
-            expect(promoVigente(promo({ dias: "AMBOS" }), en(VIERNES, "23:00"))).toBe(true)
-            expect(promoVigente(promo({ dias: "AMBOS" }), en(SABADO, "23:00"))).toBe(true)
+        it("[5, 6] se aplica viernes y sabado", () => {
+            expect(promoVigente(promo({ dias: [5, 6] }), en(VIERNES, "23:00"))).toBe(true)
+            expect(promoVigente(promo({ dias: [5, 6] }), en(SABADO, "23:00"))).toBe(true)
         })
-        it("AMBOS no se aplica el jueves 23:00", () => {
-            expect(promoVigente(promo({ dias: "AMBOS" }), en(JUEVES, "23:00"))).toBe(false)
+        it("[5, 6] no se aplica el jueves 23:00", () => {
+            expect(promoVigente(promo({ dias: [5, 6] }), en(JUEVES, "23:00"))).toBe(false)
+        })
+        it("Jueves feriado: [4] se aplica el jueves 23:00", () => {
+            expect(promoVigente(promo({ dias: [4] }), en(JUEVES, "23:00"))).toBe(true)
+        })
+        it("El viernes 03:00 sigue siendo la jornada del jueves", () => {
+            expect(promoVigente(promo({ dias: [4] }), en(VIERNES, "03:00"))).toBe(true)
+            expect(promoVigente(promo({ dias: [5] }), en(VIERNES, "03:00"))).toBe(false)
+        })
+        it("Todos los dias se aplica un martes", () => {
+            expect(promoVigente(promo({ dias: [0, 1, 2, 3, 4, 5, 6] }), en(MARTES, "23:00"))).toBe(true)
+        })
+        it("El domingo es 0", () => {
+            expect(promoVigente(promo({ dias: [0] }), en(DOMINGO, "23:00"))).toBe(true)
         })
     })
 
@@ -99,6 +113,6 @@ describe("promoVigente", () => {
 
     it("Respeta otra hora de corte: con corte a las 6, el sabado 07:00 ya es sabado", () => {
         expect(promoVigente(promo(), en(SABADO, "07:00"), 6)).toBe(false)
-        expect(promoVigente(promo({ dias: "SABADO" }), en(SABADO, "07:00"), 6)).toBe(true)
+        expect(promoVigente(promo({ dias: [6] }), en(SABADO, "07:00"), 6)).toBe(true)
     })
 })

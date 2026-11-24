@@ -17,6 +17,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Boton } from "../../componentes/Boton";
+import { desdePromo, PROMO_VACIA, validarPromo } from "./formularioPromo";
 
 // id → nombre. Incluye los dados de baja: una promo puede apuntar a un producto inactivo.
 const aMapa = (lista: { id: number; nombre: string }[] | undefined) =>
@@ -29,6 +30,9 @@ export function Promociones() {
   const [error, setError] = useState<string | null>(null);
 
   const promociones = usePromociones();
+  const primera = promociones.data?.[0];
+  if (primera) console.log(validarPromo(desdePromo(primera)));
+  console.log(validarPromo(PROMO_VACIA).error?.issues.map((i) => i.message));
   const productos = useProductos();
   const categorias = useCategorias();
   const envases = useEnvases();

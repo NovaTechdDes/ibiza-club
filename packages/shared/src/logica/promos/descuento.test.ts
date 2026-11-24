@@ -9,7 +9,7 @@ const promo = (c: Partial<PromoCalculo> = {}): PromoCalculo => ({
     tipo: "NXM",
     llevar: 2,
     pagar: 1,
-    dias: "AMBOS",
+    dias: [5, 6],
     pausada: false,
     productoIds: [10],
     categoriaIds: [],

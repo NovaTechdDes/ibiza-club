@@ -2,7 +2,7 @@
 // Es IDEMPOTENTE: se puede correr varias veces sin duplicar filas.
 // Uso: pnpm --filter @ibiza/api db:seed
 
-import { Rol, PromocionInputSchema, type Seccion } from "@ibiza/shared";
+import { Rol, PromocionInputSchema, diasATexto, type Seccion } from "@ibiza/shared";
 import { prisma } from "../src/db/prisma.js";
 import {hashearSecreto} from "../src/utils/secreto.js"
 
@@ -22,7 +22,7 @@ type PromoSeed = {
     pagar?: number;
     porcentaje?: number;
     monto?: number;
-    dias: "VIERNES" | "SABADO" | "AMBOS"
+    dias: number[]; // 0 = domingo … 6 = sábado
     horaDesde?: string;
     horaHasta?: string;
     pausada?: boolean;
@@ -33,16 +33,16 @@ type PromoSeed = {
 
 const PROMOS: PromoSeed[] = [
     {
-        nombre: "2x1 Vodka", tipo: "NXM", llevar: 2, pagar: 1, dias: "VIERNES", horaDesde: "00:00", horaHasta: "02:00",
+        nombre: "2x1 Vodka", tipo: "NXM", llevar: 2, pagar: 1, dias: [5], horaDesde: "00:00", horaHasta: "02:00",
         productos: ["Vodka con speed"], categorias: [], envases:["Vaso", "Tanque"]
     },
     {
         nombre: "Cervezas 20%", tipo: "PORCENTAJE", porcentaje: 20,
-        dias: "AMBOS", productos: [], categorias: ["Cervezas"], envases: ["Tanque"]
+        dias: [5, 6], productos: [], categorias: ["Cervezas"], envases: ["Tanque"]
     },
     {
         nombre: "Fernet $1000 off", tipo: "MONTO_FIJO", monto: 1000, 
-        dias: "SABADO", pausada: true,
+        dias: [6], pausada: true,
         productos: ["Fernet"], categorias: [], envases: ["Vaso"]
     }
 ];
@@ -256,7 +256,7 @@ const sembrarPromos = async (productosIds: Map<string, number>, categoriaIds: Ma
                 pagar: input.pagar,
                 porcentaje: input.porcentaje,
                 monto: input.monto,
-                dias: input.dias,
+                dias: diasATexto(input.dias),
                 horaDesde: input.horaDesde,
                 horaHasta: input.horaHasta,
                 pausada: input.pausada,

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useApiAdmin } from "../api";
-import { type DiaPromocion, type TipoPromocion } from "@ibiza/shared";
+import { type TipoPromocion } from "@ibiza/shared";
 
 export const CLAVE_PROMOCIONES = ["admin", "promociones"] as const;
 
@@ -12,7 +12,7 @@ export type PromocionListada = {
     pagar: number | null;
     porcentaje: number | null;
     monto: number | null;
-    dias: DiaPromocion;
+    dias: number[];
     horaDesde: string | null;
     horaHasta: string | null;
     pausada: boolean;

@@ -1,7 +1,6 @@
 import z from "zod"
 import { LARGO_NOMBRE_CORTO } from "../constantes.js";
 import { TIPOS_PROMOCION } from "../tipo-promocion.js";
-import { DIAS_PROMOCION } from "../dias-promocion.js";
 
 export const PromocionBaseSchema = z.object({
     nombre: z.string().trim().min(1).max(LARGO_NOMBRE_CORTO),
@@ -10,7 +9,8 @@ export const PromocionBaseSchema = z.object({
     pagar: z.number().int().positive().optional(),
     porcentaje: z.number().int().min(1).max(100).optional(),
     monto: z.number().int().positive().optional(),
-    dias: z.enum(DIAS_PROMOCION),
+    dias: z.array(z.number().int().min(0).max(6)).min(1, "Elegí al menos un día")
+        .transform((d) => [...new Set(d)].sort((a, b) => a - b)),
     horaDesde: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable().optional(),
     horaHasta: z.string().regex(/^([01]\d|2[0-3]):[0-5]\d$/).nullable().optional(),
     pausada: z.boolean().default(false),
