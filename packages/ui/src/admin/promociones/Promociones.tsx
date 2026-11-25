@@ -16,8 +16,9 @@ import {
 } from "./usePromociones";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { type PromocionInput } from "@ibiza/shared";
 import { Boton } from "../../componentes/Boton";
-import { PROMO_VACIA } from "./formularioPromo";
+import { desdePromo, PROMO_VACIA } from "./formularioPromo";
 import { FormularioPromocion } from "./FormularioPromocion";
 
 // id → nombre. Incluye los dados de baja: una promo puede apuntar a un producto inactivo.
@@ -29,6 +30,10 @@ export function Promociones() {
   const queryClient = useQueryClient();
 
   const [error, setError] = useState<string | null>(null);
+  // null = se ve la lista · "nueva" = alta · una promo = edición.
+  const [editando, setEditando] = useState<PromocionListada | "nueva" | null>(
+    null,
+  );
 
   const promociones = usePromociones();
   const productos = useProductos();
@@ -53,6 +58,27 @@ export function Promociones() {
 
   const refrescar = () =>
     queryClient.invalidateQueries({ queryKey: CLAVE_PROMOCIONES });
+
+  const guardar = useMutation({
+    mutationFn: async ({
+      id,
+      input,
+    }: {
+      id: number | null;
+      input: PromocionInput;
+    }) =>
+      id === null
+        ? (await api.post<PromocionListada>("/promociones", input)).data
+        : (await api.put<PromocionListada>(`/promociones/${id}`, input)).data,
+    onMutate: () => setError(null),
+    // Se vuelve a la lista solo si salió bien: si falla, queda lo escrito.
+    onSuccess: () => {
+      setEditando(null);
+      return refrescar();
+    },
+    onError: (e) =>
+      setError(mensajeDeError(e, "No se pudo guardar la promoción.")),
+  });
 
   const cambiarPausa = useMutation({
     mutationFn: async (promocion: PromocionListada) =>
@@ -83,23 +109,13 @@ export function Promociones() {
   });
 
   // Un solo pedido a la vez: un segundo toque usaría la promo vieja y desharía el primero.
-  const ocupado = cambiarPausa.isPending || cambiarEstado.isPending;
+  const ocupado =
+    cambiarPausa.isPending || cambiarEstado.isPending || guardar.isPending;
+
+  const listo = !cargando && !errorCarga;
 
   return (
     <div className={estilos.pantalla}>
-      {/* Prueba temporal de M9c/M9d: en M9e pasa a "Nueva promoción" / "Editar". */}
-      {!cargando && !errorCarga && (
-        <FormularioPromocion
-          inicial={PROMO_VACIA}
-          categorias={categorias.data ?? []}
-          productos={productos.data ?? []}
-          envases={envases.data ?? []}
-          titulo="Prueba"
-          guardando={false}
-          onGuardar={(input) => console.log(input)}
-          onCancelar={() => {}}
-        />
-      )}
       {cargando && !errorCarga && <p className={estilos.ayuda}>Cargando…</p>}
       {errorCarga && (
         <p className={estilos.error} role="alert">
@@ -111,12 +127,54 @@ export function Promociones() {
           {error}
         </p>
       )}
-      {!cargando && !errorCarga && promociones.data?.length === 0 && (
+
+      {listo && editando !== null && (
+        <FormularioPromocion
+          // El formulario lee `inicial` una sola vez: la key lo remonta al cambiar de promo.
+          key={editando === "nueva" ? "nueva" : editando.id}
+          inicial={editando === "nueva" ? PROMO_VACIA : desdePromo(editando)}
+          categorias={categorias.data ?? []}
+          productos={productos.data ?? []}
+          envases={envases.data ?? []}
+          titulo={
+            editando === "nueva"
+              ? "Nueva promoción"
+              : `Editar: ${editando.nombre}`
+          }
+          guardando={guardar.isPending}
+          onGuardar={(input) =>
+            guardar.mutate({
+              id: editando === "nueva" ? null : editando.id,
+              input,
+            })
+          }
+          onCancelar={() => {
+            setEditando(null);
+            setError(null);
+          }}
+        />
+      )}
+
+      {listo && editando === null && (
+        <div>
+          <Boton
+            disabled={ocupado}
+            onClick={() => {
+              setError(null);
+              setEditando("nueva");
+            }}
+          >
+            Nueva promoción
+          </Boton>
+        </div>
+      )}
+
+      {listo && editando === null && promociones.data?.length === 0 && (
         <p className={estilos.ayuda}>Todavía no hay promociones.</p>
       )}
 
-      {!cargando &&
-        !errorCarga &&
+      {listo &&
+        editando === null &&
         promociones.data &&
         promociones.data.length > 0 && (
           <ul className={estilos.lista}>
@@ -145,6 +203,16 @@ export function Promociones() {
                 <div className={estilos.acciones}>
                   {promocion.activo ? (
                     <>
+                      <Boton
+                        variante="secundario"
+                        disabled={ocupado}
+                        onClick={() => {
+                          setError(null);
+                          setEditando(promocion);
+                        }}
+                      >
+                        Editar
+                      </Boton>
                       <Boton
                         variante="secundario"
                         disabled={ocupado}

@@ -71,6 +71,7 @@ export function FormularioPromocion({
   onCancelar,
 }: Props) {
   const [form, setForm] = useState(inicial);
+  const [original] = useState(inicial);
   const datos = validarPromo(form);
 
   const cambiar = <K extends keyof FormularioPromo>(campo: K, valor: FormularioPromo[K]) =>
@@ -100,8 +101,10 @@ export function FormularioPromocion({
   const faltaHorario = !form.todaLaNoche && (form.horaDesde === "" || form.horaHasta === "");
   const valido = datos.success && !faltaHorario;
 
-  // setForm siempre crea un objeto nuevo: si sigue siendo `inicial`, todavía no se tocó nada.
-  const tocado = form !== inicial;
+  // setForm siempre crea un objeto nuevo: si sigue siendo el del montaje, todavía no se tocó nada.
+  // Se compara con el estado inicial y no con la prop: al editar, `inicial` sale de desdePromo()
+  // y es un objeto nuevo en cada render del padre.
+  const tocado = form !== original;
   const problema = faltaHorario
     ? "Elegí la hora desde y hasta"
     : datos.success
