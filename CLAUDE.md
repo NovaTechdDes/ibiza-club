@@ -347,6 +347,27 @@ Para cuando F25 y lo demás funcione; hoy no es prioridad. Para retomar: "seguim
   - M10b: `PantallaCliente` ya no programa una secuencia: dibuja según tres estados, `aviso` ("gracias" / "entrada", tiene prioridad), `carrito` (con líneas, la venta; vacío, el logo) y `destacado` (`{ varianteId, toque }`). El carrito anterior va en un `useRef` porque los `listen` se registran una sola vez. `lineaAgregada` (en `lib/secuenciaCliente.ts`, que quedó solo con eso y las duraciones) compara por `cantidad`, no por `subTotal`, que cambia con la promo. El destacado se busca en el carrito actual por `varianteId`, así refleja una resta o desaparece si se quita la línea.
   - M10c: con productos no se muestra el logo. Sin producto grande la lista va al centro (hasta 60vw) y al agregar se corre a la derecha (decidido el 25/11/2026). Para que se deslice y no salte, `.venta` tiene siempre dos columnas y la izquierda (`.escena`, siempre presente aunque vacía) pasa de `0fr` a `3fr` con `transition` en `grid-template-columns`. El renglón del producto que está grande se resalta (`.lineaActual`, `--color-acento-suave`). Miniatura: `Foto` recibe `className` y `.miniatura` pisa el tamaño en `em` (escala con la letra de la lista); ocupa las dos filas solo si la línea tiene promo (`.linea:has(.promo)`).
 
+- [ ] **M11** — Cobro con QR de Mercado Pago (agendado el 25/11/2026). Al tocar **Transferencia** se genera un QR dinámico de MP con el total, se muestra en la pantalla del cliente y el ticket sale **cuando MP confirma el pago**.
+  - Decidido (25/11/2026):
+    - **El medio sigue siendo `TRANSFERENCIA`** (cambio de rumbo 7). No cambian `MEDIOS_PAGO`, `CierreCaja` ni reportes. `Venta` suma **`pagoReferencia`** opcional (id de la orden de MP; `null` en efectivo, tarjeta o transferencia manual). Lo va a usar M12.
+    - **El Access Token de MP vive solo en la API** (como `GITHUB_TOKEN`). La caja llama a nuestra API con su token de dispositivo.
+    - **Sondeo, sin webhook**: la caja consulta `GET /api/pagos-qr/:ordenId` cada 2 s y la API consulta la orden en MP. El webhook queda como mejora futura.
+    - **API de Orders de MP**: `POST /v1/orders` con `type: "qr"`, `config.qr.mode: "dynamic"` y `X-Idempotency-Key`. El QR llega como texto en `type_response.qr_data` y lo dibuja la caja (`qrcode.react`). Vence a los 10 min (`PT10M`).
+    - **Una caja (POS) de MP por cada caja nuestra**, `external_id` derivado del id (ej. `IBIZA12`), en una sola sucursal (`MP_STORE_ID`). Si MP responde `pos_not_found`, la API la crea y reintenta una vez.
+    - `external_reference = "C{cajaId}-{clave}"` (`clave` = uuid de la caja, también idempotencia). La API comprueba el prefijo: una caja no ve órdenes de otra.
+    - **Todas las cajas** (barra y entrada). El QR se ve grande en la pantalla del cliente y más chico en la del cajero (por si no hay segundo monitor).
+    - **Cancelar**: cancela la orden en MP y vuelve al carrito. Si MP dice que ya se pagó, se registra la venta: nunca se pierde un pago hecho.
+    - **Sin internet o si MP falla**: error + "Reintentar" + **"Confirmar a mano"** (el cajero verifica en el celular). La venta sale como Transferencia sin `pagoReferencia` y con auditoría `TRANSFERENCIA_MANUAL`.
+    - Anular una venta pagada por QR **no devuelve la plata en MP** (se hace a mano desde MP).
+    - Riesgo aceptado: si se corta la luz con la orden ya pagada y antes de guardar la venta, ese pago queda solo en MP. Avisar al cliente.
+  - Sub-pasos: **M11a** cuenta y usuarios de prueba de MP, sucursal, caja y orden probadas a mano con `curl.exe`; variables `MP_ACCESS_TOKEN` y `MP_STORE_ID` (hecho, 25/11/2026) · **M11b** backend: módulo `pagos-qr` (crear, consultar, cancelar) y schemas en `shared` (hecho, 25/11/2026) · **M11c** `pagoReferencia` en la venta (Prisma, `VentaSubidaSchema`, migración 6 de SQLite) y acción `TRANSFERENCIA_MANUAL` · **M11d** caja: `PantallaCobroQr` (vista `"qr"`) y `useCobrar` con la referencia · **M11e** pantalla del cliente: evento `cliente:qr` y diseño (QR sobre fondo blanco) · **M11f** prueba de punta a punta, deploy de la API y release de la caja (se puede juntar con M10d).
+  - M11a, lo comprobado contra MP (25/11/2026), que manda sobre la documentación cuando no coinciden:
+    - El QR viene en **`type_response.qr_data`**. El id de la orden empieza con `ORD` (en prueba, `ORDTST...`).
+    - Orden pagada: `status: "processed"`, `status_detail: "accredited"`, con `total_paid_amount`. Otros estados: `created`, `expired`, `canceled`, `refunded`. Solo se cancela en `created`.
+    - Caja de MP: `POST /pos` (no `/v2/pos`) con `name`, `store_id`, `external_store_id`, `external_id`, `fixed_amount: true` y `category: 621102`, y `X-Idempotency-Key`. Sucursal: `POST /users/{user_id}/stores`; en prueba, `external_id` `IBIZA`, y la caja `IBIZA1` ya existe.
+    - Pruebas a mano: los JSON y los comandos están en `C:\nova\mp-pruebas\`, fuera del repo. Para pagar se usa la app de MP con el **comprador de prueba**, y el QR se dibuja con `pnpm dlx qrcode -o qr.png "<qr_data>"`.
+- [ ] **M12** — Factura electrónica (agendado el 25/11/2026). Toda venta con **transferencia o débito** sale facturada. Se planifica después de M11. Ojo: hoy no existe "débito" (los medios son Efectivo, Transferencia y Tarjeta): hay que decidir si Tarjeta se separa en débito y crédito. Contradice "Sin facturación fiscal" del cambio de rumbo 6: cuando se planifique, M12 tiene prioridad.
+
 ### Observación: qué hace falta para instalar en producción (anotado el 11/11/2026)
 
 Solo para tener en cuenta; **no cambia el orden de la hoja de ruta**. La apertura del boliche está prevista para el **31/12/2026**.
@@ -442,7 +463,6 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 
 ## Pendientes y preguntas abiertas
 
-- Integración con Mercado Pago (consultar al cliente).
 - **Logo**: los PNG de `packages/ui/src/assets/` y `apps/caja/src-tauri/icons/icono-fuente.png` son provisorios, recortados de una foto de WhatsApp. Pedir al cliente el original (PNG transparente o SVG) y reemplazarlos con los mismos nombres; después correr `pnpm tauri icon src-tauri/icons/icono-fuente.png` en `apps/caja` y borrar `android/`, `ios/` y `64x64.png`.
 - Recomendar equipamiento para comprar (PCs táctiles, impresoras, UPS, cajones) y conseguir una impresora para probar.
 - Confirmar horario de corte de la jornada (propuesta 18:00 a 10:00).
@@ -464,5 +484,6 @@ Esta sección **tiene prioridad** sobre lo descrito arriba si hay contradicción
 - **`CORS_ORIGENES`**: resuelto (18/11/2026). Tiene la URL del panel, `http://tauri.localhost` y la de la propia API (esta última sobra pero no molesta). El CORS de plataforma del App Service queda vacío para que decida Express.
 - **Recuperar la contraseña del panel**: `apps/api/src/scripts/resetear-password.ts`, por SSH en el App Service (`cd /home/site/wwwroot`, `read -s ADMIN_PASSWORD && export ADMIN_PASSWORD`, `ADMIN_EMAIL=... node dist/scripts/resetear-password.js`). Pisa la contraseña de un `AccesoPanel` existente y deja `RESET_PASSWORD` en la auditoría. En desarrollo: `pnpm --filter @ibiza/api admin:password`.
 - **`GITHUB_TOKEN` en el App Service**: resuelto (19/11/2026). Cargado en _Environment variables_; `/api/actualizaciones` probado contra Azure. Si se regenera el token en GitHub, hay que actualizarlo ahí y en `apps/api/.env` (es obligatorio: sin él la API no arranca).
+- **Mercado Pago (M11)**: hoy se usan credenciales de prueba. Antes de abrir, pasar a las de la cuenta del boliche: crear la sucursal real y cargar `MP_ACCESS_TOKEN` y `MP_STORE_ID` en el App Service (son obligatorias: sin ellas la API no arranca).
 - **Application Insights**: previsto en el stack, todavía sin activar.
 - **Clave de la letra de la semana**: en producción vive en la variable `CLAVE_LETRA` del App Service (cargada el 12/11/2026, distinta de la de desarrollo). Si se cambia, cambian las letras de los tickets.

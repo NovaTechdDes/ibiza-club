@@ -18,6 +18,7 @@ export * from './schemas/promocion.js';
 export * from './schemas/sync.js';
 export * from './schemas/auth.js';
 export * from './schemas/reporte.js';
+export * from './schemas/pago-qr.js';
 
 
 export * from './logica/jornada.js';

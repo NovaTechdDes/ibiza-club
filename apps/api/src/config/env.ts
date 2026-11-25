@@ -17,7 +17,9 @@ const envSchema = z.object({
     AZURE_STORAGE_CONNECTION_STRING: z.string().min(3),
     AZURE_STORAGE_CONTENEDOR: z.string().min(3),
     GITHUB_TOKEN: z.string().min(1),
-    GITHUB_REPO: z.string().regex(/^[\w.-]+\/[\w.-]+$/).default("NovaTechdDes/ibiza-club")
+    GITHUB_REPO: z.string().regex(/^[\w.-]+\/[\w.-]+$/).default("NovaTechdDes/ibiza-club"),
+    MP_ACCESS_TOKEN: z.string().min(1),
+    MP_STORE_ID: z.string().min(1)
 });
 
 export const env = envSchema.parse(process.env);

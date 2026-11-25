@@ -12,6 +12,7 @@ import { syncRouter } from "./modules/sync/sync.routes.js";
 import { reporteRouter } from "./modules/reporte/reporte.routes.js";
 import { adminOEncargado, autenticar, soloAdmin } from "./middleware/autenticar.js";
 import { actualizacionRouter } from "./modules/actualizacion/actualizacion.routes.js";
+import { pagosQrRouter } from "./modules/pagos-qr/pagos-qr.routes.js";
 
 export const apiRouter: Router = Router();
 
@@ -26,3 +27,4 @@ apiRouter.use('/promociones', autenticar, adminOEncargado, promocionRouter);
 apiRouter.use('/sync', requerirCaja, syncRouter);
 apiRouter.use('/reportes', autenticar, soloAdmin, reporteRouter)
 apiRouter.use('/actualizaciones', requerirCaja, actualizacionRouter)
+apiRouter.use('/pagos-qr', requerirCaja, pagosQrRouter)
