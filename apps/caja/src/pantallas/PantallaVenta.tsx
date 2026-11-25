@@ -55,6 +55,7 @@ import type { Usuario } from "../db/usuario";
 import { useApertura } from "../hooks/useApertura";
 import { fechaTicket } from "../lib/ticket";
 import { descartarCarrito } from "../lib/descartes";
+import { useCarritoEnPantallaCliente } from "../hooks/useCarritoEnPantallaCliente";
 
 interface Props {
   vinculacion: Vinculacion;
@@ -70,9 +71,13 @@ const ICONO_MEDIO: Record<MedioPago, typeof IconoEfectivo> = {
 export function PantallaVenta({ vinculacion }: Props) {
   const usuario = useSesion((estado) => estado.usuario);
   const { data: apertura } = useApertura();
-  const queryClient = useQueryClient();
 
+  const queryClient = useQueryClient();
+  const { data: tipo } = useTipoCaja();
   const carrito = useCarritoCalculado();
+  const { data: categorias } = useCategoriaVenta();
+
+  useCarritoEnPantallaCliente(carrito.lineas, carrito.total, tipo === "BARRA");
   const agregar = useCarrito((estado) => estado.agregar);
   const cambiarCantidad = useCarrito((estado) => estado.cambiarCantidad);
 
@@ -91,9 +96,6 @@ export function PantallaVenta({ vinculacion }: Props) {
     | "cierre"
     | "admin"
   >("venta");
-
-  const { data: categorias } = useCategoriaVenta();
-  const { data: tipo } = useTipoCaja();
 
   const secciones = (tipo ? SECCIONES_POR_TIPO[tipo] : []).filter((s) =>
     categorias?.some((c) => c.seccion === s),

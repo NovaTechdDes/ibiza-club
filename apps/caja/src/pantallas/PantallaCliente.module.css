@@ -61,20 +61,34 @@
 
 /* ---- Venta de barra ---- */
 
-/* Izquierda, el producto que se está mostrando; derecha, lo que ya se sumó */
+/*
+ * Izquierda, el producto que se acaba de agregar; derecha, la lista.
+ * Sin producto grande, la columna izquierda se cierra (0fr) y la lista queda al centro.
+ * Siempre son dos columnas para que el cambio se pueda animar: la lista se desliza.
+ */
 .venta {
     width: 100%;
     height: 100%;
     display: grid;
-    grid-template-columns: 3fr 2fr;
+    grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
     align-items: center;
-    gap: 4vw;
+    column-gap: 4vw;
+    transition:
+        grid-template-columns 400ms ease-out,
+        column-gap 400ms ease-out;
 }
 
-/* Con la lista completa ya no hay producto destacado: el resumen pasa al centro */
 .venta:not(:has(.destacado)) {
-    grid-template-columns: minmax(0, 60vw);
-    justify-content: center;
+    grid-template-columns: minmax(0, 0fr) minmax(0, 1fr);
+    column-gap: 0;
+}
+
+/* overflow: mientras la columna se cierra, lo que queda adentro no se sale */
+.escena {
+    display: grid;
+    place-items: center;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .destacado {
@@ -126,7 +140,10 @@
     overflow: hidden;
 }
 
+/* Al centro no ocupa todo el ancho: como mucho 60vw, igual que en M7 */
 .resumen {
+    width: min(100%, 60vw);
+    justify-self: center;
     display: grid;
     gap: 3vh;
     min-width: 0;
@@ -153,14 +170,43 @@
     font-size: min(2.2vw, 3.6vh);
 }
 
-/* Nombre a la izquierda y precio a la derecha; la promo cae en la fila de abajo */
+/*
+ * Miniatura, nombre y precio; la promo cae en la fila de abajo, debajo del nombre
+ * (la miniatura ocupa las dos filas).
+ */
 .linea {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: 2vw;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 1.2vw;
     row-gap: 0.5vh;
+    padding: 0.6vh 0.6vw;
+    border-radius: var(--radio);
     font-variant-numeric: tabular-nums;
+    transition: background-color 300ms ease-out;
     animation: aparecer 300ms ease-out;
+}
+
+/* El renglón del producto que se está mostrando grande: une las dos columnas */
+.lineaActual {
+    background: var(--color-acento-suave);
+}
+
+/* Se suma a .foto y pisa el tamaño. En em: crece y se achica con la letra de la lista. */
+.miniatura {
+    height: 2.4em;
+    border-radius: var(--radio);
+}
+
+/* Con promo ocupa las dos filas, así la promo queda alineada con el nombre.
+   Sin promo no: dejaría una fila vacía de más. */
+.linea:has(.promo) .miniatura {
+    grid-row: span 2;
+}
+
+/* La .inicial grande mide 30vh: adentro de la miniatura va a escala de la letra */
+.miniatura .inicial {
+    font-size: 1.4em;
 }
 
 .promo {

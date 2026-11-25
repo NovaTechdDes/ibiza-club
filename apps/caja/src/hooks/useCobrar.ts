@@ -70,7 +70,7 @@ export const useCobrar = () => {
       if (esEntrada) {
         avisarEntradaVendida();
       }else{
-        avisarVentaBarra(venta.lineas, venta.total);
+        avisarVentaBarra();
       }
       const ticket = armarTicket({
         jornada,

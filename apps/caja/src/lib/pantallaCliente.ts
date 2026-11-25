@@ -4,9 +4,11 @@ import type { LineaVenta } from "../hooks/useCarritoCalculado";
 export const VENTANA_CLIENTE = 'cliente';
 export const EVENTO_ENTRADA = 'cliente:entrada';
 export const EVENTO_VENTA = "cliente:venta";
+export const EVENTO_CARRITO = "cliente:carrito";
 
 
 export type LineaCliente = {
+    varianteId: number;
     cantidad: number;
     nombre: string;
     imagen: string | null;
@@ -15,22 +17,24 @@ export type LineaCliente = {
     descuento: number;
 };
 
-export type VentaCliente = {
+export type CarritoCliente = {
     lineas: LineaCliente[];
     total: number;
 };
 
 // Sin segundo monitor no hay ventana y emitTo falla: no es un error.
 // Devuelve void para que nadie lo espere con await dentro de un cobro.
-const emitir = (evento: string, datos?: VentaCliente): void => {
+const emitir = (evento: string, datos?: CarritoCliente): void => {
     emitTo(VENTANA_CLIENTE, evento, datos).catch(() => {});
 }
 
 export const avisarEntradaVendida = (): void => emitir(EVENTO_ENTRADA);
 
-export const avisarVentaBarra = (lineas: LineaVenta[], total: number): void => 
-    emitir(EVENTO_VENTA, {
+export const avisarVentaBarra = (): void => emitir(EVENTO_VENTA)
+
+export const aCarritoCliente = (lineas: LineaVenta[], total: number): CarritoCliente => ({
         lineas: lineas.map(linea => ({
+            varianteId: linea.varianteId,
             cantidad: linea.cantidad,
             nombre: `${linea.nombre} (${linea.envaseNombre})`,
             imagen: linea.imagen,
@@ -38,5 +42,8 @@ export const avisarVentaBarra = (lineas: LineaVenta[], total: number): void =>
             promocionNombre: linea.promocionNombre,
             descuento: linea.descuento
         })),
-        total
-    })
+        total,
+});
+
+
+export const mostrarCarrito = (carrito: CarritoCliente): void => emitir(EVENTO_CARRITO, carrito);
