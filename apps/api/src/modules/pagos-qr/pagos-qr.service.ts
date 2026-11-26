@@ -3,6 +3,7 @@ import z from "zod";
 import type { EstadoOrdenQr, EstadoPagoQr, OrdenQr } from "@ibiza/shared";
 import { env } from "../../config/env.js";
 import { AppError } from "../../errors/app-error.js";
+import { logger } from "../../config/logger.js";
 
 const API_MP = "https://api.mercadopago.com";
 const MINUTOS_VENCIMIENTO = 10;
@@ -32,12 +33,22 @@ const pedirMp = (ruta: string, { metodo = "GET", body, idempotencia }: Pedido = 
     });
 };
 
-const errorMp = (status: number) => new AppError(502, "INTERNO", `Mercado Pago respondió ${status}`);
+// MP explica el error en el cuerpo (ej. "store ... not found"). Va al log para
+// diagnosticar, pero no a la caja: el cajero no puede hacer nada con eso.
+// `cuerpo` es para cuando ya se leyó: una Response se puede leer una sola vez.
+const errorMp = async (res: Response, accion: string, cuerpo?: string) => {
+    const respuesta = (cuerpo ?? (await res.text().catch(() => ""))).slice(0, 2000);
+    logger.warn({ accion, status: res.status, respuesta }, "Mercado Pago respondió con error");
+    return new AppError(502, "INTERNO", `Mercado Pago respondió ${res.status}`);
+};
 
 // safeParse y no parse: un ZodError acá saldría como 400 (culpa de la caja) y es culpa de MP.
 const leerOrden = async (res: Response): Promise<OrdenMp> => {
     const resultado = ordenMpSchema.safeParse(await res.json());
-    if (!resultado.success) throw new AppError(502, "INTERNO", "Respuesta inesperada de Mercado Pago");
+    if (!resultado.success) {
+        logger.warn({ issues: resultado.error.issues }, "Respuesta inesperada de Mercado Pago");
+        throw new AppError(502, "INTERNO", "Respuesta inesperada de Mercado Pago");
+    }
     return resultado.data;
 };
 
@@ -62,9 +73,9 @@ const crearCajaMp = async (cajaId: number) => {
         body: { name: id, store_id: Number(env.MP_STORE_ID), external_id: id, fixed_amount: true, category: CATEGORIA_POS },
         idempotencia: randomUUID(),
     });
-    await res.body?.cancel();
     // 409 = ya existía (la creó otro pedido): sirve igual.
-    if (!res.ok && res.status !== 409) throw errorMp(res.status);
+    if (!res.ok && res.status !== 409) throw await errorMp(res, "crear caja");
+    await res.body?.cancel();
 };
 
 const pedirOrdenNueva = (cajaId: number, total: number, clave: string, idempotencia: string) =>
@@ -85,11 +96,13 @@ export const crearOrden = async (cajaId: number, total: number, clave: string): 
     let res = await pedirOrdenNueva(cajaId, total, clave, clave);
 
     // La primera vez que esta caja cobra con QR, MP no la conoce: se crea y se reintenta una vez.
-    if (res.status === 404 && (await res.text()).includes("pos_not_found")) {
+    if (res.status === 404) {
+        const cuerpo = await res.text();
+        if (!cuerpo.includes("pos_not_found")) throw await errorMp(res, "crear orden", cuerpo);
         await crearCajaMp(cajaId);
         res = await pedirOrdenNueva(cajaId, total, clave, randomUUID());
     }
-    if (!res.ok) throw errorMp(res.status);
+    if (!res.ok) throw await errorMp(res, "crear orden");
 
     const orden = await leerOrden(res);
     if (!orden.type_response) throw new AppError(502, "INTERNO", "Mercado Pago no devolvió el QR");
@@ -104,7 +117,7 @@ export const crearOrden = async (cajaId: number, total: number, clave: string): 
 const buscarOrden = async (cajaId: number, ordenId: string): Promise<OrdenMp> => {
     const res = await pedirMp(`/v1/orders/${ordenId}`);
     if (res.status === 404) throw AppError.noEncontrado("Orden no encontrada");
-    if (!res.ok) throw errorMp(res.status);
+    if (!res.ok) throw await errorMp(res, "consultar orden");
 
     const orden = await leerOrden(res);
     // Una caja solo ve sus órdenes. 404 y no 403, para no confirmar que la orden existe.
@@ -123,9 +136,9 @@ export const cancelarOrden = async (cajaId: number, ordenId: string): Promise<Es
     if (estadoDe(orden) !== "PENDIENTE") return { estado: estadoDe(orden) };
 
     const res = await pedirMp(`/v1/orders/${ordenId}/cancel`, { metodo: "POST", idempotencia: randomUUID() });
-    await res.body?.cancel();
     // 409: el cliente está pagando justo ahora, o ya cambió. No se adivina: se vuelve a preguntar.
-    if (!res.ok && res.status !== 409) throw errorMp(res.status);
+    if (!res.ok && res.status !== 409) throw await errorMp(res, "cancelar orden");
+    await res.body?.cancel();
 
     return consultarOrden(cajaId, ordenId);
 };

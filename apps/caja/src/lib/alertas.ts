@@ -55,7 +55,11 @@ export async function avisaError(mensaje: string) {
 }
 
 // Para cuando algo falló y se puede volver a intentar. Devuelve true si eligen reintentar
-export async function preguntarReintento(titulo: string, texto: string) {
+export async function preguntarReintento(
+  titulo: string,
+  texto: string,
+  textoCancelar = "Seguir sin imprimir",
+) {
   const { isConfirmed } = await Swal.fire({
     ...base(false),
     title: titulo,
@@ -63,7 +67,7 @@ export async function preguntarReintento(titulo: string, texto: string) {
     icon: "error",
     showCancelButton: true,
     confirmButtonText: "Reintentar",
-    cancelButtonText: "Seguir sin imprimir",
+    cancelButtonText: textoCancelar,
     // Un toque sin querer fuera de la alerta no tiene que decidir por el cajero
     allowOutsideClick: false,
     allowEscapeKey: false,

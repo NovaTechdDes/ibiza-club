@@ -18,11 +18,16 @@ type Opciones = {
   total: number;
   // MP confirmó el pago: se registra la venta con este id como referencia
   onPagado: (ordenId: string) => void;
+  // El cajero vio la transferencia en el celular y el QR ya no se puede pagar
+  onManual: () => void;
   // Se canceló y el cliente no había pagado: vuelve al carrito
   onCancelado: () => void;
 };
 
-export const usePagoQr = ({ vinculacion, total, onPagado, onCancelado }: Opciones) => {
+// Para qué se cancela el QR: para volver al carrito o para cobrar a mano
+type Destino = "volver" | "manual";
+
+export const usePagoQr = ({ vinculacion, total, onPagado, onManual, onCancelado }: Opciones) => {
   const { apiUrl, token } = vinculacion;
 
   // Una clave por QR. Reintentar con la misma devuelve la misma orden (idempotencia en MP),
@@ -49,26 +54,35 @@ export const usePagoQr = ({ vinculacion, total, onPagado, onCancelado }: Opcione
     refetchIntervalInBackground: true,
   });
 
-  // onPagado se avisa UNA sola vez: el padre arma una función nueva en cada render,
-  // y sin esta marca el efecto registraría la venta dos veces
+  // La venta se registra UNA sola vez, sea por QR o a mano: el padre arma funciones nuevas
+  // en cada render, y el sondeo puede ver PAGADO justo cuando el cajero confirma a mano
   const avisado = useRef(false);
-  const avisarPagado = (id: string) => {
+  const unaVez = (avisar: () => void) => {
     if (avisado.current) return;
     avisado.current = true;
-    onPagado(id);
+    avisar();
   };
+  const avisarPagado = (id: string) => unaVez(() => onPagado(id));
+  const avisarManual = () => unaVez(onManual);
 
   useEffect(() => {
     if (estado.data === "PAGADO" && ordenId) avisarPagado(ordenId);
   });
 
   const cancelar = useMutation({
-    mutationFn: async (): Promise<EstadoPagoQr> =>
+    mutationFn: async (_destino: Destino): Promise<EstadoPagoQr> =>
       ordenId ? cancelarOrdenQr(apiUrl, token, ordenId) : "CANCELADO",
-    // Si el cliente pagó justo al cancelar, la API devuelve PAGADO: la venta se registra igual
-    onSuccess: (final) => {
+    // Si el cliente pagó justo al cancelar, la API devuelve PAGADO: la venta se registra
+    // igual, y con la referencia de MP aunque el cajero haya tocado "Confirmar a mano"
+    onSuccess: (final, destino) => {
       if (final === "PAGADO" && ordenId) avisarPagado(ordenId);
+      else if (destino === "manual") avisarManual();
       else onCancelado();
+    },
+    // Sin conexión no se puede cancelar. Para volver se avisa y se deja decidir al cajero;
+    // a mano se cobra igual: ya vio la plata en el celular
+    onError: (_error, destino) => {
+      if (destino === "manual") avisarManual();
     },
   });
 
@@ -84,8 +98,11 @@ export const usePagoQr = ({ vinculacion, total, onPagado, onCancelado }: Opcione
     paso,
     reintentar: () => orden.refetch(),
     generarOtro: () => setClave(crypto.randomUUID()),
-    cancelar: () => cancelar.mutate(),
+    cancelar: () => cancelar.mutate("volver"),
+    // Antes de cobrar a mano se cancela el QR: si no, queda vivo 10 minutos y,
+    // si alguien lo paga, entra plata sin venta
+    confirmarManual: () => cancelar.mutate("manual"),
     cancelando: cancelar.isPending,
-    errorAlCancelar: cancelar.isError,
+    errorAlCancelar: cancelar.isError && cancelar.variables === "volver",
   };
 };

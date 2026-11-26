@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { leerConfigCaja } from "../db/ajustes";
 import type { Apertura, Jornada } from "../db/apertura";
 import { registrarVenta } from "../db/ventas";
-import { avisaError } from "../lib/alertas";
+import { avisaError, preguntarReintento } from "../lib/alertas";
 import { imprimirConReintento, imprimirEntradas, imprimirTicket } from "../lib/impresora";
 import { calcularJornada } from "../lib/jornada";
 import { avisarEntradaVendida, avisarVentaBarra } from "../lib/pantallaCliente";
@@ -49,7 +49,7 @@ export const useCobrar = () => {
   const vaciar = useCarrito((estado) => estado.vaciar);
   const quitados = useCarrito((estado) => estado.quitados);
 
-  return useMutation({
+  const cobrar = useMutation({
     mutationFn: async (cobro: Cobro) => {
       if (!apertura || !usuario || !vinculacion) {
         throw new Error("Falta la apertura, el cajero o la vinculación");
@@ -106,6 +106,25 @@ export const useCobrar = () => {
       vaciar()
       avisarOperacionNueva(queryClient)
     },
-    onError: () => avisaError("No se pudo registrar la venta"),
+    onError: async (_error, cobro) => {
+      // Efectivo y tarjeta: el cliente todavía no pagó, se vuelve a cobrar y listo.
+      // QR o transferencia confirmada a mano: la plata YA entró. Con el carrito a la vista,
+      // el cajero tocaría Transferencia de nuevo y el cliente pagaría dos veces.
+      const yaPago = Boolean(cobro.pagoReferencia || cobro.transferenciaManual);
+      if (!yaPago) {
+        avisaError("No se pudo registrar la venta");
+        return;
+      }
+      const reintentar = await preguntarReintento(
+        "La transferencia entró, pero no se guardó la venta",
+        `No vuelvas a cobrar${cobro.pagoReferencia ? ` (orden ${cobro.pagoReferencia})` : ""}. ` +
+          "Reintentá guardarla o avisale al encargado.",
+        "Avisar al encargado",
+      );
+      // Mismo cobro, misma referencia: la venta queda con el id de la orden de MP
+      if (reintentar) cobrar.mutate(cobro);
+    },
   });
+
+  return cobrar;
 };

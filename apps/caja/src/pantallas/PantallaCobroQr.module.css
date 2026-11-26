@@ -10,3 +10,12 @@
   background: #fff;
   line-height: 0;
 }
+
+/* tabular-nums: los dígitos tienen el mismo ancho y el texto no tiembla cada segundo */
+.vence {
+  margin: 0;
+  text-align: center;
+  color: var(--color-texto-suave);
+  font-size: var(--texto-sm);
+  font-variant-numeric: tabular-nums;
+}
