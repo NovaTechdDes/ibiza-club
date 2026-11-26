@@ -1,0 +1,12 @@
+/*
+ * El QR va siempre sobre blanco, también con el tema oscuro: es lo que leen bien
+ * las cámaras. Por eso #fff fijo y no un token del tema.
+ */
+.qr {
+  /* La tarjeta del Dialogo es flex en columna: así se centra sin estirarse */
+  align-self: center;
+  padding: var(--espacio-chico);
+  border-radius: var(--radio);
+  background: #fff;
+  line-height: 0;
+}

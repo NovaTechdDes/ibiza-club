@@ -237,18 +237,19 @@ model CierreCaja {
 }
 
 model Venta {
-  id         Int      @id @default(autoincrement())
-  cajaId     Int
-  idLocal    Int
-  aperturaId Int
-  numero     Int
-  cajeroId   Int
-  medioPago  String   @db.NVarChar(20)
-  subTotal   Int
-  descuento  Int
-  total      Int
-  ocurridaEn DateTime
-  recibidaEn DateTime @default(now())
+  id             Int      @id @default(autoincrement())
+  cajaId         Int
+  idLocal        Int
+  aperturaId     Int
+  numero         Int
+  cajeroId       Int
+  medioPago      String   @db.NVarChar(20)
+  pagoReferencia String?  @db.NVarChar(50)
+  subTotal       Int
+  descuento      Int
+  total          Int
+  ocurridaEn     DateTime
+  recibidaEn     DateTime @default(now())
 
   caja      Caja         @relation(fields: [cajaId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   apertura  AperturaCaja @relation(fields: [aperturaId], references: [id], onDelete: NoAction, onUpdate: NoAction)

@@ -285,6 +285,7 @@ export const VentaScalarFieldEnum = {
   numero: 'numero',
   cajeroId: 'cajeroId',
   medioPago: 'medioPago',
+  pagoReferencia: 'pagoReferencia',
   subTotal: 'subTotal',
   descuento: 'descuento',
   total: 'total',

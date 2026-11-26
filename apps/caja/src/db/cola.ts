@@ -29,6 +29,7 @@ type FilaVenta = {
     descuento: number;
     total: number;
     ocurridaEn: string;
+    pagoReferencia: string | null;
 }
 type FilaItem = {
     varianteId: number;
@@ -117,7 +118,8 @@ const armarApertura = async (idLocal: number): Promise<OperacionSubida> => {
 const armarVenta = async(idLocal: number): Promise<OperacionSubida> => {
     const db = await obtenerDb();
     const [v]  = await db.select<FilaVenta[]>(
-        `SELECT id, aperturaId, numero, ocurridaEn, cajeroId, medioPago, subTotal, descuento, total FROM Venta where id = $1`,
+        `SELECT id, aperturaId, numero, ocurridaEn, cajeroId, medioPago,
+         subTotal, descuento, total, pagoReferencia FROM Venta where id = $1`,
         [idLocal] 
     )
 
@@ -137,6 +139,7 @@ const armarVenta = async(idLocal: number): Promise<OperacionSubida> => {
         subTotal: v.subTotal,
         descuento: v.descuento,
         total: v.total,
+        pagoReferencia: v.pagoReferencia,
         ocurridaEn: v.ocurridaEn,
         aperturaIdLocal: v.aperturaId,
         items,

@@ -58,6 +58,7 @@ export type VentaMinAggregateOutputType = {
   numero: number | null
   cajeroId: number | null
   medioPago: string | null
+  pagoReferencia: string | null
   subTotal: number | null
   descuento: number | null
   total: number | null
@@ -73,6 +74,7 @@ export type VentaMaxAggregateOutputType = {
   numero: number | null
   cajeroId: number | null
   medioPago: string | null
+  pagoReferencia: string | null
   subTotal: number | null
   descuento: number | null
   total: number | null
@@ -88,6 +90,7 @@ export type VentaCountAggregateOutputType = {
   numero: number
   cajeroId: number
   medioPago: number
+  pagoReferencia: number
   subTotal: number
   descuento: number
   total: number
@@ -129,6 +132,7 @@ export type VentaMinAggregateInputType = {
   numero?: true
   cajeroId?: true
   medioPago?: true
+  pagoReferencia?: true
   subTotal?: true
   descuento?: true
   total?: true
@@ -144,6 +148,7 @@ export type VentaMaxAggregateInputType = {
   numero?: true
   cajeroId?: true
   medioPago?: true
+  pagoReferencia?: true
   subTotal?: true
   descuento?: true
   total?: true
@@ -159,6 +164,7 @@ export type VentaCountAggregateInputType = {
   numero?: true
   cajeroId?: true
   medioPago?: true
+  pagoReferencia?: true
   subTotal?: true
   descuento?: true
   total?: true
@@ -261,6 +267,7 @@ export type VentaGroupByOutputType = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia: string | null
   subTotal: number
   descuento: number
   total: number
@@ -299,6 +306,7 @@ export type VentaWhereInput = {
   numero?: Prisma.IntFilter<"Venta"> | number
   cajeroId?: Prisma.IntFilter<"Venta"> | number
   medioPago?: Prisma.StringFilter<"Venta"> | string
+  pagoReferencia?: Prisma.StringNullableFilter<"Venta"> | string | null
   subTotal?: Prisma.IntFilter<"Venta"> | number
   descuento?: Prisma.IntFilter<"Venta"> | number
   total?: Prisma.IntFilter<"Venta"> | number
@@ -319,6 +327,7 @@ export type VentaOrderByWithRelationInput = {
   numero?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
   medioPago?: Prisma.SortOrder
+  pagoReferencia?: Prisma.SortOrderInput | Prisma.SortOrder
   subTotal?: Prisma.SortOrder
   descuento?: Prisma.SortOrder
   total?: Prisma.SortOrder
@@ -344,6 +353,7 @@ export type VentaWhereUniqueInput = Prisma.AtLeast<{
   numero?: Prisma.IntFilter<"Venta"> | number
   cajeroId?: Prisma.IntFilter<"Venta"> | number
   medioPago?: Prisma.StringFilter<"Venta"> | string
+  pagoReferencia?: Prisma.StringNullableFilter<"Venta"> | string | null
   subTotal?: Prisma.IntFilter<"Venta"> | number
   descuento?: Prisma.IntFilter<"Venta"> | number
   total?: Prisma.IntFilter<"Venta"> | number
@@ -364,6 +374,7 @@ export type VentaOrderByWithAggregationInput = {
   numero?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
   medioPago?: Prisma.SortOrder
+  pagoReferencia?: Prisma.SortOrderInput | Prisma.SortOrder
   subTotal?: Prisma.SortOrder
   descuento?: Prisma.SortOrder
   total?: Prisma.SortOrder
@@ -387,6 +398,7 @@ export type VentaScalarWhereWithAggregatesInput = {
   numero?: Prisma.IntWithAggregatesFilter<"Venta"> | number
   cajeroId?: Prisma.IntWithAggregatesFilter<"Venta"> | number
   medioPago?: Prisma.StringWithAggregatesFilter<"Venta"> | string
+  pagoReferencia?: Prisma.StringNullableWithAggregatesFilter<"Venta"> | string | null
   subTotal?: Prisma.IntWithAggregatesFilter<"Venta"> | number
   descuento?: Prisma.IntWithAggregatesFilter<"Venta"> | number
   total?: Prisma.IntWithAggregatesFilter<"Venta"> | number
@@ -398,6 +410,7 @@ export type VentaCreateInput = {
   idLocal: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -418,6 +431,7 @@ export type VentaUncheckedCreateInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -431,6 +445,7 @@ export type VentaUpdateInput = {
   idLocal?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -451,6 +466,7 @@ export type VentaUncheckedUpdateInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -467,6 +483,7 @@ export type VentaCreateManyInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -478,6 +495,7 @@ export type VentaUpdateManyMutationInput = {
   idLocal?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -493,6 +511,7 @@ export type VentaUncheckedUpdateManyInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -528,6 +547,7 @@ export type VentaCountOrderByAggregateInput = {
   numero?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
   medioPago?: Prisma.SortOrder
+  pagoReferencia?: Prisma.SortOrder
   subTotal?: Prisma.SortOrder
   descuento?: Prisma.SortOrder
   total?: Prisma.SortOrder
@@ -555,6 +575,7 @@ export type VentaMaxOrderByAggregateInput = {
   numero?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
   medioPago?: Prisma.SortOrder
+  pagoReferencia?: Prisma.SortOrder
   subTotal?: Prisma.SortOrder
   descuento?: Prisma.SortOrder
   total?: Prisma.SortOrder
@@ -570,6 +591,7 @@ export type VentaMinOrderByAggregateInput = {
   numero?: Prisma.SortOrder
   cajeroId?: Prisma.SortOrder
   medioPago?: Prisma.SortOrder
+  pagoReferencia?: Prisma.SortOrder
   subTotal?: Prisma.SortOrder
   descuento?: Prisma.SortOrder
   total?: Prisma.SortOrder
@@ -752,6 +774,7 @@ export type VentaCreateWithoutCajaInput = {
   idLocal: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -770,6 +793,7 @@ export type VentaUncheckedCreateWithoutCajaInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -815,6 +839,7 @@ export type VentaScalarWhereInput = {
   numero?: Prisma.IntFilter<"Venta"> | number
   cajeroId?: Prisma.IntFilter<"Venta"> | number
   medioPago?: Prisma.StringFilter<"Venta"> | string
+  pagoReferencia?: Prisma.StringNullableFilter<"Venta"> | string | null
   subTotal?: Prisma.IntFilter<"Venta"> | number
   descuento?: Prisma.IntFilter<"Venta"> | number
   total?: Prisma.IntFilter<"Venta"> | number
@@ -826,6 +851,7 @@ export type VentaCreateWithoutCajeroInput = {
   idLocal: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -844,6 +870,7 @@ export type VentaUncheckedCreateWithoutCajeroInput = {
   aperturaId: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -882,6 +909,7 @@ export type VentaCreateWithoutAperturaInput = {
   idLocal: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -900,6 +928,7 @@ export type VentaUncheckedCreateWithoutAperturaInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -938,6 +967,7 @@ export type VentaCreateWithoutItemsInput = {
   idLocal: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -957,6 +987,7 @@ export type VentaUncheckedCreateWithoutItemsInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -985,6 +1016,7 @@ export type VentaUpdateWithoutItemsInput = {
   idLocal?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1004,6 +1036,7 @@ export type VentaUncheckedUpdateWithoutItemsInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1016,6 +1049,7 @@ export type VentaCreateWithoutAnulacionInput = {
   idLocal: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -1035,6 +1069,7 @@ export type VentaUncheckedCreateWithoutAnulacionInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -1063,6 +1098,7 @@ export type VentaUpdateWithoutAnulacionInput = {
   idLocal?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1082,6 +1118,7 @@ export type VentaUncheckedUpdateWithoutAnulacionInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1096,6 +1133,7 @@ export type VentaCreateManyCajaInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -1107,6 +1145,7 @@ export type VentaUpdateWithoutCajaInput = {
   idLocal?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1125,6 +1164,7 @@ export type VentaUncheckedUpdateWithoutCajaInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1141,6 +1181,7 @@ export type VentaUncheckedUpdateManyWithoutCajaInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1154,6 +1195,7 @@ export type VentaCreateManyCajeroInput = {
   aperturaId: number
   numero: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -1165,6 +1207,7 @@ export type VentaUpdateWithoutCajeroInput = {
   idLocal?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1183,6 +1226,7 @@ export type VentaUncheckedUpdateWithoutCajeroInput = {
   aperturaId?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1199,6 +1243,7 @@ export type VentaUncheckedUpdateManyWithoutCajeroInput = {
   aperturaId?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1212,6 +1257,7 @@ export type VentaCreateManyAperturaInput = {
   numero: number
   cajeroId: number
   medioPago: string
+  pagoReferencia?: string | null
   subTotal: number
   descuento: number
   total: number
@@ -1223,6 +1269,7 @@ export type VentaUpdateWithoutAperturaInput = {
   idLocal?: Prisma.IntFieldUpdateOperationsInput | number
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1241,6 +1288,7 @@ export type VentaUncheckedUpdateWithoutAperturaInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1257,6 +1305,7 @@ export type VentaUncheckedUpdateManyWithoutAperturaInput = {
   numero?: Prisma.IntFieldUpdateOperationsInput | number
   cajeroId?: Prisma.IntFieldUpdateOperationsInput | number
   medioPago?: Prisma.StringFieldUpdateOperationsInput | string
+  pagoReferencia?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   subTotal?: Prisma.IntFieldUpdateOperationsInput | number
   descuento?: Prisma.IntFieldUpdateOperationsInput | number
   total?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1303,6 +1352,7 @@ export type VentaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   numero?: boolean
   cajeroId?: boolean
   medioPago?: boolean
+  pagoReferencia?: boolean
   subTotal?: boolean
   descuento?: boolean
   total?: boolean
@@ -1326,6 +1376,7 @@ export type VentaSelectScalar = {
   numero?: boolean
   cajeroId?: boolean
   medioPago?: boolean
+  pagoReferencia?: boolean
   subTotal?: boolean
   descuento?: boolean
   total?: boolean
@@ -1333,7 +1384,7 @@ export type VentaSelectScalar = {
   recibidaEn?: boolean
 }
 
-export type VentaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cajaId" | "idLocal" | "aperturaId" | "numero" | "cajeroId" | "medioPago" | "subTotal" | "descuento" | "total" | "ocurridaEn" | "recibidaEn", ExtArgs["result"]["venta"]>
+export type VentaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "cajaId" | "idLocal" | "aperturaId" | "numero" | "cajeroId" | "medioPago" | "pagoReferencia" | "subTotal" | "descuento" | "total" | "ocurridaEn" | "recibidaEn", ExtArgs["result"]["venta"]>
 export type VentaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   caja?: boolean | Prisma.CajaDefaultArgs<ExtArgs>
   apertura?: boolean | Prisma.AperturaCajaDefaultArgs<ExtArgs>
@@ -1360,6 +1411,7 @@ export type $VentaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     numero: number
     cajeroId: number
     medioPago: string
+    pagoReferencia: string | null
     subTotal: number
     descuento: number
     total: number
@@ -1746,6 +1798,7 @@ export interface VentaFieldRefs {
   readonly numero: Prisma.FieldRef<"Venta", 'Int'>
   readonly cajeroId: Prisma.FieldRef<"Venta", 'Int'>
   readonly medioPago: Prisma.FieldRef<"Venta", 'String'>
+  readonly pagoReferencia: Prisma.FieldRef<"Venta", 'String'>
   readonly subTotal: Prisma.FieldRef<"Venta", 'Int'>
   readonly descuento: Prisma.FieldRef<"Venta", 'Int'>
   readonly total: Prisma.FieldRef<"Venta", 'Int'>

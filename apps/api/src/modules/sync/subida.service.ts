@@ -39,7 +39,7 @@ const guardarVenta = async(tx: Tx, cajaId: number, op: Op<"VENTA">) => {
         data: {
             cajaId, idLocal: op.idLocal, aperturaId,
             numero: op.numero, cajeroId: op.cajeroId, medioPago: op.medioPago,
-            subTotal: op.subTotal, descuento: op.descuento, total: op.total,
+            subTotal: op.subTotal, descuento: op.descuento, total: op.total, pagoReferencia: op.pagoReferencia ?? null,
             ocurridaEn: new Date(op.ocurridaEn),
             items: { create: op.items}
         }

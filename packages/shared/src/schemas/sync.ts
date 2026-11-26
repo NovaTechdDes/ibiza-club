@@ -2,6 +2,7 @@ import z from "zod";
 import { LARGO_NOMBRE, TAMANO_LOTE } from "../constantes.js";
 import { MEDIOS_PAGO } from "../medio-pago.js";
 import { TIPOS_MOVIMIENTO } from "../tipo-movimiento.js";
+import { OrdenIdSchema } from "./pago-qr.js";
 
 const Id = z.number().int().positive();
 const Plata = z.number().int().min(0);
@@ -28,6 +29,9 @@ export const VentaSubidaSchema = OperacionBase.extend({
     numero: z.number().int().positive(),
     cajeroId: Id,
     medioPago: z.enum(MEDIOS_PAGO),
+    // Id de la orden de Mercado Pago (M11). null en efectivo, tarjeta
+    // o transferencia confirmada a mano. Opcional: las cajas 0.1.x no lo mandan.
+    pagoReferencia: OrdenIdSchema.nullable().optional(),
     subTotal: Plata,
     descuento: Plata,
     total: Plata,
@@ -44,6 +48,9 @@ export const VentaSubidaSchema = OperacionBase.extend({
         }
         if(v.total !== v.subTotal - v.descuento){
             ctx.addIssue({ code: "custom", path: ["total"], message: "El total no es subtotal - descuento"})
+        }
+        if(v.pagoReferencia && v.medioPago !== 'TRANSFERENCIA'){
+            ctx.addIssue({ code: "custom", path: ["pagoReferencia"], message: "Solo una transferencia lleva referencia de pago"})
         }
 });
 
@@ -105,7 +112,7 @@ export const AuditoriaSubidaSchema = OperacionBase.extend({
     usuarioId: Id.optional().nullable(),
     accion: z.string().trim().min(1).max(50),
     detalle: z.string().optional()
-})
+});
 
 export const SyncBajadaSchema = z.object({
     desde: z.coerce.number().int().min(0)

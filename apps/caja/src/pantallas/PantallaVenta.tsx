@@ -48,6 +48,7 @@ import { registrarAuditoria } from "../db/auditoria";
 import { PantallaCambioCajero } from "./PantallaCambioCajero";
 import { PantallaAnulacion } from "./PantallaAnulacion";
 import { PantallaCierre } from "./PantallaCierre";
+import { PantallaCobroQr } from "./PantallaCobroQr";
 import { useQueryClient } from "@tanstack/react-query";
 import { CLAVE_BAJADA } from "../hooks/useBajada";
 import { puedeAutorizar, ROLES_AUTORIZAN } from "../lib/autorizacion";
@@ -95,6 +96,7 @@ export function PantallaVenta({ vinculacion }: Props) {
     | "anulacion"
     | "cierre"
     | "admin"
+    | "qr"
   >("venta");
 
   const secciones = (tipo ? SECCIONES_POR_TIPO[tipo] : []).filter((s) =>
@@ -115,6 +117,16 @@ export function PantallaVenta({ vinculacion }: Props) {
     if (!usuario) return;
     if (await confirmar("¿Vaciar el carrito?", "Vaciar", { peligro: true }))
       descartarCarrito(usuario.id);
+  }
+
+  // Transferencia cobra con QR de Mercado Pago. Con total 0 (promo que lo cubre todo)
+  // no hay nada que pagar: MP no acepta órdenes de $0, así que se cobra directo
+  function pagarCon(medio: MedioPago) {
+    if (medio === "TRANSFERENCIA" && carrito.total > 0) {
+      setVista("qr");
+    } else {
+      cobrar.mutate({ medioPago: medio });
+    }
   }
 
   function volverDeAdmin() {
@@ -170,6 +182,26 @@ export function PantallaVenta({ vinculacion }: Props) {
 
   if (vista === "cierre") {
     return <PantallaCierre onVolver={() => setVista("venta")} />;
+  }
+
+  if (vista === "qr") {
+    // Se vuelve a la venta ANTES de cobrar: el carrito queda a la vista mientras
+    // imprime, igual que con los otros medios (useCobrar lo vacía al terminar)
+    return (
+      <PantallaCobroQr
+        vinculacion={vinculacion}
+        total={carrito.total}
+        onPagado={(ordenId) => {
+          setVista("venta");
+          cobrar.mutate({ medioPago: "TRANSFERENCIA", pagoReferencia: ordenId });
+        }}
+        onManual={() => {
+          setVista("venta");
+          cobrar.mutate({ medioPago: "TRANSFERENCIA", transferenciaManual: true });
+        }}
+        onVolver={() => setVista("venta")}
+      />
+    );
   }
 
   if (vista === "admin") {
@@ -377,7 +409,7 @@ export function PantallaVenta({ vinculacion }: Props) {
                 key={medio}
                 className={estilos.pago}
                 disabled={cobrar.isPending || carrito.cantidad === 0}
-                onClick={() => cobrar.mutate(medio)}
+                onClick={() => pagarCon(medio)}
               >
                 <Icono tamaño={26} />
                 {NOMBRE_MEDIO[medio]}

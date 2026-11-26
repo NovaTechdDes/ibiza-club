@@ -18,6 +18,12 @@ import { useVinculacion } from "./useVinculacion";
 import { avisarOperacionNueva } from "./useSubida";
 import { useTipoCaja } from "./useCatalogo";
 
+export type Cobro = {
+  medioPago: MedioPago;
+  pagoReferencia?: string | null;
+  transferenciaManual?: boolean;
+}
+
 // Con jornada, la letra y la fecha quedaron fijas al abrir la caja.
 // Sin jornada, salen de la hora de la venta, sin ningún paso manual.
 const jornadaDelTicket = async (
@@ -44,7 +50,7 @@ export const useCobrar = () => {
   const quitados = useCarrito((estado) => estado.quitados);
 
   return useMutation({
-    mutationFn: async (medioPago: MedioPago) => {
+    mutationFn: async (cobro: Cobro) => {
       if (!apertura || !usuario || !vinculacion) {
         throw new Error("Falta la apertura, el cajero o la vinculación");
       }
@@ -57,7 +63,9 @@ export const useCobrar = () => {
       //    porque onError diría "no se registró" y el cajero cobraría dos veces
       const numero = await registrarVenta({
         ...venta,
-        medioPago,
+        medioPago:cobro.medioPago,
+        pagoReferencia: cobro.pagoReferencia,
+        transferenciaManual: cobro.transferenciaManual,
         aperturaId: apertura.id,
         cajeroId: usuario.id,
         quitados
@@ -78,7 +86,7 @@ export const useCobrar = () => {
         numero,
         lineas: venta.lineas,
         total: venta.total,
-        medioPago,
+        medioPago: cobro.medioPago,
         instante,
         conEnvase: !esEntrada,
       });
