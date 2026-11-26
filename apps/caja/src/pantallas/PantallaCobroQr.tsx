@@ -6,6 +6,7 @@ import type { Vinculacion } from "../db/ajustes";
 import { usePagoQr } from "../hooks/usePagoQr";
 import { confirmar } from "../lib/alertas";
 import estilos from "./PantallaCobroQr.module.css";
+import { mostrarQr } from "../lib/pantallaCliente";
 
 type Props = {
   vinculacion: Vinculacion;
@@ -22,15 +23,47 @@ type Props = {
  * Solo dibuja según el paso de usePagoQr. Registrar la venta e imprimir lo hace
  * useCobrar desde PantallaVenta, igual que con los otros medios de pago.
  */
-export function PantallaCobroQr({ vinculacion, total, onPagado, onManual, onVolver }: Props) {
-  const { paso, reintentar, generarOtro, cancelar, confirmarManual, cancelando, errorAlCancelar } =
-    usePagoQr({ vinculacion, total, onPagado, onManual, onCancelado: onVolver });
+export function PantallaCobroQr({
+  vinculacion,
+  total,
+  onPagado,
+  onManual,
+  onVolver,
+}: Props) {
+  const {
+    paso,
+    reintentar,
+    generarOtro,
+    cancelar,
+    confirmarManual,
+    cancelando,
+    errorAlCancelar,
+  } = usePagoQr({
+    vinculacion,
+    total,
+    onPagado,
+    onManual,
+    onCancelado: onVolver,
+  });
 
   async function confirmarAMano() {
-    if (await confirmar("¿Ya viste la transferencia en el celular?", "Sí, cobrar")) confirmarManual();
+    if (
+      await confirmar("¿Ya viste la transferencia en el celular?", "Sí, cobrar")
+    )
+      confirmarManual();
   }
 
+  const qrData = paso.paso === "esperando" ? paso.orden.qrData : null;
+
   const monto = <Cifra prefijo="$">{total.toLocaleString("es-AR")}</Cifra>;
+
+  // La limpieza saca el QR de la pantalla del cliente en todas las salidas: pagado,
+  // vencido, cancelado, volver, generar otro (cambia qrData) o al desmontarse.
+  useEffect(() => {
+    if (!qrData) return;
+    mostrarQr({ qrData, total });
+    return () => mostrarQr(null);
+  }, [qrData, total]);
 
   switch (paso.paso) {
     case "creando":
@@ -38,7 +71,11 @@ export function PantallaCobroQr({ vinculacion, total, onPagado, onManual, onVolv
         <Dialogo titulo="Transferencia" ayuda="Generando el QR…" tamaño="medio">
           {monto}
           <Acciones>
-            <Boton variante="secundario" onClick={cancelar} disabled={cancelando}>
+            <Boton
+              variante="secundario"
+              onClick={cancelar}
+              disabled={cancelando}
+            >
               Cancelar
             </Boton>
           </Acciones>
@@ -47,7 +84,11 @@ export function PantallaCobroQr({ vinculacion, total, onPagado, onManual, onVolv
 
     case "esperando":
       return (
-        <Dialogo titulo="Transferencia" ayuda="El cliente escanea el QR con su app" tamaño="medio">
+        <Dialogo
+          titulo="Transferencia"
+          ayuda="El cliente escanea el QR con su app"
+          tamaño="medio"
+        >
           {/* Fondo blanco siempre: con el tema oscuro, muchos celulares no leen un QR claro sobre negro */}
           <div className={estilos.qr}>
             <QRCodeSVG value={paso.orden.qrData} size={260} marginSize={4} />
@@ -63,11 +104,19 @@ export function PantallaCobroQr({ vinculacion, total, onPagado, onManual, onVolv
           </Mensaje>
           <Acciones>
             {errorAlCancelar ? (
-              <Boton variante="secundario" onClick={onVolver} disabled={cancelando}>
+              <Boton
+                variante="secundario"
+                onClick={onVolver}
+                disabled={cancelando}
+              >
                 Volver igual
               </Boton>
             ) : null}
-            <Boton variante="secundario" onClick={cancelar} disabled={cancelando}>
+            <Boton
+              variante="secundario"
+              onClick={cancelar}
+              disabled={cancelando}
+            >
               {errorAlCancelar ? "Reintentar cancelar" : "Cancelar"}
             </Boton>
             <Boton onClick={confirmarAMano} disabled={cancelando}>
@@ -81,7 +130,9 @@ export function PantallaCobroQr({ vinculacion, total, onPagado, onManual, onVolv
       return (
         <Dialogo titulo="Transferencia" tamaño="medio">
           {monto}
-          <Mensaje>No se pudo generar el QR. Revisá la conexión o confirmá a mano.</Mensaje>
+          <Mensaje>
+            No se pudo generar el QR. Revisá la conexión o confirmá a mano.
+          </Mensaje>
           <Acciones>
             <Boton variante="secundario" onClick={onVolver}>
               Volver
@@ -98,7 +149,9 @@ export function PantallaCobroQr({ vinculacion, total, onPagado, onManual, onVolv
     case "terminado":
       return (
         <Dialogo
-          titulo={paso.motivo === "VENCIDO" ? "El QR venció" : "Se canceló el QR"}
+          titulo={
+            paso.motivo === "VENCIDO" ? "El QR venció" : "Se canceló el QR"
+          }
           ayuda="No se cobró nada. Podés generar otro."
           tamaño="medio"
         >

@@ -235,6 +235,82 @@
     color: var(--color-texto-suave);
 }
 
+/* ---- Pago con QR ---- */
+
+/*
+ * Barra: lista a la izquierda (toma lo que sobra) y QR a la derecha (su ancho lo
+ * da el alto del QR). Como en la venta, sin espacio vacío arriba ni abajo.
+ */
+.pagoConLista {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    column-gap: 4vw;
+}
+
+/* En la venta la lista va al centro con 60vw como mucho; acá llena su columna */
+.pagoConLista .resumen {
+    width: 100%;
+}
+
+/* Total arriba, QR al medio, ayuda abajo: se lee de arriba hacia abajo antes de sacar el celular */
+.pago {
+    display: grid;
+    justify-items: center;
+    gap: 3vh;
+    text-align: center;
+    animation: aparecer 400ms ease-out;
+}
+
+.pagoTotal {
+    margin: 0;
+    display: grid;
+    justify-items: center;
+    gap: 0.5vh;
+    font-size: min(6vw, 9vh);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
+}
+
+/* Igual que .total de la venta: la palabra chica y suave, el número grande */
+.pagoTotal span:first-child {
+    font-size: 0.35em;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-texto-suave);
+}
+
+/*
+ * Blanco fijo y no un token: en el tema oscuro, un QR claro sobre negro
+ * muchos celulares no lo leen. Cuadrado y del alto de la pantalla.
+ */
+.qr {
+    height: 58vh;
+    max-width: 80vw;
+    aspect-ratio: 1;
+    padding: 1vh;
+    border-radius: var(--radio-grande);
+    background: #fff;
+    line-height: 0;
+}
+
+.qr svg {
+    width: 100%;
+    height: 100%;
+}
+
+.pagoAyuda {
+    margin: 0;
+    font-size: min(2.6vw, 4vh);
+    font-weight: 500;
+    color: var(--color-texto-suave);
+}
+
 /* prefers-reduced-motion ya lo resuelve tema.css (animation-duration: 0ms) */
 @keyframes aparecer {
     from {

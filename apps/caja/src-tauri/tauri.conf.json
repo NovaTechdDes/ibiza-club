@@ -9,7 +9,6 @@
     "beforeBuildCommand": "pnpm build",
     "frontendDist": "../dist"
   },
-  
   "app": {
     "windows": [
       {
@@ -30,7 +29,9 @@
   },
   "bundle": {
     "active": true,
-    "targets": ["nsis"],
+    "targets": [
+      "nsis"
+    ],
     "createUpdaterArtifacts": true,
     "icon": [
       "icons/32x32.png",
@@ -43,7 +44,9 @@
   "plugins": {
     "updater": {
       "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDUyQkI3OEJGMjhBNjM3QUUKUldTdU42WW92M2k3VXFyRlRMZFo0dy9QbVBMSVY1dStUSUZRSkZ3TTkwc01LZlJoUDlLK3kzNE4K",
-      "windows": { "installMode": "passive"}
+      "windows": {
+        "installMode": "passive"
+      }
     }
   }
 }
